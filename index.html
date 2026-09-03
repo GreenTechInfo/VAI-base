@@ -4,548 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>База ВУ - ВАИ</title>
-    <style>
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #1a1a1a;
-            --bg-card: #222222;
-            --bg-input: #1a1a1a;
-            --border-color: #333333;
-            --text-primary: #d4d4d4;
-            --text-secondary: #888888;
-            --accent-green: #2d5a27;
-            --accent-green-hover: #3a7a33;
-            --status-valid: #1a472a;
-            --status-expiring: #5a4a1a;
-            --status-expired: #4a1a1a;
-            --status-archived: #333333;
-            --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: var(--bg-primary);
-            min-height: 100vh;
-            color: var(--text-primary);
-            padding: 0;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 0;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .tab {
-            padding: 12px 24px;
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            transition: all 0.3s;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-
-        .tab:hover {
-            color: var(--text-primary);
-            background: var(--bg-secondary);
-        }
-
-        .tab.active {
-            color: var(--accent-green-hover);
-            border-bottom-color: var(--accent-green);
-            background: var(--bg-secondary);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .create-form {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 3px;
-            padding: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .form-input {
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 2px;
-            width: 100%;
-            transition: border-color 0.2s;
-            font-family: var(--font-mono);
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent-green);
-            background: #1f1f1f;
-        }
-
-        select.form-input {
-            cursor: pointer;
-        }
-
-        select.form-input option {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-
-        .btn-create {
-            padding: 12px 30px;
-            font-size: 14px;
-            font-weight: 600;
-            background: var(--accent-green);
-            border: 1px solid var(--accent-green);
-            color: #fff;
-            border-radius: 2px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.3s;
-            margin-right: 10px;
-        }
-
-        .btn-create:hover {
-            background: var(--accent-green-hover);
-            border-color: var(--accent-green-hover);
-        }
-
-        .btn-save {
-            padding: 12px 30px;
-            font-size: 14px;
-            font-weight: 600;
-            background: #1a472a;
-            border: 1px solid #2d5a27;
-            color: #4caf50;
-            border-radius: 2px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.3s;
-        }
-
-        .btn-save:hover {
-            background: #2d5a27;
-            color: #fff;
-        }
-
-        .canvas-preview {
-            margin-top: 20px;
-            text-align: center;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 3px;
-            padding: 20px;
-            overflow: auto;
-        }
-
-        .canvas-preview canvas {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid var(--border-color);
-            border-radius: 2px;
-        }
-
-        .search-panel {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 3px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .search-panel-header {
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .search-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 10px;
-        }
-
-        .search-input {
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 8px 10px;
-            font-size: 13px;
-            border-radius: 2px;
-            transition: border-color 0.2s;
-            font-family: var(--font-mono);
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--accent-green);
-            background: #1f1f1f;
-        }
-
-        .search-input::placeholder {
-            color: #555;
-        }
-
-        select.search-input {
-            cursor: pointer;
-        }
-
-        select.search-input option {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            font-size: 12px;
-            font-weight: 600;
-            border: 1px solid;
-            border-radius: 2px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.2s;
-        }
-
-        .btn-reset {
-            background: transparent;
-            border-color: var(--border-color);
-            color: var(--text-secondary);
-        }
-
-        .btn-reset:hover {
-            border-color: #555;
-            color: var(--text-primary);
-        }
-
-        .results-panel {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 3px;
-        }
-
-        .results-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .results-count {
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-family: var(--font-mono);
-        }
-
-        .vu-record {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-left: 3px solid var(--accent-green);
-            margin: 15px;
-            border-radius: 2px;
-        }
-
-        .vu-record-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 15px;
-            background: #1f1f1f;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .vu-number {
-            font-family: var(--font-mono);
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--accent-green-hover);
-            letter-spacing: 1px;
-        }
-
-        .vu-status {
-            padding: 3px 10px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-radius: 2px;
-        }
-
-        .status-valid {
-            background: var(--status-valid);
-            color: #4caf50;
-            border: 1px solid #2d5a27;
-        }
-
-        .status-expiring {
-            background: var(--status-expiring);
-            color: #ffc107;
-            border: 1px solid #5a4a1a;
-        }
-
-        .status-expired {
-            background: var(--status-expired);
-            color: #f44336;
-            border: 1px solid #6b2020;
-        }
-
-        .status-archived {
-            background: var(--status-archived);
-            color: #888;
-            border: 1px solid #444;
-        }
-
-        .vu-data {
-            padding: 15px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-        }
-
-        .data-field {
-            margin-bottom: 5px;
-        }
-
-        .data-label {
-            font-size: 10px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 3px;
-        }
-
-        .data-value {
-            font-size: 13px;
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-        }
-
-        .documents-grid {
-            display: flex;
-            gap: 10px;
-            padding: 0 15px 15px 15px;
-            flex-wrap: wrap;
-        }
-
-        .document-thumb {
-            position: relative;
-            background: #1a1a1a;
-            border: 1px solid var(--border-color);
-            border-radius: 2px;
-            overflow: hidden;
-            cursor: pointer;
-            width: 120px;
-            height: 90px;
-            transition: border-color 0.2s;
-            flex-shrink: 0;
-        }
-
-        .document-thumb:hover {
-            border-color: var(--accent-green);
-        }
-
-        .document-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(30%);
-        }
-
-        .document-thumb:hover img {
-            filter: grayscale(0%);
-        }
-
-        .document-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 2px;
-            font-size: 8px;
-            text-align: center;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .photo-counter {
-            position: absolute;
-            top: 3px;
-            right: 3px;
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 1px 4px;
-            font-size: 9px;
-            border-radius: 2px;
-            font-family: var(--font-mono);
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-family: var(--font-mono);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: var(--accent-green-hover);
-            font-size: 13px;
-            font-family: var(--font-mono);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
-        }
-
-        .modal-content {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content img {
-            max-width: 90%;
-            max-height: 80vh;
-            object-fit: contain;
-            display: block;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: #fff;
-            font-size: 30px;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            line-height: 40px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid var(--border-color);
-            border-radius: 2px;
-            z-index: 1001;
-        }
-
-        .modal-close:hover {
-            background: rgba(255, 0, 0, 0.5);
-        }
-
-        .modal-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #fff;
-            font-size: 30px;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            line-height: 40px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid var(--border-color);
-            border-radius: 2px;
-            z-index: 1001;
-            user-select: none;
-        }
-
-        .modal-nav:hover {
-            background: rgba(0, 0, 0, 0.9);
-        }
-
-        .modal-prev {
-            left: 20px;
-        }
-
-        .modal-next {
-            right: 20px;
-        }
-
-        .modal-counter {
-            color: #fff;
-            font-size: 14px;
-            margin-top: 10px;
-            font-family: var(--font-mono);
-        }
-    </style>
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
     <div class="container">
         <div class="tabs">
             <button class="tab active" data-tab="database" onclick="switchTab('database')">База ВУ</button>
             <button class="tab" data-tab="create" onclick="switchTab('create')">Создать ВУ</button>
+            <button class="tab" data-tab="exam" onclick="switchTab('exam')">Экзамен</button>
         </div>
 
+        <!-- Вкладка: База ВУ -->
         <div class="tab-content active" id="tab-database">
             <div class="search-panel">
                 <div class="search-panel-header">Параметры поиска</div>
@@ -578,6 +47,7 @@
             </div>
         </div>
 
+        <!-- Вкладка: Создать ВУ -->
         <div class="tab-content" id="tab-create">
             <div class="create-form">
                 <h2 style="margin-bottom: 20px; color: var(--accent-green-hover);">СОЗДАНИЕ НОВОГО ВУ</h2>
@@ -637,6 +107,161 @@
                 <canvas id="vuCanvas" width="1215" height="892"></canvas>
             </div>
         </div>
+
+        <!-- Вкладка: Экзамен -->
+        <div class="tab-content" id="tab-exam">
+            <div class="exam-form">
+                <h2 style="margin-bottom: 20px; color: var(--accent-green-hover);">ЗАПОЛНЕНИЕ БЛАНКА ЭКЗАМЕНА</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Дата экзамена</label>
+                        <input type="text" class="form-input" id="examDate" placeholder="ДД.ММ.ГГГГ" oninput="generateExam()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Время экзамена</label>
+                        <input type="text" class="form-input" id="examTime" placeholder="ЧЧ:ММ" oninput="generateExam()">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Категория ТС</label>
+                        <input type="text" class="form-input" id="examCategory" value="C" oninput="generateExam()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Тип трансмиссии</label>
+                        <input type="text" class="form-input" id="examTransmission" value="Механика" oninput="generateExam()">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Фамилия</label>
+                        <input type="text" class="form-input" id="examLastName" placeholder="Иванов" oninput="generateExam()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Имя</label>
+                        <input type="text" class="form-input" id="examFirstName" placeholder="Иван" oninput="generateExam()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Отчество (при наличии)</label>
+                        <input type="text" class="form-input" id="examMiddleName" placeholder="Иванович" oninput="generateExam()">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Дата рождения</label>
+                        <input type="text" class="form-input" id="examBirthDate" placeholder="ДД.ММ.ГГГГ" oninput="generateExam()">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Марка ТС</label>
+                        <input type="text" class="form-input" id="examVehicleMake" placeholder="УРАЛ" oninput="generateExam()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Модель ТС</label>
+                        <input type="text" class="form-input" id="examVehicleModel" placeholder="4320" oninput="generateExam()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Гос. рег. знак ТС</label>
+                        <input type="text" class="form-input" id="examPlateNumber" placeholder="9632АТ 67" oninput="generateExam()">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Экзаменатор (Должность, подразделение, специальное звание, инициалы, фамилия)</label>
+                    <input type="text" class="form-input" id="examExaminer" placeholder="Инспектор ОТНиЭР 49-й ВАИ, сержант Я.В. Орлов" oninput="generateExam()">
+                </div>
+
+                <!-- Чекбоксы для навыков -->
+                <div class="form-group skills-section">
+                    <div class="skills-header">
+                        <label class="form-label">Навыки управления транспортным средством, подлежащие проверке</label>
+                        <div class="skills-actions">
+                            <button type="button" class="btn btn-skills" onclick="checkAllSkills()">Выделить всё</button>
+                            <button type="button" class="btn btn-skills" onclick="uncheckAllSkills()">Убрать всё</button>
+                        </div>
+                    </div>
+                    <div class="skills-grid" id="skillsGrid">
+                        <!-- Навыки будут добавлены через JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Ошибки -->
+                <div class="form-group errors-section">
+                    <div class="errors-header">
+                        <label class="form-label">Ошибки и нарушения (отметить допущенные)</label>
+                        <div class="errors-actions">
+                            <button type="button" class="btn btn-skills" onclick="checkAllErrors()">Выделить всё</button>
+                            <button type="button" class="btn btn-skills" onclick="uncheckAllErrors()">Убрать всё</button>
+                        </div>
+                    </div>
+                    <div id="errorsContainer">
+                        <!-- Ошибки будут добавлены через JavaScript -->
+                    </div>
+                    <div class="errors-total" id="errorsTotal">Штрафные баллы: 0</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Комментарий экзаменатора о допущенных ошибках</label>
+                    <input type="text" class="form-input" id="examExaminerComment" placeholder="Введите комментарий..." oninput="generateExam()">
+                </div>
+
+                <!-- ПОДПИСИ -->
+                <div class="form-group signatures-section">
+                    <div class="signatures-header">
+                        <label class="form-label">Подписи</label>
+                    </div>
+                    <div class="signatures-grid">
+                        <div class="signature-item">
+                            <div class="signature-label">Подпись экзаменатора</div>
+                            <div class="signature-text-row">
+                                <input type="text" class="form-input signature-text-input" id="signatureExaminerText" placeholder="Инициалы, фамилия (например: Я.В. Орлов)" oninput="generateExam()">
+                            </div>
+                            <input type="file" class="signature-input" id="signatureExaminerInput" accept="image/*" onchange="loadSignature('examiner', this)">
+                            <div class="signature-preview" id="signatureExaminerPreview"><div style="color: #555; font-size: 12px;">Подпись не загружена</div></div>
+                            <div class="signature-controls">
+                                <button class="btn btn-skills" onclick="resetSignature('examiner')">Сбросить</button>
+                            </div>
+                        </div>
+                        <div class="signature-item">
+                            <div class="signature-label">Подпись кандидата</div>
+                            <div class="signature-text-row">
+                                <input type="text" class="form-input signature-text-input" id="signatureCandidateText" placeholder="Инициалы, фамилия (например: И.И. Иванов)" oninput="generateExam()">
+                            </div>
+                            <input type="file" class="signature-input" id="signatureCandidateInput" accept="image/*" onchange="loadSignature('candidate', this)">
+                            <div class="signature-preview" id="signatureCandidatePreview"><div style="color: #555; font-size: 12px;">Подпись не загружена</div></div>
+                            <div class="signature-controls">
+                                <button class="btn btn-skills" onclick="resetSignature('candidate')">Сбросить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exam-buttons">
+                    <button class="btn-save" onclick="saveExamPage1()">Сохранить стр. 1</button>
+                    <button class="btn-save" onclick="saveExamPage2()">Сохранить стр. 2</button>
+                    <button class="btn-save" onclick="saveExamBoth()">Сохранить обе страницы</button>
+                </div>
+            </div>
+
+            <div class="canvas-preview exam-preview">
+                <!-- Страница 1 -->
+                <div class="exam-page-wrapper">
+                    <h3>Страница 1</h3>
+                    <canvas id="examCanvas1" width="1654" height="2339"></canvas>
+                </div>
+                <!-- Страница 2 -->
+                <div class="exam-page-wrapper">
+                    <h3>Страница 2</h3>
+                    <canvas id="examCanvas2" width="1654" height="2339"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="modal" id="photoModal">
@@ -649,584 +274,10 @@
         </div>
     </div>
 
-    <script>
-        const sheetID = "1hLOQ29hMWMxau9uh6xiSyDicRXnzYjWyeIwzpXcGMcU";
-        const sheetName = "ВУ";
-        const url = `https://opensheet.elk.sh/${sheetID}/${encodeURIComponent(sheetName)}`;
-
-        let vuDatabase = [];
-        let currentPhotoList = [];
-        let currentPhotoIndex = 0;
-
-        const VU_CONFIG = {
-            canvasWidth: 1215,
-            canvasHeight: 892,
-            rankBackgrounds: {
-                'гвардии рядовой': 'backgrounds/ryadovoy.png',
-                'гвардии ефрейтор': 'backgrounds/efreytor.png',
-                'гвардии мл. сержант': 'backgrounds/mladshiy_serzhant.png',
-                'гвардии сержант': 'backgrounds/serzhant.png',
-                'гвардии ст. сержант': 'backgrounds/starshiy_serzhant.png',
-                'гвардии старшина': 'backgrounds/starshina.png',
-                'гвардии прапорщик': 'backgrounds/praporshchik.png',
-                'гвардии ст. прапорщик': 'backgrounds/starshiy_praporshchik.png',
-                'гвардии лейтенант': 'backgrounds/leytenant.png',
-                'гвардии ст. лейтенант': 'backgrounds/starshiy_leytenant.png',
-                'гвардии капитан': 'backgrounds/kapitan.png',
-                'гвардии майор': 'backgrounds/mayor.png'
-            }
-        };
-
-        const backgroundCache = {};
-
-        function fitText(ctx, text, x, y, maxWidth, initialSize, fontFamily, fontWeight, color, align = 'left', fontStyle = 'normal') {
-            if (!text || text.trim() === '') return;
-            
-            let fontSize = initialSize;
-            ctx.textAlign = align;
-            ctx.textBaseline = 'bottom';
-            
-            do {
-                ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px "${fontFamily}"`;
-                const metrics = ctx.measureText(text);
-                if (metrics.width <= maxWidth) {
-                    break;
-                }
-                fontSize -= 1;
-            } while (fontSize > 8);
-            
-            ctx.fillStyle = color;
-            ctx.fillText(text, x, y);
-        }
-
-        function loadImage(src) {
-            return new Promise((resolve, reject) => {
-                if (backgroundCache[src]) {
-                    resolve(backgroundCache[src]);
-                    return;
-                }
-                
-                const img = new Image();
-                img.onload = () => {
-                    backgroundCache[src] = img;
-                    resolve(img);
-                };
-                img.onerror = reject;
-                img.src = src + '?nocache=' + Date.now();
-            });
-        }
-
-        function switchTab(tabName) {
-            window.location.hash = tabName;
-            
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            document.getElementById(`tab-${tabName}`).classList.add('active');
-            document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
-            
-            if (tabName === 'create') {
-                setTimeout(generateVU, 100);
-            }
-        }
-
-        function handleHash() {
-            const hash = window.location.hash.substring(1);
-            if (hash === 'create') {
-                switchTab('create');
-            } else {
-                switchTab('database');
-            }
-        }
-
-        function parseDate(dateStr) {
-            if (!dateStr) return null;
-            
-            const str = String(dateStr).trim();
-            if (!str) return null;
-            
-            const dotParts = str.split('.');
-            if (dotParts.length === 3) {
-                const day = parseInt(dotParts[0]);
-                const month = parseInt(dotParts[1]);
-                const year = parseInt(dotParts[2]);
-                if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-                    const fullYear = year < 100 ? 2000 + year : year;
-                    return new Date(fullYear, month - 1, day);
-                }
-            }
-            
-            const isoParts = str.split('-');
-            if (isoParts.length === 3) {
-                const year = parseInt(isoParts[0]);
-                const month = parseInt(isoParts[1]);
-                const day = parseInt(isoParts[2]);
-                if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-                    return new Date(year, month - 1, day);
-                }
-            }
-            
-            const date = new Date(str);
-            if (!isNaN(date.getTime())) {
-                return date;
-            }
-            
-            return null;
-        }
-
-        function formatDate(dateString) {
-            const date = parseDate(dateString);
-            if (!date) return dateString || 'Н/Д';
-            
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            
-            return `${day}.${month}.${year}`;
-        }
-
-        function calculateExpiry(issueDate) {
-            const date = parseDate(issueDate);
-            if (!date) return '';
-            
-            const expiryDate = new Date(date);
-            expiryDate.setMonth(expiryDate.getMonth() + 1);
-            
-            const day = String(expiryDate.getDate()).padStart(2, '0');
-            const month = String(expiryDate.getMonth() + 1).padStart(2, '0');
-            const year = expiryDate.getFullYear();
-            
-            return `${day}.${month}.${year}`;
-        }
-
-        function splitUrls(urlString) {
-            if (!urlString) return [];
-            
-            return String(urlString)
-                .split(';')
-                .map(url => url.trim())
-                .filter(url => url.length > 0);
-        }
-
-        async function generateVU() {
-            const canvas = document.getElementById('vuCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            const vuNumber = document.getElementById('createVUNumber').value.trim();
-            const rank = document.getElementById('createRank').value;
-            const lastName = document.getElementById('createLastName').value.trim();
-            const firstName = document.getElementById('createFirstName').value.trim();
-            const middleName = document.getElementById('createMiddleName').value.trim();
-            const issueDate = document.getElementById('createIssueDate').value.trim();
-            
-            const expiryDate = calculateExpiry(issueDate);
-            document.getElementById('createExpiryDate').value = expiryDate;
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            if (rank && VU_CONFIG.rankBackgrounds[rank]) {
-                try {
-                    const bgImage = await loadImage(VU_CONFIG.rankBackgrounds[rank]);
-                    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-                } catch (error) {
-                    console.warn('Ошибка загрузки фона:', error);
-                    ctx.fillStyle = '#2a2a2a';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#666';
-                    ctx.font = '24px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('Ошибка загрузки фона', 607, 446);
-                }
-            } else {
-                ctx.fillStyle = '#2a2a2a';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#666';
-                ctx.font = '24px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('Выберите звание', 607, 446);
-            }
-            
-            if (rank) {
-                const fontFamily = 'Segoe Script';
-                const color = '#000f55';
-                
-                if (vuNumber) {
-                    fitText(ctx, vuNumber, 389, 106, 123, 25, fontFamily, 'normal', color, 'left', 'italic');
-                }
-
-                if (rank) {
-                    fitText(ctx, rank, 218, 149, 341, 30, fontFamily, 'normal', color, 'left', 'italic');
-                }
-
-                if (lastName) {
-                    fitText(ctx, lastName, 148, 191, 411, 30, fontFamily, 'normal', color, 'left', 'italic');
-                }
-
-                if (firstName) {
-                    fitText(ctx, firstName, 102, 233, 457, 30, fontFamily, 'normal', color, 'left', 'italic');
-                }
-
-                if (middleName) {
-                    fitText(ctx, middleName, 149, 275, 410, 30, fontFamily, 'normal', color, 'left', 'italic');
-                }
-
-                if (issueDate) {
-                    let dateStr = issueDate;
-                    if (!dateStr.includes('.') && dateStr.length === 8) {
-                        dateStr = dateStr.slice(0, 2) + '.' + dateStr.slice(2, 4) + '.' + dateStr.slice(4, 8);
-                    }
-                    
-                    const dateParts = dateStr.split('.');
-                    if (dateParts.length === 3 && dateParts[0].length === 2 && dateParts[1].length === 2) {
-                        fitText(ctx, dateParts[0], 320, 486, 49, 30, fontFamily, 'normal', color, 'left', 'italic');
-                        fitText(ctx, dateParts[1], 443, 486, 116, 30, fontFamily, 'normal', color, 'center', 'italic');
-                        const year = dateParts[2].slice(-2);
-                        fitText(ctx, year, 529, 483, 33, 23, fontFamily, 'normal', color, 'left', 'italic');
-                    } else {
-                        fitText(ctx, issueDate, 320, 486, 242, 30, fontFamily, 'normal', color, 'left', 'italic');
-                    }
-                }
-
-                if (expiryDate) {
-                    let dateStr = expiryDate;
-                    if (!dateStr.includes('.') && dateStr.length === 8) {
-                        dateStr = dateStr.slice(0, 2) + '.' + dateStr.slice(2, 4) + '.' + dateStr.slice(4, 8);
-                    }
-                    
-                    const dateParts = dateStr.split('.');
-                    if (dateParts.length === 3 && dateParts[0].length === 2 && dateParts[1].length === 2) {
-                        fitText(ctx, dateParts[0], 320, 594, 49, 30, fontFamily, 'normal', color, 'left', 'italic');
-                        fitText(ctx, dateParts[1], 443, 594, 116, 30, fontFamily, 'normal', color, 'center', 'italic');
-                        const year = dateParts[2].slice(-2);
-                        fitText(ctx, year, 529, 591, 33, 23, fontFamily, 'normal', color, 'left', 'italic');
-                    } else {
-                        fitText(ctx, expiryDate, 320, 486, 242, 30, fontFamily, 'normal', color, 'left', 'italic');
-                    }
-                }
-            }
-        }
-
-        function saveVU() {
-            const canvas = document.getElementById('vuCanvas');
-            
-            if (canvas.width === 0 || canvas.height === 0) {
-                alert('Холст пуст');
-                return;
-            }
-            
-            const lastName = document.getElementById('createLastName').value.trim() || 'unknown';
-            const fileName = `${lastName}_ВУ.png`;
-            
-            const link = document.createElement('a');
-            link.download = fileName;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }
-
-        async function loadFromGoogleSheets() {
-            const resultsContainer = document.getElementById('results');
-            resultsContainer.innerHTML = '<div class="loading">ЗАГРУЗКА ДАННЫХ...</div>';
-            
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                if (!Array.isArray(data)) {
-                    throw new Error("Invalid data format");
-                }
-                
-                vuDatabase = data
-                    .filter(row => row && Object.values(row).some(value => value !== '' && value !== null && value !== undefined))
-                    .map((row, index) => {
-                        const fio = row['ФИО'] || row['fio'] || row['name'] || '';
-                        const vuNumber = row['Номер ВУ'] || row['vuNumber'] || row['номер'] || '';
-                        const issueDate = row['Дата выдачи (формат: ГГГГ-ММ-ДД)'] || row['Дата выдачи'] || row['issueDate'] || '';
-                        const issuedBy = row['Кем выдано'] || row['issuedBy'] || row['кем'] || '';
-                        const photoVU = row['Ссылка на фото ВУ'] || row['Фото ВУ'] || row['photoVU'] || '';
-                        const photoExam = row['Ссылка на фото бланков'] || row['Фото бланков'] || row['photoExam'] || '';
-                        const state = row['Состояние'] || row['состояние'] || row['state'] || '';
-                        
-                        return {
-                            fio: fio || 'Н/Д',
-                            vuNumber: vuNumber || 'Н/Д',
-                            issueDate: issueDate,
-                            expiryDate: calculateExpiry(issueDate),
-                            issuedBy: issuedBy || 'Н/Д',
-                            state: state.trim(),
-                            photos: {
-                                vu: splitUrls(photoVU),
-                                exam: splitUrls(photoExam)
-                            },
-                            rowIndex: index
-                        };
-                    })
-                    .reverse();
-                
-                const activeRecords = vuDatabase.filter(vu => vu.state !== 'Архив');
-                displayResults(activeRecords);
-                
-            } catch (error) {
-                console.error('Ошибка загрузки:', error);
-                resultsContainer.innerHTML = `
-                    <div class="no-results">
-                        ОШИБКА ЗАГРУЗКИ ДАННЫХ<br>
-                        <small>${error.message}</small>
-                    </div>
-                `;
-            }
-        }
-
-        function getVUStatus(expiryDate, state) {
-            if (state === 'Архив') {
-                return { status: 'archived', text: 'АРХИВ', class: 'status-archived' };
-            }
-            
-            if (!expiryDate) {
-                return { status: 'expired', text: 'НЕТ ДАННЫХ', class: 'status-expired' };
-            }
-            
-            const date = parseDate(expiryDate);
-            if (!date) {
-                return { status: 'expired', text: 'НЕТ ДАННЫХ', class: 'status-expired' };
-            }
-            
-            const today = new Date();
-            const diffTime = date - today;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            
-            if (diffDays < 0) {
-                return { status: 'expired', text: 'ПРОСРОЧЕНО', class: 'status-expired' };
-            } else if (diffDays <= 7) {
-                return { status: 'expiring', text: 'ИСТЕКАЕТ', class: 'status-expiring' };
-            } else {
-                return { status: 'valid', text: 'ДЕЙСТВИТЕЛЬНО', class: 'status-valid' };
-            }
-        }
-
-        function displayResults(results) {
-            const resultsContainer = document.getElementById('results');
-            const resultsCount = document.getElementById('resultsCount');
-            
-            resultsCount.textContent = `ЗАПИСЕЙ: ${results.length}`;
-            
-            if (results.length === 0) {
-                resultsContainer.innerHTML = '<div class="no-results">ЗАПИСИ НЕ НАЙДЕНЫ</div>';
-                return;
-            }
-            
-            let html = '';
-            
-            results.forEach(vu => {
-                const status = getVUStatus(vu.expiryDate, vu.state);
-                const isArchived = vu.state === 'Архив';
-                
-                html += `
-                    <div class="vu-record">
-                        <div class="vu-record-header">
-                            <div class="vu-number">${vu.vuNumber}</div>
-                            <div class="vu-status ${status.class}">${status.text}</div>
-                        </div>
-                        
-                        <div class="vu-data">
-                            <div class="data-field">
-                                <div class="data-label">ФИО</div>
-                                <div class="data-value">${vu.fio}</div>
-                            </div>
-                            <div class="data-field">
-                                <div class="data-label">Дата выдачи</div>
-                                <div class="data-value">${formatDate(vu.issueDate)}</div>
-                            </div>
-                            <div class="data-field">
-                                <div class="data-label">Действительно до</div>
-                                <div class="data-value">${formatDate(vu.expiryDate)}</div>
-                            </div>
-                            <div class="data-field">
-                                <div class="data-label">Кем выдано</div>
-                                <div class="data-value">${vu.issuedBy}</div>
-                            </div>
-                            ${isArchived ? `
-                            <div class="data-field">
-                                <div class="data-label">Состояние</div>
-                                <div class="data-value" style="color: #888;">АРХИВ</div>
-                            </div>
-                            ` : ''}
-                        </div>
-                        
-                        ${(vu.photos.vu.length > 0 || vu.photos.exam.length > 0) ? `
-                        <div class="documents-grid">
-                            ${vu.photos.vu.length > 0 ? `
-                            <div class="document-thumb" onclick="openPhotoGallery(${JSON.stringify(vu.photos.vu).replace(/"/g, '&quot;')}, 0)">
-                                <img src="${vu.photos.vu[0]}" alt="ВУ" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23111%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23444%22 font-family=%22monospace%22%3EНЕТ ФОТО%3C/text%3E%3C/svg%3E'">
-                                <div class="document-label">ВУ</div>
-                                ${vu.photos.vu.length > 1 ? `<div class="photo-counter">1/${vu.photos.vu.length}</div>` : ''}
-                            </div>
-                            ` : ''}
-                            
-                            ${vu.photos.exam.length > 0 ? `
-                            <div class="document-thumb" onclick="openPhotoGallery(${JSON.stringify(vu.photos.exam).replace(/"/g, '&quot;')}, 0)">
-                                <img src="${vu.photos.exam[0]}" alt="Бланки" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect width=%22400%22 height=%22300%22 fill=%22%23111%22/%3E%3Ctext x=%22200%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23444%22 font-family=%22monospace%22%3EНЕТ ФОТО%3C/text%3E%3C/svg%3E'">
-                                <div class="document-label">БЛАНКИ</div>
-                                ${vu.photos.exam.length > 1 ? `<div class="photo-counter">1/${vu.photos.exam.length}</div>` : ''}
-                            </div>
-                            ` : ''}
-                        </div>
-                        ` : ''}
-                    </div>
-                `;
-            });
-            
-            resultsContainer.innerHTML = html;
-        }
-
-        function openPhotoGallery(photoList, startIndex) {
-            currentPhotoList = photoList;
-            currentPhotoIndex = startIndex;
-            updateModalImage();
-            document.getElementById('photoModal').style.display = 'block';
-        }
-
-        function updateModalImage() {
-            if (currentPhotoList.length === 0) return;
-            
-            const modalImage = document.getElementById('modalImage');
-            const modalCounter = document.getElementById('modalCounter');
-            
-            modalImage.src = currentPhotoList[currentPhotoIndex];
-            modalCounter.textContent = `${currentPhotoIndex + 1} / ${currentPhotoList.length}`;
-            
-            const prevBtn = document.querySelector('.modal-prev');
-            const nextBtn = document.querySelector('.modal-next');
-            
-            if (currentPhotoList.length <= 1) {
-                prevBtn.style.display = 'none';
-                nextBtn.style.display = 'none';
-            } else {
-                prevBtn.style.display = 'block';
-                nextBtn.style.display = 'block';
-            }
-        }
-
-        function prevPhoto() {
-            if (currentPhotoIndex > 0) {
-                currentPhotoIndex--;
-                updateModalImage();
-            }
-        }
-
-        function nextPhoto() {
-            if (currentPhotoIndex < currentPhotoList.length - 1) {
-                currentPhotoIndex++;
-                updateModalImage();
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('photoModal').style.display = 'none';
-        }
-
-        function searchVU() {
-            const searchFIO = document.getElementById('searchFIO').value.toLowerCase();
-            const searchVU = document.getElementById('searchVU').value.toLowerCase();
-            const searchIssued = document.getElementById('searchIssued').value.toLowerCase();
-            const searchDateFrom = document.getElementById('searchDateFrom').value;
-            const searchDateTo = document.getElementById('searchDateTo').value;
-            const searchStatus = document.getElementById('searchStatus').value;
-            
-            let filteredResults = vuDatabase.filter(vu => {
-                let match = true;
-                
-                if (searchStatus !== 'archived' && vu.state === 'Архив') {
-                    match = false;
-                }
-                
-                if (searchFIO && !vu.fio.toLowerCase().includes(searchFIO)) {
-                    match = false;
-                }
-                
-                if (searchVU && !vu.vuNumber.toLowerCase().includes(searchVU)) {
-                    match = false;
-                }
-                
-                if (searchIssued && !vu.issuedBy.toLowerCase().includes(searchIssued)) {
-                    match = false;
-                }
-                
-                if (searchDateFrom) {
-                    const fromDate = parseDate(searchDateFrom);
-                    const vuDate = parseDate(vu.issueDate);
-                    if (fromDate && vuDate && vuDate < fromDate) {
-                        match = false;
-                    }
-                }
-                
-                if (searchDateTo) {
-                    const toDate = parseDate(searchDateTo);
-                    const vuDate = parseDate(vu.issueDate);
-                    if (toDate && vuDate && vuDate > toDate) {
-                        match = false;
-                    }
-                }
-                
-                if (searchStatus) {
-                    const status = getVUStatus(vu.expiryDate, vu.state).status;
-                    if (status !== searchStatus) {
-                        match = false;
-                    }
-                }
-                
-                return match;
-            });
-            
-            displayResults(filteredResults);
-        }
-
-        function resetSearch() {
-            document.getElementById('searchForm').reset();
-            const activeRecords = vuDatabase.filter(vu => vu.state !== 'Архив');
-            displayResults(activeRecords);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            handleHash();
-            loadFromGoogleSheets();
-            generateVU();
-            
-            window.addEventListener('hashchange', handleHash);
-            
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeModal();
-                }
-                if (e.key === 'ArrowLeft') {
-                    prevPhoto();
-                }
-                if (e.key === 'ArrowRight') {
-                    nextPhoto();
-                }
-            });
-            
-            document.getElementById('photoModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeModal();
-                }
-            });
-            
-            const searchInputs = document.querySelectorAll('.search-input');
-            searchInputs.forEach(input => {
-                input.addEventListener('input', searchVU);
-            });
-            
-            setInterval(loadFromGoogleSheets, 300000);
-        });
-    </script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/database.js"></script>
+    <script src="scripts/create.js"></script>
+    <script src="scripts/exam.js"></script>
+    <script src="scripts/signatures.js"></script>
 </body>
 </html>
