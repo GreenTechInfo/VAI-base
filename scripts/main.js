@@ -30,6 +30,9 @@ function switchTab(tabName) {
     if (tabName === 'exam') {
         setTimeout(generateExam, 100);
     }
+    if (tabName === 'tech') {
+        setTimeout(generateTech, 100);
+    }
 }
 
 function handleHash() {
@@ -38,6 +41,8 @@ function handleHash() {
         switchTab('create');
     } else if (hash === 'exam') {
         switchTab('exam');
+    } else if (hash === 'tech') {
+        switchTab('tech');
     } else {
         switchTab('database');
     }
@@ -266,6 +271,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (typeof generateExam === 'function') {
         generateExam();
+    }
+    
+    if (typeof generateTech === 'function') {
+        generateTech();
     }
     
     window.addEventListener('hashchange', handleHash);

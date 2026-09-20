@@ -20,8 +20,20 @@ const signatureData = {
         y: 0.5,
         active: false,
         imageData: null
+    },
+    techExpert: {
+        image: null,
+        src: null,
+        scale: 1,
+        rotation: 0,
+        x: 0.5,
+        y: 0.5,
+        active: false,
+        imageData: null
     }
 };
+
+const ALL_SIGNATURE_TYPES = ['examiner', 'candidate', 'techExpert'];
 
 let activeSignatureType = null;
 let isDragging = false;
@@ -68,7 +80,7 @@ function loadSignature(type, input) {
 
 // ========== АКТИВАЦИЯ РЕДАКТИРОВАНИЯ ==========
 function activateSignature(type) {
-    for (const t of ['examiner', 'candidate']) {
+    for (const t of ALL_SIGNATURE_TYPES) {
         if (t !== type) {
             signatureData[t].active = false;
         }
@@ -84,12 +96,13 @@ function activateSignature(type) {
         
         updateSignatureInfo(type);
         generateExam();
+        if (typeof generateTech === 'function') generateTech();
     }
 }
 
 // ========== ДЕАКТИВАЦИЯ РЕДАКТИРОВАНИЯ ==========
 function deactivateSignatures() {
-    for (const type of ['examiner', 'candidate']) {
+    for (const type of ALL_SIGNATURE_TYPES) {
         const data = signatureData[type];
         if (data) {
             data.active = false;
@@ -101,6 +114,7 @@ function deactivateSignatures() {
     if (controls) controls.style.display = 'none';
     
     generateExam();
+    if (typeof generateTech === 'function') generateTech();
 }
 
 // ========== ПРЕВЬЮ ==========
@@ -147,7 +161,12 @@ function updateSignatureInfo(type) {
     
     const info = document.getElementById('signatureInfo');
     if (info) {
-        const label = type === 'examiner' ? 'Экзаменатор' : 'Кандидат';
+        const labels = {
+            examiner: 'Экзаменатор',
+            candidate: 'Кандидат',
+            techExpert: 'Технический эксперт'
+        };
+        const label = labels[type] || type;
         info.textContent = `${label}: Масштаб ${Math.round(data.scale * 100)}% | Поворот ${Math.round(data.rotation)}°`;
     }
 }
@@ -175,6 +194,7 @@ function adjustSignature(action, value) {
     
     updateSignatureInfo(activeSignatureType);
     generateExam();
+    if (typeof generateTech === 'function') generateTech();
 }
 
 // ========== ОБРАБОТЧИКИ МЫШИ ==========
@@ -185,8 +205,7 @@ function handleCanvasMouseDown(e, canvas) {
     const mouseX = (e.clientX - rect.left) * scaleX;
     const mouseY = (e.clientY - rect.top) * scaleY;
     
-    const types = ['examiner', 'candidate'];
-    for (const type of types) {
+    for (const type of ALL_SIGNATURE_TYPES) {
         const data = signatureData[type];
         if (!data.image || !data.active) continue;
         
@@ -241,6 +260,7 @@ function handleCanvasMouseMove(e, canvas) {
             data.x = Math.max(0.05, Math.min(0.95, (mouseX - dragOffsetX) / canvas.width));
             data.y = Math.max(0.05, Math.min(0.95, (mouseY - dragOffsetY) / canvas.height));
             generateExam();
+            if (typeof generateTech === 'function') generateTech();
         }
         return;
     }
@@ -256,6 +276,7 @@ function handleCanvasMouseMove(e, canvas) {
             data.scale = newScale;
             updateSignatureInfo(selectedSignature);
             generateExam();
+            if (typeof generateTech === 'function') generateTech();
         }
         return;
     }
@@ -269,13 +290,13 @@ function handleCanvasMouseMove(e, canvas) {
             data.rotation = (angle + 90) % 360;
             updateSignatureInfo(selectedSignature);
             generateExam();
+            if (typeof generateTech === 'function') generateTech();
         }
         return;
     }
     
     let cursor = 'default';
-    const types = ['examiner', 'candidate'];
-    for (const type of types) {
+    for (const type of ALL_SIGNATURE_TYPES) {
         const data = signatureData[type];
         if (!data.image || !data.active) continue;
         
@@ -317,6 +338,9 @@ function handleCanvasMouseUp() {
     
     const canvas = document.getElementById('examCanvas2');
     if (canvas) canvas.style.cursor = 'default';
+    
+    const techCanvas = document.getElementById('techCanvas');
+    if (techCanvas) techCanvas.style.cursor = 'default';
 }
 
 // ========== ОТРИСОВКА ПОДПИСИ НА CANVAS ==========
@@ -405,7 +429,12 @@ function drawSignatureOnCanvas(ctx, type, canvas, showEditMode) {
         ctx.font = '10px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
-        const label = type === 'examiner' ? 'Экзаменатор' : 'Кандидат';
+        const labels = {
+            examiner: 'Экзаменатор',
+            candidate: 'Кандидат',
+            techExpert: 'Технический эксперт'
+        };
+        const label = labels[type] || type;
         ctx.fillText(label, x, y - drawHeight/2 - 5);
         ctx.restore();
     }
@@ -437,23 +466,27 @@ function resetSignature(type) {
     }
     
     generateExam();
+    if (typeof generateTech === 'function') generateTech();
 }
 
 // ========== ИНИЦИАЛИЗАЦИЯ ==========
 document.addEventListener('DOMContentLoaded', function() {
-    const canvas = document.getElementById('examCanvas2');
-    if (!canvas) return;
-    
-    canvas.addEventListener('mousedown', function(e) {
-        handleCanvasMouseDown(e, this);
+    const canvases = ['examCanvas2', 'techCanvas'];
+    canvases.forEach(id => {
+        const canvas = document.getElementById(id);
+        if (!canvas) return;
+        
+        canvas.addEventListener('mousedown', function(e) {
+            handleCanvasMouseDown(e, this);
+        });
+        
+        canvas.addEventListener('mousemove', function(e) {
+            handleCanvasMouseMove(e, this);
+        });
+        
+        canvas.addEventListener('mouseup', handleCanvasMouseUp);
+        canvas.addEventListener('mouseleave', handleCanvasMouseUp);
     });
-    
-    canvas.addEventListener('mousemove', function(e) {
-        handleCanvasMouseMove(e, this);
-    });
-    
-    canvas.addEventListener('mouseup', handleCanvasMouseUp);
-    canvas.addEventListener('mouseleave', handleCanvasMouseUp);
 });
 
 // ========== ЭКСПОРТ ==========

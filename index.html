@@ -12,6 +12,7 @@
             <button class="tab active" data-tab="database" onclick="switchTab('database')">База ВУ</button>
             <button class="tab" data-tab="create" onclick="switchTab('create')">Создать ВУ</button>
             <button class="tab" data-tab="exam" onclick="switchTab('exam')">Экзамен</button>
+            <button class="tab" data-tab="tech" onclick="switchTab('tech')">Техосмотр</button>
         </div>
 
         <!-- Вкладка: База ВУ -->
@@ -262,6 +263,195 @@
                 </div>
             </div>
         </div>
+
+        <!-- Вкладка: Техосмотр -->
+        <div class="tab-content" id="tab-tech">
+            <div class="exam-form">
+                <h2 style="margin-bottom: 20px; color: var(--accent-green-hover);">ДИАГНОСТИЧЕСКАЯ КАРТА ТЕХОСМОТРА</h2>
+
+               <div class="form-row">
+					<div class="form-group">
+						<label class="form-label">Регистрационный номер карты</label>
+						<input type="text" class="form-input" id="techCardNumber" 
+							   placeholder="000000000000001" maxlength="15" inputmode="numeric"
+							   oninput="formatTechCardNumber(this)">
+					</div>
+					<div class="form-group">
+						<label class="form-label">Срок действия до</label>
+						<input type="text" class="form-input" id="techValidUntil" 
+							   placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
+							   oninput="formatTechDate(this)">
+					</div>
+				</div>
+
+                <div class="form-group">
+                    <label class="form-label">Подразделение, проводившее технический осмотр</label>
+                    <input type="text" class="form-input" id="techDepartment" value="49-я территориальная ВАИ Нижегородского гарнизона" readonly style="background:#111;color:#888;">
+                </div>
+
+                <div class="form-group">
+					<label class="form-label">Тип проверки</label>
+					<div class="radio-group">
+						<label class="radio-option">
+							<input type="radio" name="techCheckType" value="primary" onchange="generateTech()">
+							<span>Первичная</span>
+						</label>
+						<label class="radio-option">
+							<input type="radio" name="techCheckType" value="secondary" onchange="generateTech()">
+							<span>Вторичная</span>
+						</label>
+					</div>
+				</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Регистрационный знак ТС</label>
+                        <input type="text" class="form-input" id="techPlateNumber" placeholder="4295АТ 67" oninput="generateTech()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Марка, модель ТС</label>
+                        <input type="text" class="form-input" id="techVehicleMakeModel" placeholder="УРАЛ 4320" oninput="generateTech()">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">VIN</label>
+                        <input type="text" class="form-input" id="techVIN" placeholder="V5GGJIQ5WCO710235" oninput="generateTech()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Категория ТС</label>
+                        <input type="text" class="form-input" id="techCategory" placeholder="C" oninput="generateTech()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Год выпуска ТС</label>
+                        <input type="text" class="form-input" id="techYear" placeholder="2016" oninput="generateTech()">
+                    </div>
+                </div>
+
+                <div class="form-row">
+					<div class="form-group">
+						<label class="form-label">СТС серия</label>
+						<input type="text" class="form-input" id="techSTSSeries" placeholder="52" oninput="generateTech()">
+					</div>
+					<div class="form-group">
+						<label class="form-label">СТС номер</label>
+						<input type="text" class="form-input" id="techSTSNumber" placeholder="8595" oninput="generateTech()">
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-group">
+						<label class="form-label">СТС выдан кем</label>
+						<input type="text" class="form-input" id="techSTSIssuedBy" placeholder="49-ой территориальной ВАИ" oninput="generateTech()">
+					</div>
+					<div class="form-group">
+						<label class="form-label">СТС выдан когда</label>
+						<input type="text" class="form-input" id="techSTSIssuedDate" 
+							   placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
+							   oninput="formatTechDate(this)">
+					</div>
+				</div>
+
+                <!-- 25 пунктов -->
+                <div class="form-group tech-section">
+                    <div class="skills-header">
+                        <label class="form-label">Пункты диагностической карты</label>
+                        <div class="skills-actions">
+                            <button type="button" class="btn btn-skills" onclick="setAllTechItems('ok')">Все ✓</button>
+                            <button type="button" class="btn btn-skills" onclick="setAllTechItems('fail')">Все ✕</button>
+                            <button type="button" class="btn btn-skills" onclick="setAllTechItems(null)">Сбросить</button>
+                        </div>
+                    </div>
+                    <div id="techItemsContainer"></div>
+                </div>
+
+                <!-- Данные ТС -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Масса без нагрузки</label>
+                        <input type="text" class="form-input" id="techMassWithoutLoad" placeholder="8050 кг" oninput="generateTech()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Разрешённая максимальная масса</label>
+                        <input type="text" class="form-input" id="techMaxMass" placeholder="15205 кг" oninput="generateTech()">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Мощность двигателя</label>
+                        <input type="text" class="form-input" id="techEnginePower" placeholder="240 л.с." oninput="generateTech()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Пробег ТС</label>
+                        <input type="text" class="form-input" id="techMileage" placeholder="1000 км" oninput="generateTech()">
+                    </div>
+                </div>
+
+                <div class="form-group">
+					<label class="form-label">Заключение о возможности эксплуатации</label>
+					<div class="radio-group">
+						<label class="radio-option">
+							<input type="radio" name="techConclusion" value="possible" onchange="generateTech()">
+							<span>Возможно</span>
+						</label>
+						<label class="radio-option">
+							<input type="radio" name="techConclusion" value="impossible" onchange="generateTech()">
+							<span>Невозможно</span>
+						</label>
+					</div>
+				</div>
+
+                <!-- Повторная проверка -->
+                <div class="form-group">
+                    <label class="form-label">Пункты, требующие повторной проверки</label>
+                    <input type="text" class="form-input" id="techRecheck1" placeholder="Пункт 1" oninput="generateTech()" style="margin-bottom:6px;">
+                    <input type="text" class="form-input" id="techRecheck2" placeholder="Пункт 2" oninput="generateTech()" style="margin-bottom:6px;">
+                    <input type="text" class="form-input" id="techRecheck3" placeholder="Пункт 3" oninput="generateTech()">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+						<label class="form-label">Дата</label>
+						<input type="text" class="form-input" id="techExpertDate" 
+							   placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
+							   oninput="formatTechDate(this)">
+					</div>
+                    <div class="form-group">
+                        <label class="form-label">ФИО технического эксперта</label>
+                        <input type="text" class="form-input" id="techExpertName" placeholder="Кравченко А.Н." oninput="generateTech()">
+                    </div>
+                </div>
+
+                <!-- Подпись эксперта -->
+                <div class="form-group signatures-section">
+                    <div class="signatures-header">
+                        <label class="form-label">Подпись технического эксперта</label>
+                    </div>
+                    <div class="signatures-grid">
+                        <div class="signature-item">
+                            <div class="signature-label">Подпись</div>
+                            <input type="file" class="signature-input" id="signatureTechExpertInput" accept="image/*" onchange="loadSignature('techExpert', this)">
+                            <div class="signature-preview" id="signatureTechExpertPreview">
+                                <div style="color:#555;font-size:12px;">Подпись не загружена</div>
+                            </div>
+                            <div class="signature-controls">
+                                <button class="btn btn-skills" onclick="resetSignature('techExpert')">Сбросить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exam-buttons">
+                    <button class="btn-save" onclick="saveTech()">Сохранить диагностическую карту</button>
+                </div>
+            </div>
+
+            <div class="canvas-preview">
+                <canvas id="techCanvas" width="1654" height="2339"></canvas>
+            </div>
+        </div>
     </div>
 
     <div class="modal" id="photoModal">
@@ -279,5 +469,6 @@
     <script src="scripts/create.js"></script>
     <script src="scripts/exam.js"></script>
     <script src="scripts/signatures.js"></script>
+    <script src="scripts/techosmotr.js"></script>
 </body>
 </html>
