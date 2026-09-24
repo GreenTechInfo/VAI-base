@@ -13,6 +13,7 @@
             <button class="tab" data-tab="create" onclick="switchTab('create')">Создать ВУ</button>
             <button class="tab" data-tab="exam" onclick="switchTab('exam')">Экзамен</button>
             <button class="tab" data-tab="tech" onclick="switchTab('tech')">Техосмотр</button>
+            <button class="tab" data-tab="protocol" onclick="switchTab('protocol')">Протоколы</button>
         </div>
 
         <!-- Вкладка: База ВУ -->
@@ -52,7 +53,7 @@
         <div class="tab-content" id="tab-create">
             <div class="create-form">
                 <h2 style="margin-bottom: 20px; color: var(--accent-green-hover);">СОЗДАНИЕ НОВОГО ВУ</h2>
-                
+
                 <div class="form-group">
                     <label class="form-label">Номер ВУ</label>
                     <input type="text" class="form-input" id="createVUNumber" placeholder="Например: АН-12-8" oninput="generateVU()">
@@ -113,7 +114,7 @@
         <div class="tab-content" id="tab-exam">
             <div class="exam-form">
                 <h2 style="margin-bottom: 20px; color: var(--accent-green-hover);">ЗАПОЛНЕНИЕ БЛАНКА ЭКЗАМЕНА</h2>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Дата экзамена</label>
@@ -172,7 +173,7 @@
                         <input type="text" class="form-input" id="examPlateNumber" placeholder="9632АТ 67" oninput="generateExam()">
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">Экзаменатор (Должность, подразделение, специальное звание, инициалы, фамилия)</label>
                     <input type="text" class="form-input" id="examExaminer" placeholder="Инспектор ОТНиЭР 49-й ВАИ, сержант Я.В. Орлов" oninput="generateExam()">
@@ -187,9 +188,7 @@
                             <button type="button" class="btn btn-skills" onclick="uncheckAllSkills()">Убрать всё</button>
                         </div>
                     </div>
-                    <div class="skills-grid" id="skillsGrid">
-                        <!-- Навыки будут добавлены через JavaScript -->
-                    </div>
+                    <div class="skills-grid" id="skillsGrid"></div>
                 </div>
 
                 <!-- Ошибки -->
@@ -201,12 +200,10 @@
                             <button type="button" class="btn btn-skills" onclick="uncheckAllErrors()">Убрать всё</button>
                         </div>
                     </div>
-                    <div id="errorsContainer">
-                        <!-- Ошибки будут добавлены через JavaScript -->
-                    </div>
+                    <div id="errorsContainer"></div>
                     <div class="errors-total" id="errorsTotal">Штрафные баллы: 0</div>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">Комментарий экзаменатора о допущенных ошибках</label>
                     <input type="text" class="form-input" id="examExaminerComment" placeholder="Введите комментарий..." oninput="generateExam()">
@@ -251,12 +248,10 @@
             </div>
 
             <div class="canvas-preview exam-preview">
-                <!-- Страница 1 -->
                 <div class="exam-page-wrapper">
                     <h3>Страница 1</h3>
                     <canvas id="examCanvas1" width="1654" height="2339"></canvas>
                 </div>
-                <!-- Страница 2 -->
                 <div class="exam-page-wrapper">
                     <h3>Страница 2</h3>
                     <canvas id="examCanvas2" width="1654" height="2339"></canvas>
@@ -269,20 +264,20 @@
             <div class="exam-form">
                 <h2 style="margin-bottom: 20px; color: var(--accent-green-hover);">ДИАГНОСТИЧЕСКАЯ КАРТА ТЕХОСМОТРА</h2>
 
-               <div class="form-row">
-					<div class="form-group">
-						<label class="form-label">Регистрационный номер карты</label>
-						<input type="text" class="form-input" id="techCardNumber" 
-							   placeholder="000000000000001" maxlength="15" inputmode="numeric"
-							   oninput="formatTechCardNumber(this)">
-					</div>
-					<div class="form-group">
-						<label class="form-label">Срок действия до</label>
-						<input type="text" class="form-input" id="techValidUntil" 
-							   placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
-							   oninput="formatTechDate(this)">
-					</div>
-				</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Регистрационный номер карты</label>
+                        <input type="text" class="form-input" id="techCardNumber"
+                               placeholder="000000000000001" maxlength="15" inputmode="numeric"
+                               oninput="formatTechCardNumber(this)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Срок действия до</label>
+                        <input type="text" class="form-input" id="techValidUntil"
+                               placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
+                               oninput="formatTechDate(this)">
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label class="form-label">Подразделение, проводившее технический осмотр</label>
@@ -290,18 +285,18 @@
                 </div>
 
                 <div class="form-group">
-					<label class="form-label">Тип проверки</label>
-					<div class="radio-group">
-						<label class="radio-option">
-							<input type="radio" name="techCheckType" value="primary" onchange="generateTech()">
-							<span>Первичная</span>
-						</label>
-						<label class="radio-option">
-							<input type="radio" name="techCheckType" value="secondary" onchange="generateTech()">
-							<span>Вторичная</span>
-						</label>
-					</div>
-				</div>
+                    <label class="form-label">Тип проверки</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="techCheckType" value="primary" onchange="generateTech()">
+                            <span>Первичная</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="techCheckType" value="secondary" onchange="generateTech()">
+                            <span>Вторичная</span>
+                        </label>
+                    </div>
+                </div>
 
                 <div class="form-row">
                     <div class="form-group">
@@ -330,28 +325,28 @@
                 </div>
 
                 <div class="form-row">
-					<div class="form-group">
-						<label class="form-label">СТС серия</label>
-						<input type="text" class="form-input" id="techSTSSeries" placeholder="52" oninput="generateTech()">
-					</div>
-					<div class="form-group">
-						<label class="form-label">СТС номер</label>
-						<input type="text" class="form-input" id="techSTSNumber" placeholder="8595" oninput="generateTech()">
-					</div>
-				</div>
+                    <div class="form-group">
+                        <label class="form-label">СТС серия</label>
+                        <input type="text" class="form-input" id="techSTSSeries" placeholder="52" oninput="generateTech()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">СТС номер</label>
+                        <input type="text" class="form-input" id="techSTSNumber" placeholder="8595" oninput="generateTech()">
+                    </div>
+                </div>
 
-				<div class="form-row">
-					<div class="form-group">
-						<label class="form-label">СТС выдан кем</label>
-						<input type="text" class="form-input" id="techSTSIssuedBy" placeholder="49-ой территориальной ВАИ" oninput="generateTech()">
-					</div>
-					<div class="form-group">
-						<label class="form-label">СТС выдан когда</label>
-						<input type="text" class="form-input" id="techSTSIssuedDate" 
-							   placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
-							   oninput="formatTechDate(this)">
-					</div>
-				</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">СТС выдан кем</label>
+                        <input type="text" class="form-input" id="techSTSIssuedBy" placeholder="49-ой территориальной ВАИ" oninput="generateTech()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">СТС выдан когда</label>
+                        <input type="text" class="form-input" id="techSTSIssuedDate"
+                               placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
+                               oninput="formatTechDate(this)">
+                    </div>
+                </div>
 
                 <!-- 25 пунктов -->
                 <div class="form-group tech-section">
@@ -390,18 +385,18 @@
                 </div>
 
                 <div class="form-group">
-					<label class="form-label">Заключение о возможности эксплуатации</label>
-					<div class="radio-group">
-						<label class="radio-option">
-							<input type="radio" name="techConclusion" value="possible" onchange="generateTech()">
-							<span>Возможно</span>
-						</label>
-						<label class="radio-option">
-							<input type="radio" name="techConclusion" value="impossible" onchange="generateTech()">
-							<span>Невозможно</span>
-						</label>
-					</div>
-				</div>
+                    <label class="form-label">Заключение о возможности эксплуатации</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="techConclusion" value="possible" onchange="generateTech()">
+                            <span>Возможно</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="techConclusion" value="impossible" onchange="generateTech()">
+                            <span>Невозможно</span>
+                        </label>
+                    </div>
+                </div>
 
                 <!-- Повторная проверка -->
                 <div class="form-group">
@@ -413,11 +408,11 @@
 
                 <div class="form-row">
                     <div class="form-group">
-						<label class="form-label">Дата</label>
-						<input type="text" class="form-input" id="techExpertDate" 
-							   placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
-							   oninput="formatTechDate(this)">
-					</div>
+                        <label class="form-label">Дата</label>
+                        <input type="text" class="form-input" id="techExpertDate"
+                               placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
+                               oninput="formatTechDate(this)">
+                    </div>
                     <div class="form-group">
                         <label class="form-label">ФИО технического эксперта</label>
                         <input type="text" class="form-input" id="techExpertName" placeholder="Кравченко А.Н." oninput="generateTech()">
@@ -452,6 +447,282 @@
                 <canvas id="techCanvas" width="1654" height="2339"></canvas>
             </div>
         </div>
+
+        <!-- Вкладка: Протоколы -->
+        <div class="tab-content" id="tab-protocol">
+            <div class="exam-form">
+                <h2 style="margin-bottom: 20px; color: var(--accent-green-hover);">СОЗДАНИЕ ПРОТОКОЛА ОБ АДМИНИСТРАТИВНОМ ПРАВОНАРУШЕНИИ</h2>
+
+                <!-- Блок: Общие сведения -->
+                <div class="form-group">
+                    <label class="form-label">Регистрационный номер по подсистеме «Административная практика»</label>
+                    <input type="text" class="form-input" id="protocolRegNumber" placeholder="000001-ПДД" oninput="generateProtocol()">
+                </div>
+
+				<div class="form-row">
+					<div class="form-group">
+						<label class="form-label">Дата составления</label>
+						<input type="text" class="form-input" id="protocolDate"
+							   placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
+							   oninput="formatProtocolDate(this)">
+					</div>
+					<div class="form-group">
+						<label class="form-label">Время составления</label>
+						<input type="text" class="form-input" id="protocolTime"
+							   placeholder="ЧЧ:ММ" maxlength="5" inputmode="numeric"
+							   oninput="formatProtocolTime(this)">
+					</div>
+					<div class="form-group">
+						<label class="form-label">Место составления</label>
+						<input type="text" class="form-input" id="protocolPlace" placeholder="Город, улица, дом" oninput="generateProtocol()">
+					</div>
+				</div>
+
+                <!-- Блок: Должностное лицо -->
+                <div class="form-group">
+                    <label class="form-label">Должностное лицо, составившее протокол (должность, звание, ФИО)</label>
+                    <input type="text" class="form-input" id="protocolOfficialPosition" placeholder="Должность" oninput="generateProtocol()" style="margin-bottom:5px;">
+                    <input type="text" class="form-input" id="protocolOfficialRank" placeholder="Специальное звание" oninput="generateProtocol()" style="margin-bottom:5px;">
+                    <input type="text" class="form-input" id="protocolOfficialName" placeholder="Фамилия, инициалы" oninput="generateProtocol()">
+                </div>
+
+                <!-- Блок: Данные нарушителя -->
+                <h3 style="color: var(--text-secondary); margin: 20px 0 10px 0;">Данные лица, в отношении которого возбуждено дело</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Фамилия</label>
+                        <input type="text" class="form-input" id="protocolLastName" oninput="generateProtocol()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Имя</label>
+                        <input type="text" class="form-input" id="protocolFirstName" oninput="generateProtocol()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Отчество</label>
+                        <input type="text" class="form-input" id="protocolMiddleName" oninput="generateProtocol()">
+                    </div>
+                </div>
+
+                <div class="form-row">
+					<div class="form-group">
+						<label class="form-label">Дата рождения</label>
+						<input type="text" class="form-input" id="protocolBirthDate"
+							   placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
+							   oninput="formatProtocolBirthDate(this)">
+					</div>
+					<div class="form-group">
+						<label class="form-label">Место рождения</label>
+						<input type="text" class="form-input" id="protocolBirthPlace" oninput="generateProtocol()">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">Владение русским языком</label>
+					<div class="radio-group">
+						<label class="radio-option">
+							<input type="radio" name="protocolRussianLanguage" value="владеет" onchange="generateProtocol()">
+							<span>Владеет</span>
+						</label>
+						<label class="radio-option">
+							<input type="radio" name="protocolRussianLanguage" value="не владеет" onchange="generateProtocol()">
+							<span>Не владеет</span>
+						</label>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="form-label">Зарегистрированный(ая) по месту жительства / пребывания</label>
+					<input type="text" class="form-input" id="protocolRegisteredAddress" placeholder="Адрес регистрации" oninput="generateProtocol()">
+				</div>
+
+				<div class="form-row">
+					<div class="form-group">
+						<label class="form-label">Телефон (регистрация)</label>
+						<input type="text" class="form-input" id="protocolRegisteredPhone"
+							   placeholder="+7 (___) ___-__-__" maxlength="18" inputmode="numeric"
+							   oninput="formatProtocolPhone(this)">
+					</div>
+					<div class="form-group">
+						<label class="form-label">Фактически проживающий(ая)</label>
+						<input type="text" class="form-input" id="protocolActualAddress" placeholder="Фактический адрес" oninput="generateProtocol()">
+					</div>
+					<div class="form-group">
+						<label class="form-label">Телефон (фактический)</label>
+						<input type="text" class="form-input" id="protocolActualPhone"
+							   placeholder="+7 (___) ___-__-__" maxlength="18" inputmode="numeric"
+							   oninput="formatProtocolPhone(this)">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">Работающий(ая) / служащий(ая)</label>
+					<input type="text" class="form-input" id="protocolWorkPlace2" placeholder="Наименование организации, звание, должность, рота, отряд" oninput="generateProtocol()">
+				</div>
+				
+				<div class="form-group">
+					<label class="form-label">Водительское удостоверение/документ, удостоверяющий личность (серия, номер, когда и кем выдан)</label>
+					<input type="text" class="form-input" id="protocolDriverLicense" placeholder="Например: В/У 5201 123456, выдано 01.01.2020, МРЭО УГИБДД по Нижегородской области" oninput="generateProtocol()">
+				</div>
+
+                <!-- Блок: Транспортное средство -->
+				<h3 style="color: var(--text-secondary); margin: 20px 0 10px 0;">Транспортное средство</h3>
+
+				<div class="form-row">
+					<div class="form-group">
+						<label class="form-label">Марка</label>
+						<input type="text" class="form-input" id="protocolVehicleMake" placeholder="UAZ PATRIOT" oninput="generateProtocol()">
+					</div>
+					<div class="form-group">
+						<label class="form-label">Цвет</label>
+						<input type="text" class="form-input" id="protocolVehicleColor" placeholder="Зелёный" oninput="generateProtocol()">
+					</div>
+					<div class="form-group">
+						<label class="form-label">Гос. номер</label>
+						<input type="text" class="form-input" id="protocolVehiclePlate" placeholder="0100MP43" oninput="generateProtocol()">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">Принадлежащим (организация, фамилия, имя, отчество)</label>
+					<input type="text" class="form-input" id="protocolVehicleOwner" placeholder="Военной комендатуре гарнизона Нижегородской обл. ВС РФ" oninput="generateProtocol()">
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">Состоящим на учете</label>
+					<input type="text" class="form-input" id="protocolVehicleRegistered" placeholder="49-ой территориальной военной автоинспекции" oninput="generateProtocol()">
+				</div>
+
+                <!-- Блок: Обстоятельства нарушения -->
+				<h3 style="color: var(--text-secondary); margin: 20px 0 10px 0;">Обстоятельства правонарушения</h3>
+
+				<div class="form-row">
+					<div class="form-group">
+						<label class="form-label">Дата совершения</label>
+						<input type="text" class="form-input" id="protocolViolationDate"
+							   placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric"
+							   oninput="formatProtocolDate(this)">
+					</div>
+					<div class="form-group">
+						<label class="form-label">Время совершения</label>
+						<input type="text" class="form-input" id="protocolViolationTime"
+							   placeholder="ЧЧ:ММ" maxlength="5" inputmode="numeric"
+							   oninput="formatProtocolTime(this)">
+					</div>
+					<div class="form-group">
+						<label class="form-label">Место совершения</label>
+						<input type="text" class="form-input" id="protocolViolationPlace" placeholder="Город, улица, дом" oninput="generateProtocol()">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">Пункт НПА, существо нарушения, при применении спец. тех. средств указываются их показания, наименования, номер</label>
+					<input type="text" class="form-input" id="protocolViolationDescription" placeholder="п. 2.7 ПДД РФ, управлял транспортным средством в состоянии алкогольного опьянения" oninput="generateProtocol()">
+				</div>
+
+				<div class="form-row">
+					<div class="form-group">
+						<label class="form-label">Часть статьи</label>
+						<input type="text" class="form-input" id="protocolArticlePart" oninput="generateProtocol()">
+					</div>
+					<div class="form-group">
+						<label class="form-label">Номер статьи КоАП РФ</label>
+						<input type="text" class="form-input" id="protocolArticleNumber" oninput="generateProtocol()">
+					</div>
+				</div>
+
+                <!-- Блок: Свидетели и потерпевшие -->
+                <div class="form-group">
+                    <label class="form-label">Сведения о свидетелях и потерпевших (ФИО, адрес места жительства, телефон)</label>
+                    <input type="text" class="form-input" id="protocolWitnesses" oninput="generateProtocol()">
+                </div>
+				
+				<!-- Строка о разъяснении ответственности свидетелям -->
+				<div class="form-group">
+					<label class="form-label">Свидетелям разъяснена ответственность (ФИО свидетелей)</label>
+					<input type="text" class="form-input" id="protocolWitnessesNotified"
+						   placeholder="Иванов И.И., Петров П.П." oninput="generateProtocol()">
+				</div>
+
+               <!-- Блок: Объяснения (для стр. 2) -->
+				<div class="form-group">
+					<label class="form-label">Потерпевшим разъяснены права (ФИО потерпевших)</label>
+					<input type="text" class="form-input" id="protocolVictimsNotified"
+						   placeholder="Иванов И.И., Петров П.П." oninput="generateProtocol()">
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">Место и время рассмотрения дела об административном правонарушении</label>
+					<input type="text" class="form-input" id="protocolConsiderationPlaceTime"
+						   placeholder="г. Нижний Новгород, ул. ... , 01.01.2026 в 10:00" oninput="generateProtocol()">
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">Объяснения лица, в отношении которого возбуждено дело, показания потерпевших и свидетелей (в случае необходимости записываются и приобщаются к делу)</label>
+					<input type="text" class="form-input" id="protocolExplanation" oninput="generateProtocol()">
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">Объяснения и замечания по содержанию протокола</label>
+					<input type="text" class="form-input" id="protocolRemarks" oninput="generateProtocol()">
+				</div>
+
+                <!-- ПОДПИСИ -->
+                <div class="form-group signatures-section">
+                    <div class="signatures-header">
+                        <label class="form-label">Подписи сторон</label>
+                    </div>
+                    <div class="signatures-grid">
+                        <div class="signature-item">
+                            <div class="signature-label">Подпись должностного лица</div>
+                            <input type="file" class="signature-input" id="signatureOfficialInput" accept="image/*" onchange="loadSignature('official', this)">
+                            <div class="signature-preview" id="signatureOfficialPreview">
+                                <div style="color:#555;font-size:12px;">Подпись не загружена</div>
+                            </div>
+                            <div class="signature-controls">
+                                <button class="btn btn-skills" onclick="resetSignature('official')">Сбросить</button>
+                            </div>
+                        </div>
+                        <div class="signature-item">
+                            <div class="signature-label">Подпись нарушителя</div>
+                            <input type="file" class="signature-input" id="signatureViolatorInput" accept="image/*" onchange="loadSignature('violator', this)">
+                            <div class="signature-preview" id="signatureViolatorPreview">
+                                <div style="color:#555;font-size:12px;">Подпись не загружена</div>
+                            </div>
+                            <div class="signature-controls">
+                                <button class="btn btn-skills" onclick="resetSignature('violator')">Сбросить</button>
+                            </div>
+                        </div>
+                        <div class="signature-item">
+                            <div class="signature-label">Подпись потерпевшего/свидетеля</div>
+                            <input type="file" class="signature-input" id="signatureVictimInput" accept="image/*" onchange="loadSignature('victim', this)">
+                            <div class="signature-preview" id="signatureVictimPreview">
+                                <div style="color:#555;font-size:12px;">Подпись не загружена</div>
+                            </div>
+                            <div class="signature-controls">
+                                <button class="btn btn-skills" onclick="resetSignature('victim')">Сбросить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exam-buttons">
+					<button class="btn-save" onclick="saveProtocolPage1()">Сохранить стр. 1</button>
+					<button class="btn-save" onclick="saveProtocolPage2()">Сохранить стр. 2</button>
+					<button class="btn-save" onclick="saveProtocolBoth()">Сохранить обе страницы</button>
+				</div>
+            </div>
+
+            <div class="canvas-preview exam-preview">
+                <div class="exam-page-wrapper">
+                    <h3>Страница 1</h3>
+                    <canvas id="protocolCanvas1" width="1654" height="2339"></canvas>
+                </div>
+                <div class="exam-page-wrapper">
+                    <h3>Страница 2</h3>
+                    <canvas id="protocolCanvas2" width="1654" height="2339"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="modal" id="photoModal">
@@ -470,5 +741,8 @@
     <script src="scripts/exam.js"></script>
     <script src="scripts/signatures.js"></script>
     <script src="scripts/techosmotr.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <script src="scripts/protocol.js"></script>
+	
 </body>
 </html>
