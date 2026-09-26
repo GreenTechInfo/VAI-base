@@ -21,6 +21,23 @@
 
                 <div class="eis-panel">
                     <div class="eis-panel-header">
+                        <span class="eis-panel-title">Транспортное средство из реестра</span>
+                        <div class="eis-panel-actions">
+                            <a href="tech-database.html?tab=vehicles" class="eis-btn eis-btn-sm eis-btn-secondary" style="text-decoration:none;">Управление реестром</a>
+                        </div>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-group" style="margin-bottom:0;">
+                            <label class="eis-form-label">Выберите ТС — данные подставятся автоматически</label>
+                            <select class="eis-select" id="techVehicleSelect" onchange="onVehicleSelected(this.value)">
+                                <option value="">— Не выбрано —</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
                         <span class="eis-panel-title">Основные сведения</span>
                     </div>
                     <div class="eis-panel-body">
@@ -194,7 +211,10 @@
                 </div>
 
                 <div class="eis-actions-bar">
-                    <button class="eis-btn eis-btn-success" onclick="saveTech()">Сохранить диагностическую карту</button>
+                    <button class="eis-btn eis-btn-secondary" onclick="saveTech()">Скачать PNG</button>
+                    <button class="eis-btn eis-btn-success" onclick="saveTechToDB()">
+                        Сохранить в базу ЕИС
+                    </button>
                 </div>
 
                 <div class="eis-panel">
@@ -223,5 +243,6 @@
     <script src="js/main.js"></script>
     <script src="js/signatures.js"></script>
     <script src="js/techosmotr.js"></script>
+    <script src="js/tech-save.js"></script>
 </body>
 </html>

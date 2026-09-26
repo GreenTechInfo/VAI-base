@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>База ТО — ЕИС ВАИ</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="eis-wrapper">
+        <div id="site-header"></div>
+        <div id="site-nav"></div>
+
+        <div class="eis-modal" id="photoModal">
+            <span class="eis-modal-close" onclick="closeModal()">×</span>
+            <span class="eis-modal-nav eis-modal-prev" onclick="prevPhoto()">‹</span>
+            <span class="eis-modal-nav eis-modal-next" onclick="nextPhoto()">›</span>
+            <div class="eis-modal-content">
+                <img id="modalImage" src="" alt="Документ">
+                <div class="eis-modal-counter" id="modalCounter"></div>
+            </div>
+        </div>
+
+
+        <main class="eis-main">
+            <div class="eis-container">
+                <div class="eis-page-header">
+                    <h1 class="eis-page-title">База технического обслуживания</h1>
+                    <div class="eis-page-subtitle">Диагностические карты и реестр ТС</div>
+                </div>
+
+                <div class="eis-tabs">
+                    <button class="eis-tab active" data-tab="cards" onclick="switchTechTab('cards')">Диагностические карты</button>
+                    <button class="eis-tab" data-tab="vehicles" onclick="switchTechTab('vehicles')">Реестр ТС</button>
+                </div>
+
+                <!-- ================= ВКЛАДКА: КАРТЫ ================= -->
+                <div id="tab-cards" class="eis-tab-content active">
+
+                    <div class="eis-panel">
+                        <div class="eis-panel-header">
+                            <span class="eis-panel-title">Сводка</span>
+                        </div>
+                        <div class="eis-panel-body">
+                            <div class="eis-admin-stats" id="techStats">
+                                <div class="eis-stat-card" style="cursor:pointer" onclick="filterByStatus('')">
+                                    <div class="eis-stat-value" id="statTotal">—</div>
+                                    <div class="eis-stat-label">Всего</div>
+                                </div>
+                                <div class="eis-stat-card" style="cursor:pointer;border-left-color:#28a745" onclick="filterByStatus('valid')">
+                                    <div class="eis-stat-value" id="statValid" style="color:#28a745">—</div>
+                                    <div class="eis-stat-label">Действительно</div>
+                                </div>
+                                <div class="eis-stat-card" style="cursor:pointer;border-left-color:#ffc107" onclick="filterByStatus('expiring')">
+                                    <div class="eis-stat-value" id="statExpiring" style="color:#f57c00">—</div>
+                                    <div class="eis-stat-label">Истекает</div>
+                                </div>
+                                <div class="eis-stat-card" style="cursor:pointer;border-left-color:#dc3545" onclick="filterByStatus('expired')">
+                                    <div class="eis-stat-value" id="statExpired" style="color:#c62828">—</div>
+                                    <div class="eis-stat-label">Просрочено</div>
+                                </div>
+                                <div class="eis-stat-card" style="cursor:pointer;border-left-color:#dc3545" onclick="filterByConclusion('impossible')">
+                                    <div class="eis-stat-value" id="statFailed" style="color:#c62828">—</div>
+                                    <div class="eis-stat-label">Не прошёл</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="eis-panel">
+                        <div class="eis-panel-header">
+                            <span class="eis-panel-title">Поиск</span>
+                        </div>
+                        <div class="eis-panel-body">
+                            <form class="eis-search-form" id="techSearchForm" onsubmit="return false;">
+                                <div class="eis-form-row">
+                                    <div class="eis-form-group">
+                                        <label class="eis-form-label">Поиск</label>
+                                        <input type="text" class="eis-input" id="techSearchQuery" placeholder="Номер карты, гос.номер, VIN, эксперт">
+                                    </div>
+                                    <div class="eis-form-group">
+                                        <label class="eis-form-label">Дата с</label>
+                                        <input type="date" class="eis-input" id="techSearchDateFrom">
+                                    </div>
+                                    <div class="eis-form-group">
+                                        <label class="eis-form-label">Дата по</label>
+                                        <input type="date" class="eis-input" id="techSearchDateTo">
+                                    </div>
+                                    <div class="eis-form-group">
+                                        <label class="eis-form-label">Заключение</label>
+                                        <select class="eis-select" id="techSearchConclusion">
+                                            <option value="">Все</option>
+                                            <option value="possible">Возможно</option>
+                                            <option value="impossible">Невозможно</option>
+                                        </select>
+                                    </div>
+                                    <div class="eis-form-group eis-form-group-btn">
+                                        <label class="eis-form-label">&nbsp;</label>
+                                        <button type="button" class="eis-btn eis-btn-danger" onclick="resetTechSearch()">Сбросить</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="eis-panel">
+                        <div class="eis-panel-header">
+                            <span class="eis-panel-title">Результаты</span>
+                            <span class="eis-badge" id="techResultsCount">ЗАПИСЕЙ: 0</span>
+                        </div>
+                        <div class="eis-panel-body" id="techResults">
+                            <div class="eis-loading">
+                                <div class="eis-spinner"></div>
+                                <span>Загрузка данных...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= ВКЛАДКА: РЕЕСТР ТС ================= -->
+                <div id="tab-vehicles" class="eis-tab-content">
+
+                    <div class="eis-panel">
+                        <div class="eis-panel-header">
+                            <span class="eis-panel-title">Поиск по реестру</span>
+                            <div class="eis-panel-actions">
+                                <button class="eis-btn eis-btn-sm eis-btn-primary" onclick="openVehicleModal()">+ Добавить ТС</button>
+                                <button class="eis-btn eis-btn-sm eis-btn-secondary" onclick="loadVehiclesFromSupabase()">Обновить</button>
+                            </div>
+                        </div>
+                        <div class="eis-panel-body">
+                            <div class="eis-form-row">
+                                <div class="eis-form-group">
+                                    <label class="eis-form-label">Поиск</label>
+                                    <input type="text" class="eis-input" id="vehicleSearchQuery" placeholder="Гос.номер, марка, VIN">
+                                </div>
+                                <div class="eis-form-group">
+                                    <label class="eis-form-label">Категория</label>
+                                    <input type="text" class="eis-input" id="vehicleSearchCategory" placeholder="C, D, CE...">
+                                </div>
+                                <div class="eis-form-group eis-form-group-btn">
+                                    <label class="eis-form-label">&nbsp;</label>
+                                    <button type="button" class="eis-btn eis-btn-danger" onclick="resetVehicleSearch()">Сбросить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="eis-panel">
+                        <div class="eis-panel-header">
+                            <span class="eis-panel-title">Транспортные средства</span>
+                            <span class="eis-badge" id="vehicleResultsCount">ЗАПИСЕЙ: 0</span>
+                        </div>
+                        <div class="eis-panel-body" id="vehicleResults">
+                            <div class="eis-loading">
+                                <div class="eis-spinner"></div>
+                                <span>Загрузка...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <!-- Модалка деталей ТО (увеличенная) -->
+    <div class="eis-modal-form" id="techDetailModal">
+        <div class="eis-modal-form-content eis-modal-tech-wide">
+            <div class="eis-modal-form-header">
+                <div>
+                    <h3 id="tdTitle" style="margin:0">Диагностическая карта</h3>
+                    <div id="tdStatus" style="margin-top:6px;"></div>
+                </div>
+                <span class="eis-modal-form-close" onclick="closeTechDetailModal()">×</span>
+            </div>
+            <div class="eis-modal-form-body">
+                <div class="eis-tech-detail-layout">
+                    <div class="eis-tech-detail-photo" id="tdPhotoWrap" onclick="openTechPhotoFull()">
+                        <img id="tdPhoto" src="" alt="Диагностическая карта">
+                        <div class="eis-tech-detail-photo-zoom">🔍 Нажмите для увеличения</div>
+                    </div>
+                    <div class="eis-tech-detail-fields" id="tdFields"></div>
+                </div>
+            </div>
+            <div class="eis-modal-form-footer eis-modal-form-footer-split">
+                <div class="eis-modal-form-footer-right">
+                    <button type="button" class="eis-btn eis-btn-danger" id="tdDeleteBtn">Удалить</button>
+                </div>
+                <div class="eis-modal-form-footer-right">
+                    <button type="button" class="eis-btn eis-btn-secondary" id="tdDownloadBtn">Скачать PNG</button>
+                    <button type="button" class="eis-btn eis-btn-secondary" id="tdRecheckBtn">Повторный осмотр</button>
+                    <button type="button" class="eis-btn eis-btn-primary" id="tdEditBtn">Редактировать</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модалка создания/редактирования ТС -->
+    <div class="eis-modal-form" id="vehicleModal">
+        <div class="eis-modal-form-content" style="max-width: 800px;">
+            <div class="eis-modal-form-header">
+                <h3 id="vehicleModalTitle">Добавить ТС в реестр</h3>
+                <span class="eis-modal-form-close" onclick="closeVehicleModal()">×</span>
+            </div>
+            <div class="eis-modal-form-body">
+                <input type="hidden" id="vehId">
+                <div class="eis-form-row">
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Гос. номер *</label>
+                        <input type="text" class="eis-input" id="vehPlate" placeholder="4295АТ 67">
+                    </div>
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Марка, модель *</label>
+                        <input type="text" class="eis-input" id="vehMakeModel" placeholder="УРАЛ 4320">
+                    </div>
+                </div>
+                <div class="eis-form-row">
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">VIN</label>
+                        <input type="text" class="eis-input" id="vehVIN" placeholder="V5GGJIQ5WCO710235">
+                    </div>
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Категория</label>
+                        <input type="text" class="eis-input" id="vehCategory" placeholder="C">
+                    </div>
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Год выпуска</label>
+                        <input type="text" class="eis-input" id="vehYear" placeholder="2016">
+                    </div>
+                </div>
+                <div class="eis-form-row">
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">СТС серия</label>
+                        <input type="text" class="eis-input" id="vehSTSSeries" placeholder="52">
+                    </div>
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">СТС номер</label>
+                        <input type="text" class="eis-input" id="vehSTSNumber" placeholder="8595">
+                    </div>
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">СТС выдан когда</label>
+                        <input type="text" class="eis-input" id="vehSTSIssuedDate" placeholder="ДД.ММ.ГГГГ">
+                    </div>
+                </div>
+                <div class="eis-form-group">
+                    <label class="eis-form-label">СТС выдан кем</label>
+                    <input type="text" class="eis-input" id="vehSTSIssuedBy" placeholder="49-ой территориальной ВАИ">
+                </div>
+                <div class="eis-form-row">
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Масса без нагрузки</label>
+                        <input type="text" class="eis-input" id="vehMassWithoutLoad" placeholder="8050 кг">
+                    </div>
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Максимальная масса</label>
+                        <input type="text" class="eis-input" id="vehMaxMass" placeholder="15205 кг">
+                    </div>
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Мощность двигателя</label>
+                        <input type="text" class="eis-input" id="vehEnginePower" placeholder="240 л.с.">
+                    </div>
+                </div>
+                <div class="eis-form-group">
+                    <label class="eis-form-label">Подразделение / часть</label>
+                    <input type="text" class="eis-input" id="vehOwnerUnit" placeholder="Военная комендатура гарнизона">
+                </div>
+                <div class="eis-auth-error" id="vehError"></div>
+            </div>
+            <div class="eis-modal-form-footer eis-modal-form-footer-split">
+                <button type="button" class="eis-btn eis-btn-danger" id="vehDeleteBtn" style="display:none;" onclick="deleteVehicleFromModal()">
+                    Удалить
+                </button>
+                <div class="eis-modal-form-footer-right">
+                    <button type="button" class="eis-btn eis-btn-secondary" onclick="closeVehicleModal()">Отмена</button>
+                    <button type="button" class="eis-btn eis-btn-primary" id="vehSaveBtn" onclick="saveVehicle()">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/guard.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tech-database.js"></script>
+</body>
+</html>

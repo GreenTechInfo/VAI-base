@@ -2628,3 +2628,245 @@ textarea {
     }
 }
 
+/* ================================================================
+   БОЛЬШАЯ МОДАЛКА ДЕТАЛЕЙ ТО
+   ================================================================ */
+.eis-modal-form-content.eis-modal-tech-wide {
+    max-width: 1400px;
+    width: 95vw;
+}
+
+.eis-tech-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(320px, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .eis-tech-detail-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.eis-tech-detail-photo {
+    border: 1px solid var(--eis-border);
+    border-radius: var(--eis-radius);
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 520px;
+    cursor: zoom-in;
+    position: relative;
+    transition: box-shadow 0.2s;
+}
+
+    .eis-tech-detail-photo:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .eis-tech-detail-photo img {
+        max-width: 100%;
+        max-height: 75vh;
+        object-fit: contain;
+        display: block;
+    }
+
+.eis-tech-detail-photo-zoom {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.65);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.eis-tech-detail-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+    .eis-tech-detail-fields .eis-data-field {
+        border-bottom: 1px dashed var(--eis-border);
+        padding: 8px 0;
+    }
+
+        .eis-tech-detail-fields .eis-data-field:last-child {
+            border-bottom: none;
+        }
+
+/* ================================================================
+   ВКЛАДКИ
+   ================================================================ */
+.eis-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--eis-border);
+}
+
+.eis-tab {
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--eis-text-secondary);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .eis-tab:hover {
+        color: var(--eis-text);
+    }
+
+    .eis-tab.active {
+        color: var(--eis-accent);
+        border-bottom-color: var(--eis-accent);
+    }
+
+@media (max-width: 768px) {
+    .eis-tab {
+        flex: 1;
+        padding: 10px 8px;
+        font-size: 12px;
+        text-align: center;
+    }
+}
+
+#photoModal {
+    z-index: 3000;
+}
+
+.eis-tech-versions {
+    margin-top: 10px;
+}
+
+.eis-tech-version-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 12px;
+    border: 1px solid var(--eis-border);
+    border-radius: var(--eis-radius-sm);
+    margin-bottom: 6px;
+    font-size: 13px;
+    background: #fff;
+}
+
+    .eis-tech-version-item.is-current {
+        border-color: var(--eis-accent);
+        background: var(--eis-accent-light);
+    }
+
+
+/* ================================================================
+   ЗУМ В ГАЛЕРЕЕ ФОТО
+   ================================================================ */
+#modalImage {
+    user-select: none;
+    -webkit-user-drag: none;
+    image-rendering: auto;
+}
+
+/* Когда пользователь увеличивает — включаем "документный" рендер:
+   браузер пересэмплирует под новый размер, а не тянет старый растр */
+.eis-modal-content.zoomed #modalImage {
+    cursor: grab;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+.eis-modal-content.zoomed.panning #modalImage {
+    cursor: grabbing;
+}
+
+/* На время активного перетаскивания отключаем ресемплинг —
+   чтобы не тормозило, а после отпускания снова включится */
+.eis-modal-content.panning #modalImage {
+    image-rendering: auto;
+}
+
+.eis-modal-zoom {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 6px 8px;
+    border-radius: 24px;
+    z-index: 1002;
+    user-select: none;
+}
+
+    .eis-modal-zoom button {
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 50%;
+        background: transparent;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        line-height: 1;
+    }
+
+        .eis-modal-zoom button:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .eis-modal-zoom button:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+            .eis-modal-zoom button:disabled:hover {
+                background: transparent;
+            }
+
+.eis-modal-zoom-value {
+    color: #fff;
+    font-family: var(--eis-font-mono);
+    font-size: 13px;
+    min-width: 52px;
+    text-align: center;
+    padding: 0 4px;
+}
+
+@media (max-width: 768px) {
+    .eis-modal-zoom {
+        bottom: 12px;
+        padding: 4px 6px;
+    }
+
+        .eis-modal-zoom button {
+            width: 32px;
+            height: 32px;
+            font-size: 18px;
+        }
+
+    .eis-modal-zoom-value {
+        min-width: 44px;
+        font-size: 12px;
+    }
+}

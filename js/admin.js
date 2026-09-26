@@ -137,7 +137,7 @@ function openEditUserModal(userId) {
     document.getElementById('euId').value = user.id;
     document.getElementById('euUsername').value = user.username || '';
     document.getElementById('euFullName').value = user.full_name || '';
-    document.getElementById('euRank').value = user.rank || 'рядовой';
+    document.getElementById('euRank').value = user.rank || 'Ефрейтор';
     document.getElementById('euPosition').value = user.position || '';
     document.getElementById('euRole').value = user.role || 'cadet';
 
@@ -206,10 +206,29 @@ async function saveEditUser() {
     btn.disabled = true;
     btn.textContent = 'Сохранение...';
 
+    // Если логин изменился — сначала меняем email через RPC
+    const oldUsername = targetUser?.username || '';
+    if (username !== oldUsername) {
+        const { data: rpcData, error: rpcError } = await supabaseClient.rpc('admin_update_user_login', {
+            p_user_id: id,
+            p_new_username: username
+        });
+
+        if (rpcError) {
+            btn.disabled = false;
+            btn.textContent = 'Сохранить';
+            errEl.textContent = 'Ошибка смены логина: ' + rpcError.message;
+            showToast('Ошибка смены логина: ' + rpcError.message, 'error');
+            return;
+        }
+
+        console.log('Логин/email изменены:', rpcData);
+    }
+
+    // Обновляем остальные поля профиля
     const { error } = await supabaseClient
         .from('profiles')
         .update({
-            username: username,
             full_name: fullName,
             rank: rank,
             position: position,
@@ -230,7 +249,8 @@ async function saveEditUser() {
     // Логируем
     await logAction('admin_user_update', 'profiles', id, {
         username: username,
-        role: role
+        role: role,
+		login_changed: username !== oldUsername
     });
 
     // Если редактировали себя — перезагрузим страницу
