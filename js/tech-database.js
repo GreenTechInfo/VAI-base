@@ -380,30 +380,118 @@ function downloadTechPhoto(row) {
 // ================================================================
 // УДАЛЕНИЕ КАРТЫ ТО
 // ================================================================
+// ================================================================
+// УДАЛЕНИЕ КАРТЫ ТО + ВСЕХ ЕЁ ВЕРСИЙ
+// ================================================================
 async function deleteTechFromDB(row) {
+    // 1) Собираем всю цепочку версий
+    const chain = await collectVersionChain(row.id);
+
+    if (chain.length === 0) {
+        showToast('Запись не найдена', 'error');
+        return;
+    }
+
+    // 2) Спрашиваем подтверждение
+    const versionsCount = chain.length;
+    const msg = versionsCount > 1
+        ? `Удалить карту № ${row.card_number} и ВСЕ её версии (${versionsCount} шт.)? Фото будут удалены из хранилища.`
+        : `Удалить карту № ${row.card_number} (${row.plate_number || 'без номера'})?`;
+
     const ok = await showConfirm({
-        title: 'Удаление ТО',
-        message: `Удалить карту № ${row.card_number} (${row.plate_number || 'без номера'})?`,
+        title: versionsCount > 1 ? 'Удаление ТО со всеми версиями' : 'Удаление ТО',
+        message: msg,
         confirmText: 'Удалить',
         type: 'danger'
     });
     if (!ok) return;
 
-    if (row.photo_url) {
-        const fname = extractStorageFileName(row.photo_url, 'tech-photos');
-        if (fname) {
-            try { await supabaseClient.storage.from('tech-photos').remove([fname]); }
-            catch (e) { console.warn(e); }
+    // 3) Удаляем все фото цепочки из Storage
+    const fileNames = chain
+        .map(v => extractStorageFileName(v.photo_url, 'tech-photos'))
+        .filter(Boolean);
+
+    if (fileNames.length > 0) {
+        try {
+            await supabaseClient.storage.from('tech-photos').remove(fileNames);
+        } catch (e) {
+            console.warn('Не удалось удалить часть фото:', e);
         }
     }
 
-    const { error } = await supabaseClient.from('tech_inspections').delete().eq('id', row.id);
-    if (error) { showToast('Ошибка: ' + error.message, 'error'); return; }
+    // 4) Удаляем все записи цепочки одним запросом
+    const ids = chain.map(v => v.id);
+    const { error } = await supabaseClient
+        .from('tech_inspections')
+        .delete()
+        .in('id', ids);
 
-    await logAction('tech_delete', 'tech_inspections', row.id, { card_number: row.card_number });
-    showToast('Запись удалена', 'success');
+    if (error) {
+        showToast('Ошибка: ' + error.message, 'error');
+        return;
+    }
+
+    // 5) Аудит — пишем одну запись на всю операцию
+    await logAction('tech_delete', 'tech_inspections', row.id, {
+        card_number: row.card_number,
+        versions_deleted: versionsCount,
+        deleted_ids: ids
+    });
+
+    showToast(
+        versionsCount > 1
+            ? `Удалено: карта + ${versionsCount - 1} версий`
+            : 'Запись удалена',
+        'success'
+    );
+
     closeTechDetailModal();
     await loadTechFromSupabase();
+}
+
+// ================================================================
+// СБОР ЦЕПОЧКИ ВЕРСИЙ (вверх по previous_id + вниз по ссылкам)
+// ================================================================
+async function collectVersionChain(startId) {
+    const chain = [];
+    const visited = new Set();
+
+    // --- Идём ВВЕРХ: от текущей к самым старым ---
+    let walkId = startId;
+    while (walkId && !visited.has(walkId)) {
+        visited.add(walkId);
+        const { data } = await supabaseClient
+            .from('tech_inspections')
+            .select('id, card_number, photo_url, previous_id')
+            .eq('id', walkId)
+            .single();
+        if (!data) break;
+        chain.push(data);
+        walkId = data.previous_id;
+    }
+
+    // --- Идём ВНИЗ: ищем всех, у кого previous_id указывает на уже найденных ---
+    let foundNewer = true;
+    while (foundNewer) {
+        foundNewer = false;
+        const ids = chain.map(c => c.id);
+        const { data: newer } = await supabaseClient
+            .from('tech_inspections')
+            .select('id, card_number, photo_url, previous_id')
+            .in('previous_id', ids);
+
+        if (newer && newer.length > 0) {
+            for (const n of newer) {
+                if (!visited.has(n.id)) {
+                    visited.add(n.id);
+                    chain.push(n);
+                    foundNewer = true;
+                }
+            }
+        }
+    }
+
+    return chain;
 }
 
 // ================================================================
@@ -689,6 +777,7 @@ window.filterByConclusion = filterByConclusion;
 window.openTechDetailModal = openTechDetailModal;
 window.closeTechDetailModal = closeTechDetailModal;
 window.openTechPhotoFull = openTechPhotoFull;
+window.collectVersionChain = collectVersionChain;
 window.deleteTechFromDB = deleteTechFromDB;
 window.loadVehiclesFromSupabase = loadVehiclesFromSupabase;
 window.applyVehicleFilters = applyVehicleFilters;

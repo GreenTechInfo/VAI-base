@@ -529,9 +529,19 @@ function humanizeAction(action) {
         'vu_update': '✏️ Редактирование ВУ',
         'vu_status_change': '📦 Смена статуса ВУ',
         'vu_delete': '🗑 Удаление ВУ',
+
         'exam_create': '🎓 Создание экзамена',
-        'tech_create': '🛠 Создание техосмотра',
+
+        'tech_create': '📄 Создание ТО',
+        'tech_update': '✏️ Редактирование ТО',
+        'tech_delete': '🗑 Удаление ТО',
+
+        'vehicle_create': '🚗 Добавление ТС в реестр',
+        'vehicle_update': '✏️ Редактирование ТС',
+        'vehicle_delete': '🗑 Удаление ТС из реестра',
+
         'protocol_create': '📋 Создание протокола',
+
         'admin_user_create': '👤 Создание пользователя',
         'admin_user_update': '✏️ Редактирование пользователя',
         'admin_user_delete': '🗑 Удаление пользователя',
