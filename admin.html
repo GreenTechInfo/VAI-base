@@ -1,0 +1,317 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель — ЕИС ВАИ</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="eis-wrapper">
+        <div id="site-header"></div>
+        <div id="site-nav"></div>
+
+        <main class="eis-main">
+            <div class="eis-container">
+                <div class="eis-page-header">
+                    <h1 class="eis-page-title">Админ-панель</h1>
+                    <div class="eis-page-subtitle">Управление пользователями и статистика системы</div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Статистика системы</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-admin-stats" id="statsGrid">
+                            <div class="eis-stat-card">
+                                <div class="eis-stat-value" id="statUsers">—</div>
+                                <div class="eis-stat-label">Пользователей</div>
+                            </div>
+                            <div class="eis-stat-card">
+                                <div class="eis-stat-value" id="statVU">—</div>
+                                <div class="eis-stat-label">ВУ в базе</div>
+                            </div>
+                            <div class="eis-stat-card">
+                                <div class="eis-stat-value" id="statExams">—</div>
+                                <div class="eis-stat-label">Экзаменов</div>
+                            </div>
+                            <div class="eis-stat-card">
+                                <div class="eis-stat-value" id="statTech">—</div>
+                                <div class="eis-stat-label">Техосмотров</div>
+                            </div>
+                            <div class="eis-stat-card">
+                                <div class="eis-stat-value" id="statProtocols">—</div>
+                                <div class="eis-stat-label">Протоколов</div>
+                            </div>
+                            <div class="eis-stat-card">
+                                <div class="eis-stat-value" id="statAudit">—</div>
+                                <div class="eis-stat-label">Записей в логе</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Пользователи</span>
+                        <div class="eis-panel-actions">
+                            <button type="button" class="eis-btn eis-btn-primary eis-btn-sm" onclick="openCreateUserModal()">
+                                + Создать пользователя
+                            </button>
+                            <button type="button" class="eis-btn eis-btn-secondary eis-btn-sm" onclick="loadUsers()">
+                                Обновить
+                            </button>
+                        </div>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div id="usersContainer">
+                            <div class="eis-loading">
+                                <div class="eis-spinner"></div>
+                                <span>Загрузка...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Журнал действий</span>
+                        <div class="eis-panel-actions">
+                            <button type="button" class="eis-btn eis-btn-secondary eis-btn-sm" onclick="loadAuditLog()">
+                                Обновить
+                            </button>
+                        </div>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div id="auditContainer">
+                            <div class="eis-loading">
+                                <div class="eis-spinner"></div>
+                                <span>Загрузка...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <!-- Модалка создания пользователя -->
+    <div class="eis-modal-form" id="createUserModal">
+        <div class="eis-modal-form-content">
+            <div class="eis-modal-form-header">
+                <h3>Создание пользователя</h3>
+                <span class="eis-modal-form-close" onclick="closeCreateUserModal()">×</span>
+            </div>
+            <div class="eis-modal-form-body">
+                <form id="createUserForm">
+                    <div class="eis-form-row">
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Логин *</label>
+                            <input type="text" class="eis-input" id="cuUsername" required autocomplete="off" placeholder="Например: Aleksandr_Kravchenko">
+                        </div>
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Пароль * (мин. 6)</label>
+                            <input type="text" class="eis-input" id="cuPassword" required minlength="6" autocomplete="new-password">
+                        </div>
+                    </div>
+
+                    <div class="eis-form-row">
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">ФИО *</label>
+                            <input type="text" class="eis-input" id="cuFullName" placeholder="Иванов Иван Иванович" required>
+                        </div>
+                    </div>
+
+                    <div class="eis-form-row">
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Звание</label>
+                            <select class="eis-select" id="cuRank">
+                                <option value="Рядовой">Рядовой</option>
+                                <option value="Ефрейтор">Ефрейтор</option>
+                                <option value="Мл. сержант">Младший сержант</option>
+                                <option value="Сержант">Сержант</option>
+                                <option value="Ст. сержант">Старший сержант</option>
+                                <option value="Старшина">Старшина</option>
+                                <option value="Прапорщик">Прапорщик</option>
+                                <option value="Ст. прапорщик">Старший прапорщик</option>
+                                <option value="Лейтенант">Лейтенант</option>
+                                <option value="Ст. лейтенант">Старший лейтенант</option>
+                                <option value="Капитан">Капитан</option>
+                                <option value="Майор">Майор</option>
+                            </select>
+                        </div>
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Роль *</label>
+                            <select class="eis-select" id="cuRole" required>
+                                <option value="cadet">Курсант</option>
+                                <option value="inspector_odps">Инспектор ОДПС</option>
+                                <option value="inspector_reo">Инспектор РЭО</option>
+                                <option value="chief_odps">Начальник ОДПС</option>
+                                <option value="chief_reo">Начальник РЭО</option>
+                                <option value="chief_cuipp">Начальник ЦУиПП</option>
+                                <option value="chief_vai">Начальник ВАИ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Должность</label>
+                        <input type="text" class="eis-input" id="cuPosition" placeholder="Инспектор ОТНиЭР">
+                    </div>
+
+                    <div class="eis-auth-error" id="cuError"></div>
+                </form>
+            </div>
+            <div class="eis-modal-form-footer">
+                <button type="button" class="eis-btn eis-btn-secondary" onclick="closeCreateUserModal()">Отмена</button>
+                <button type="button" class="eis-btn eis-btn-primary" id="cuSubmitBtn" onclick="submitCreateUser()">Создать</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модалка сброса пароля -->
+    <div class="eis-modal-form" id="resetPasswordModal">
+        <div class="eis-modal-form-content" style="max-width: 420px;">
+            <div class="eis-modal-form-header">
+                <h3>Сброс пароля</h3>
+                <span class="eis-modal-form-close" onclick="closeResetPasswordModal()">×</span>
+            </div>
+            <div class="eis-modal-form-body">
+                <div class="eis-form-group">
+                    <label class="eis-form-label">Новый пароль (мин. 6)</label>
+                    <input type="text" class="eis-input" id="rpNewPassword" required minlength="6">
+                </div>
+                <div class="eis-auth-error" id="rpError"></div>
+            </div>
+            <div class="eis-modal-form-footer">
+                <button type="button" class="eis-btn eis-btn-secondary" onclick="closeResetPasswordModal()">Отмена</button>
+                <button type="button" class="eis-btn eis-btn-primary" onclick="submitResetPassword()">Сбросить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модалка подробной информации о логе -->
+    <div class="eis-modal-form" id="auditDetailModal">
+        <div class="eis-modal-form-content" style="max-width: 700px;">
+            <div class="eis-modal-form-header">
+                <div>
+                    <h3 id="adAction" style="margin: 0;">Действие</h3>
+                    <div style="font-size: 12px; color: #888; font-family: monospace; margin-top: 4px;">
+                        code: <span id="adActionCode">—</span>
+                    </div>
+                </div>
+                <span class="eis-modal-form-close" onclick="closeAuditDetailModal()">×</span>
+            </div>
+            <div class="eis-modal-form-body">
+                <div class="eis-audit-detail-section">
+                    <div class="eis-audit-detail-title">Основные поля</div>
+                    <div id="adFields"></div>
+                </div>
+
+                <div class="eis-audit-detail-section">
+                    <div class="eis-audit-detail-title">
+                        Дополнительные данные (details)
+                    </div>
+                    <div id="adDetails" class="eis-audit-detail-json"></div>
+                </div>
+            </div>
+            <div class="eis-modal-form-footer">
+                <button type="button" class="eis-btn eis-btn-secondary" onclick="closeAuditDetailModal()">
+                    Закрыть
+                </button>
+                <button type="button" class="eis-btn eis-btn-primary" id="adCopyBtn">
+                    Скопировать JSON
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модалка редактирования пользователя -->
+    <div class="eis-modal-form" id="editUserModal">
+        <div class="eis-modal-form-content" style="max-width: 560px;">
+            <div class="eis-modal-form-header">
+                <h3>Редактирование пользователя</h3>
+                <span class="eis-modal-form-close" onclick="closeEditUserModal()">×</span>
+            </div>
+            <div class="eis-modal-form-body">
+                <input type="hidden" id="euId">
+
+                <div class="eis-form-row">
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Логин *</label>
+                        <input type="text" class="eis-input" id="euUsername" required autocomplete="off">
+                    </div>
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Роль *</label>
+                        <select class="eis-select" id="euRole" required>
+                            <option value="cadet">Курсант</option>
+                            <option value="inspector_odps">Инспектор ОДПС</option>
+                            <option value="inspector_reo">Инспектор РЭО</option>
+                            <option value="chief_odps">Начальник ОДПС</option>
+                            <option value="chief_reo">Начальник РЭО</option>
+                            <option value="chief_cuipp">Начальник ЦУиПП</option>
+                            <option value="chief_vai">Начальник ВАИ</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="eis-form-group">
+                    <label class="eis-form-label">ФИО *</label>
+                    <input type="text" class="eis-input" id="euFullName" placeholder="Иванов Иван Иванович" required>
+                </div>
+
+                <div class="eis-form-row">
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Звание</label>
+                        <select class="eis-select" id="euRank">
+                            <option value="Рядовой">Рядовой</option>
+                            <option value="Ефрейтор">Ефрейтор</option>
+                            <option value="Мл. сержант">Младший сержант</option>
+                            <option value="Сержант">Сержант</option>
+                            <option value="Ст. сержант">Старший сержант</option>
+                            <option value="Старшина">Старшина</option>
+                            <option value="Прапорщик">Прапорщик</option>
+                            <option value="Ст. прапорщик">Старший прапорщик</option>
+                            <option value="Лейтенант">Лейтенант</option>
+                            <option value="Ст. лейтенант">Старший лейтенант</option>
+                            <option value="Капитан">Капитан</option>
+                            <option value="Майор">Майор</option>
+                        </select>
+                    </div>
+                    <div class="eis-form-group">
+                        <label class="eis-form-label">Должность</label>
+                        <input type="text" class="eis-input" id="euPosition" placeholder="Инспектор ОТНиЭР">
+                    </div>
+                </div>
+
+                <div class="eis-auth-error" id="euError"></div>
+            </div>
+            <div class="eis-modal-form-footer eis-modal-form-footer-split">
+                <button type="button" class="eis-btn eis-btn-danger" onclick="deleteUserFromModal()">
+                    Удалить
+                </button>
+                <div class="eis-modal-form-footer-right">
+                    <button type="button" class="eis-btn eis-btn-secondary" onclick="closeEditUserModal()">
+                        Отмена
+                    </button>
+                    <button type="button" class="eis-btn eis-btn-primary" id="euSaveBtn" onclick="saveEditUser()">
+                        Сохранить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/guard.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

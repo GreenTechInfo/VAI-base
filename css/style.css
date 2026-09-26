@@ -1,0 +1,2091 @@
+/* ========== ЕИС ВАИ - ЕДИНАЯ ИНФОРМАЦИОННАЯ СИСТЕМА ========== */
+
+:root {
+    --eis-bg: #f0f2f5;
+    --eis-bg-dark: #1f2025;
+    --eis-bg-panel: #ffffff;
+    --eis-bg-header: #1f2025;
+    --eis-bg-nav: #1e7e34;
+    --eis-border: #e0e4e8;
+    --eis-border-dark: #333333;
+    --eis-text: #222222;
+    --eis-text-secondary: #666666;
+    --eis-text-light: #888888;
+    --eis-text-white: #ffffff;
+    --eis-accent: #1e7e34;
+    --eis-accent-hover: #15652a;
+    --eis-accent-light: #e8f5e9;
+    --eis-danger: #dc3545;
+    --eis-warning: #ffc107;
+    --eis-success: #28a745;
+    --eis-info: #17a2b8;
+    --eis-font: 'PT Sans', 'Segoe UI', Arial, sans-serif;
+    --eis-font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--eis-font);
+    background: var(--eis-bg);
+    min-height: 100vh;
+    color: var(--eis-text);
+    line-height: 1.5;
+}
+
+/* ========== ОБЁРТКА ========== */
+.eis-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.eis-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+/* ========== ШАПКА ========== */
+.eis-header {
+    background: var(--eis-bg-dark);
+    color: var(--eis-text-white);
+    height: 72px;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.eis-header .eis-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.eis-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.eis-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.eis-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.eis-org-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.eis-org-title {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.eis-org-sub {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1.2;
+}
+
+.eis-header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.eis-user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.eis-user-role {
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.eis-user-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.eis-header-divider {
+    width: 1px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.eis-logout-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ccc;
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.eis-logout-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ========== НАВИГАЦИЯ ========== */
+.eis-nav {
+    background: var(--eis-bg-nav);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+.eis-nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2px;
+    width: 100%;
+}
+
+.eis-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    transition: all 0.15s;
+    border-radius: 4px 4px 0 0;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.eis-nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.eis-nav-item.active {
+    background: var(--eis-bg);
+    color: var(--eis-accent);
+    font-weight: 700;
+}
+
+.eis-nav-item svg {
+    flex-shrink: 0;
+}
+
+/* ========== ОСНОВНОЙ КОНТЕНТ ========== */
+.eis-main {
+    flex: 1;
+    padding: 24px 0 48px;
+}
+
+.eis-tab-content {
+    display: none;
+}
+
+.eis-tab-content.active {
+    display: block;
+}
+
+/* ========== ЗАГОЛОВОК СТРАНИЦЫ ========== */
+.eis-page-header {
+    margin-bottom: 24px;
+}
+
+.eis-page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--eis-text);
+    margin-bottom: 4px;
+}
+
+.eis-page-subtitle {
+    font-size: 13px;
+    color: var(--eis-text-secondary);
+}
+
+/* ========== ПАНЕЛИ ========== */
+.eis-panel {
+    background: var(--eis-bg-panel);
+    border: 1px solid var(--eis-border);
+    border-radius: 6px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.eis-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: #fafbfc;
+    border-bottom: 1px solid var(--eis-border);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.eis-panel-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--eis-text);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.eis-panel-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.eis-panel-body {
+    padding: 20px;
+}
+
+.eis-panel-body.eis-preview-body {
+    background: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    overflow: auto;
+}
+
+.eis-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--eis-accent);
+    background: var(--eis-accent-light);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-family: var(--eis-font-mono);
+}
+
+/* ========== ДВУХКОЛОНОЧНЫЙ МАКЕТ ========== */
+.eis-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* ========== ФОРМЫ ========== */
+.eis-form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.eis-form-row:last-child {
+    margin-bottom: 0;
+}
+
+.eis-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.eis-form-group:last-child {
+    margin-bottom: 0;
+}
+
+.eis-form-group-btn {
+    justify-content: flex-start;
+}
+
+    .eis-form-group-btn .eis-btn {
+        width: 100%;
+    }
+
+.eis-btn-danger {
+    background: var(--eis-danger);
+    color: #fff;
+    border-color: var(--eis-danger);
+}
+
+    .eis-btn-danger:hover {
+        background: #c82333;
+        border-color: #c82333;
+    }
+
+.eis-input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.eis-input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.eis-input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+.eis-form-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--eis-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.eis-input,
+.eis-select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: var(--eis-font);
+    color: var(--eis-text);
+    background: #fff;
+    border: 1px solid var(--eis-border);
+    border-radius: 4px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.eis-input:focus,
+.eis-select:focus {
+    outline: none;
+    border-color: var(--eis-accent);
+    box-shadow: 0 0 0 3px rgba(30, 126, 52, 0.1);
+}
+
+.eis-input::placeholder {
+    color: #aaa;
+}
+
+.eis-input[readonly] {
+    background: #f5f5f5;
+    color: var(--eis-text-light);
+    cursor: not-allowed;
+}
+
+.eis-input-sm {
+    font-size: 13px;
+    padding: 8px 10px;
+}
+
+.eis-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23666'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+/* ========== КНОПКИ ========== */
+.eis-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--eis-font);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.eis-btn-primary {
+    background: var(--eis-accent);
+    color: #fff;
+    border-color: var(--eis-accent);
+}
+
+.eis-btn-primary:hover {
+    background: var(--eis-accent-hover);
+    border-color: var(--eis-accent-hover);
+}
+
+.eis-btn-secondary {
+    background: #fff;
+    color: var(--eis-text);
+    border-color: var(--eis-border);
+}
+
+.eis-btn-secondary:hover {
+    background: #f5f5f5;
+    border-color: #ccc;
+}
+
+.eis-btn-success {
+    background: var(--eis-success);
+    color: #fff;
+    border-color: var(--eis-success);
+}
+
+.eis-btn-success:hover {
+    background: #218838;
+    border-color: #218838;
+}
+
+.eis-btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.eis-actions-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+/* ========== ЧЕКБОКСЫ И РАДИО ========== */
+.eis-radio-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.eis-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: var(--eis-text);
+    background: #fff;
+    border: 1px solid var(--eis-border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.eis-radio:hover {
+    border-color: var(--eis-accent);
+    background: var(--eis-accent-light);
+}
+
+.eis-radio input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--eis-accent);
+    cursor: pointer;
+}
+
+.eis-radio:has(input:checked) {
+    border-color: var(--eis-accent);
+    background: var(--eis-accent-light);
+    color: var(--eis-accent);
+    font-weight: 600;
+}
+
+/* ========== НАВЫКИ ========== */
+.eis-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 24px;
+}
+
+.eis-skill-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.eis-skill-item:hover {
+    background: #f5f5f5;
+}
+
+.eis-skill-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--eis-accent);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.eis-skill-item label {
+    font-size: 13px;
+    color: var(--eis-text);
+    cursor: pointer;
+    line-height: 1.3;
+}
+
+/* ========== ОШИБКИ ========== */
+.eis-error-group {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #fafbfc;
+    border: 1px solid var(--eis-border);
+    border-left: 3px solid var(--eis-accent);
+    border-radius: 4px;
+}
+
+.eis-error-group-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--eis-accent);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.eis-error-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 24px;
+}
+
+.eis-error-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+}
+
+.eis-error-item label {
+    font-size: 13px;
+    color: var(--eis-text);
+    flex: 1;
+    line-height: 1.3;
+}
+
+.eis-error-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.eis-error-btn {
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--eis-border);
+    background: #fff;
+    color: var(--eis-text);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.eis-error-btn:hover {
+    border-color: var(--eis-accent);
+    color: var(--eis-accent);
+    background: var(--eis-accent-light);
+}
+
+.eis-error-count {
+    min-width: 24px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--eis-font-mono);
+}
+
+.eis-error-slots {
+    font-size: 11px;
+    color: var(--eis-text-light);
+    font-family: var(--eis-font-mono);
+}
+
+.eis-errors-total {
+    margin-top: 16px;
+    padding: 12px 20px;
+    background: var(--eis-accent-light);
+    border: 1px solid var(--eis-accent);
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--eis-accent);
+    font-family: var(--eis-font-mono);
+}
+
+/* ========== ПУНКТЫ ТЕХОСМОТРА ========== */
+.eis-tech-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+}
+
+.eis-tech-item:hover {
+    background: #fafbfc;
+}
+
+.eis-tech-item:last-child {
+    border-bottom: none;
+}
+
+.eis-tech-item-number {
+    min-width: 28px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--eis-accent);
+    font-family: var(--eis-font-mono);
+    text-align: right;
+}
+
+.eis-tech-item-text {
+    flex: 1;
+    font-size: 13px;
+    color: var(--eis-text);
+    line-height: 1.3;
+}
+
+.eis-tech-item-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.eis-tech-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--eis-border);
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: var(--eis-text-secondary);
+}
+
+.eis-tech-btn-ok:hover,
+.eis-tech-btn-ok.active {
+    background: #e8f5e9;
+    border-color: var(--eis-success);
+    color: var(--eis-success);
+}
+
+.eis-tech-btn-fail:hover,
+.eis-tech-btn-fail.active {
+    background: #ffebee;
+    border-color: var(--eis-danger);
+    color: var(--eis-danger);
+}
+
+/* ========== ПОДПИСИ ========== */
+.eis-signatures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.eis-signature-item {
+    background: #fafbfc;
+    border: 1px solid var(--eis-border);
+    border-radius: 4px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.eis-signature-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--eis-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.eis-file-input {
+    font-size: 12px;
+    color: var(--eis-text-secondary);
+}
+
+.eis-file-input::file-selector-button {
+    background: #fff;
+    border: 1px solid var(--eis-border);
+    color: var(--eis-text);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--eis-font);
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 10px;
+    transition: all 0.2s;
+}
+
+.eis-file-input::file-selector-button:hover {
+    border-color: var(--eis-accent);
+    color: var(--eis-accent);
+    background: var(--eis-accent-light);
+}
+
+.eis-signature-preview {
+    min-height: 60px;
+    background: #fff;
+    border: 1px dashed var(--eis-border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 12px;
+    color: var(--eis-text-light);
+    overflow: hidden;
+}
+
+.eis-signature-preview canvas {
+    max-width: 100%;
+    max-height: 50px;
+    object-fit: contain;
+}
+
+/* ========== РЕЗУЛЬТАТЫ ========== */
+.eis-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    gap: 16px;
+    color: var(--eis-text-secondary);
+    font-size: 14px;
+}
+
+.eis-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--eis-border);
+    border-top-color: var(--eis-accent);
+    border-radius: 50%;
+    animation: eis-spin 0.8s linear infinite;
+}
+
+@keyframes eis-spin {
+    to { transform: rotate(360deg); }
+}
+
+.eis-no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--eis-text-secondary);
+    font-size: 14px;
+}
+
+.eis-vu-record {
+    background: #fff;
+    border: 1px solid var(--eis-border);
+    border-radius: 6px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.eis-vu-record:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.eis-vu-record-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: #fafbfc;
+    border-bottom: 1px solid var(--eis-border);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.eis-vu-number {
+    font-family: var(--eis-font-mono);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--eis-accent);
+    letter-spacing: 0.5px;
+}
+
+.eis-vu-status {
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 12px;
+}
+
+.eis-status-valid {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.eis-status-expiring {
+    background: #fff8e1;
+    color: #f57c00;
+    border: 1px solid #ffcc80;
+}
+
+.eis-status-expired {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+.eis-status-archived {
+    background: #f5f5f5;
+    color: #757575;
+    border: 1px solid #e0e0e0;
+}
+
+.eis-vu-data {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.eis-data-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.eis-data-label {
+    font-size: 11px;
+    color: var(--eis-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    font-weight: 600;
+}
+
+.eis-data-value {
+    font-size: 14px;
+    color: var(--eis-text);
+    font-family: var(--eis-font-mono);
+}
+
+/* ========== ДОКУМЕНТЫ ========== */
+.eis-documents-grid {
+    display: flex;
+    gap: 12px;
+    padding: 0 20px 20px;
+    flex-wrap: wrap;
+}
+
+.eis-document-thumb {
+    position: relative;
+    width: 130px;
+    height: 95px;
+    background: #f5f5f5;
+    border: 1px solid var(--eis-border);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.eis-document-thumb:hover {
+    border-color: var(--eis-accent);
+    box-shadow: 0 2px 8px rgba(30, 126, 52, 0.15);
+}
+
+.eis-document-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.eis-document-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 9px;
+    text-align: center;
+    padding: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.eis-photo-counter {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 10px;
+    border-radius: 3px;
+    font-family: var(--eis-font-mono);
+}
+
+/* ========== ПРЕДПРОСМОТР СТРАНИЦ ========== */
+.eis-page-preview {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.eis-page-preview h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--eis-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    align-self: flex-start;
+}
+
+.eis-page-preview canvas {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--eis-border);
+    border-radius: 4px;
+    background: #fff;
+}
+
+/* ========== ПОДВАЛ ========== */
+.eis-footer {
+    background: var(--eis-bg-dark); /* #1f2025 — как у шапки */
+    color: #aaa;
+    padding: 28px 0 18px;
+    margin-top: auto;
+    font-size: 14px;
+}
+
+/* --- Верхняя часть: логотип + название --- */
+.eis-footer-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.eis-footer-logo {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eis-footer-logo-img {
+    height: 44px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.eis-footer-org {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.eis-footer-org-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+.eis-footer-org-sub {
+    font-size: 13px;
+    color: #aaa;
+    line-height: 1.2;
+}
+
+/* --- Нижняя часть: дисклеймер + копирайт --- */
+.eis-footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    padding-top: 16px;
+    flex-wrap: wrap;
+}
+
+.eis-footer-disclaimer {
+    flex: 1 1 480px;
+    max-width: 1000px;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #888;
+}
+
+    .eis-footer-disclaimer strong {
+        color: #ccc;
+        font-weight: 600;
+    }
+
+.eis-footer-copy {
+    flex-shrink: 0;
+    font-size: 12px;
+    color: #888;
+    white-space: nowrap;
+    font-family: var(--eis-font-mono);
+}
+
+/* --- Адаптив --- */
+@media (max-width: 768px) {
+    .eis-footer {
+        padding: 22px 0 16px;
+    }
+
+    .eis-footer-top {
+        gap: 12px;
+    }
+
+    .eis-footer-logo-img {
+        height: 38px;
+    }
+
+    .eis-footer-bottom {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .eis-footer-disclaimer {
+        flex: 1 1 auto;
+        max-width: 100%;
+    }
+
+    .eis-footer-copy {
+        white-space: normal;
+    }
+}
+
+@media (max-width: 480px) {
+    .eis-footer-org-title {
+        font-size: 14px;
+    }
+
+    .eis-footer-org-sub {
+        font-size: 12px;
+    }
+
+    .eis-footer-logo-img {
+        height: 34px;
+    }
+}
+
+/* ========== МОДАЛЬНОЕ ОКНО ========== */
+.eis-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 1000;
+}
+
+.eis-modal-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.eis-modal-content img {
+    max-width: 90%;
+    max-height: 80vh;
+    object-fit: contain;
+    display: block;
+    border-radius: 4px;
+}
+
+.eis-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #fff;
+    font-size: 32px;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: background 0.2s;
+    z-index: 1001;
+    line-height: 1;
+}
+
+.eis-modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.eis-modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 36px;
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: background 0.2s;
+    z-index: 1001;
+    user-select: none;
+    line-height: 1;
+}
+
+.eis-modal-nav:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.eis-modal-prev {
+    left: 20px;
+}
+
+.eis-modal-next {
+    right: 20px;
+}
+
+.eis-modal-counter {
+    color: #fff;
+    font-size: 14px;
+    margin-top: 16px;
+    font-family: var(--eis-font-mono);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 6px 16px;
+    border-radius: 20px;
+}
+
+/* ========== АДАПТИВНОСТЬ ========== */
+@media (max-width: 1024px) {
+    .eis-two-col {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .eis-header {
+        height: auto;
+        padding: 12px 0;
+    }
+
+    .eis-header .eis-container {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .eis-user-info {
+        display: none;
+    }
+
+    .eis-nav-menu {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .eis-nav-item {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .eis-nav-item span {
+        display: none;
+    }
+
+    .eis-skills-grid,
+    .eis-error-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .eis-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .eis-signatures-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .eis-footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .eis-container {
+        padding: 0 12px;
+    }
+
+    .eis-page-title {
+        font-size: 18px;
+    }
+
+    .eis-panel-header {
+        padding: 10px 14px;
+    }
+
+    .eis-panel-body {
+        padding: 14px;
+    }
+
+    .eis-vu-data {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ========== НАВИГАЦИЯ — ССЫЛКИ ========== */
+.eis-nav-item {
+    padding: 0;
+}
+
+    .eis-nav-item a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        color: inherit;
+        text-decoration: none;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px 4px 0 0;
+        transition: all 0.15s;
+    }
+
+    .eis-nav-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+        .eis-nav-item:hover a {
+            color: #fff;
+        }
+
+    .eis-nav-item.active {
+        background: var(--eis-bg);
+    }
+
+        .eis-nav-item.active a {
+            color: var(--eis-accent);
+            font-weight: 700;
+        }
+
+
+/* ================================================================
+   СТРАНИЦА ВХОДА
+   ================================================================ */
+
+.eis-auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--eis-bg-dark);
+    padding: 20px;
+}
+
+.eis-auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--eis-bg-panel);
+    border-radius: 8px;
+    padding: 40px 32px 32px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.eis-auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.eis-auth-logo {
+    height: 64px;
+    width: auto;
+    margin-bottom: 16px;
+}
+
+.eis-auth-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--eis-text);
+    margin-bottom: 4px;
+}
+
+.eis-auth-subtitle {
+    font-size: 13px;
+    color: var(--eis-text-secondary);
+}
+
+.eis-auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.eis-btn-block {
+    width: 100%;
+    margin-top: 8px;
+}
+
+.eis-auth-error {
+    min-height: 20px;
+    font-size: 13px;
+    color: var(--eis-danger);
+    text-align: center;
+    margin-top: 4px;
+}
+
+.eis-auth-hint {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--eis-text-light);
+    text-align: center;
+    line-height: 1.5;
+    padding-top: 20px;
+    border-top: 1px solid var(--eis-border);
+}
+
+/* ================================================================
+   ЛИЧНЫЙ КАБИНЕТ
+   ================================================================ */
+
+.eis-profile-hint {
+    margin-top: 16px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--eis-text-secondary);
+    background: #fafbfc;
+    border-left: 3px solid var(--eis-accent);
+    border-radius: 4px;
+    line-height: 1.5;
+}
+
+/* ================================================================
+   АДМИН-ПАНЕЛЬ
+   ================================================================ */
+
+.eis-admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+}
+
+.eis-stat-card {
+    background: #fafbfc;
+    border: 1px solid var(--eis-border);
+    border-left: 3px solid var(--eis-accent);
+    border-radius: 4px;
+    padding: 16px;
+    text-align: center;
+}
+
+.eis-stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--eis-accent);
+    font-family: var(--eis-font-mono);
+    line-height: 1.2;
+}
+
+.eis-stat-label {
+    font-size: 11px;
+    color: var(--eis-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+/* Таблица */
+.eis-admin-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--eis-border);
+    border-radius: 4px;
+}
+
+.eis-admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+    .eis-admin-table thead th {
+        background: #fafbfc;
+        padding: 10px 12px;
+        text-align: left;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--eis-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid var(--eis-border);
+        white-space: nowrap;
+    }
+
+    .eis-admin-table tbody td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: middle;
+    }
+
+    .eis-admin-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .eis-admin-table tbody tr:hover {
+        background: #fafbfc;
+    }
+
+.eis-admin-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.eis-select-sm {
+    padding: 4px 24px 4px 8px;
+    font-size: 12px;
+    background-position: right 6px center;
+    background-size: 10px;
+    min-width: 130px;
+}
+
+/* Роли */
+.eis-role-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.eis-role-chief {
+    background: #e8f5e9;
+    color: #1e7e34;
+    border: 1px solid #a5d6a7;
+}
+
+.eis-role-other {
+    background: #f5f5f5;
+    color: #555;
+    border: 1px solid #e0e0e0;
+}
+
+/* Audit log */
+.eis-audit-time {
+    font-family: var(--eis-font-mono);
+    font-size: 12px;
+    color: var(--eis-text-secondary);
+    white-space: nowrap;
+}
+
+.eis-audit-action {
+    font-weight: 600;
+    color: var(--eis-accent);
+    white-space: nowrap;
+}
+
+.eis-audit-details {
+    font-family: var(--eis-font-mono);
+    font-size: 11px;
+    color: var(--eis-text-light);
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Кнопка удаления */
+.eis-btn-danger {
+    background: var(--eis-danger);
+    color: #fff;
+    border-color: var(--eis-danger);
+}
+
+    .eis-btn-danger:hover {
+        background: #c82333;
+        border-color: #c82333;
+    }
+
+/* Модальные формы */
+.eis-modal-form {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.eis-modal-form-content {
+    background: #fff;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 680px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.eis-modal-form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--eis-border);
+    background: #fafbfc;
+}
+
+    .eis-modal-form-header h3 {
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+.eis-modal-form-close {
+    font-size: 26px;
+    cursor: pointer;
+    color: var(--eis-text-light);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+    line-height: 1;
+}
+
+    .eis-modal-form-close:hover {
+        background: #f0f0f0;
+        color: var(--eis-text);
+    }
+
+.eis-modal-form-body {
+    padding: 20px 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.eis-modal-form-footer {
+    padding: 14px 24px;
+    border-top: 1px solid var(--eis-border);
+    background: #fafbfc;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+@media (max-width: 640px) {
+    .eis-admin-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+        .eis-admin-actions .eis-select-sm,
+        .eis-admin-actions .eis-btn {
+            width: 100%;
+        }
+}
+
+#vuCanvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--eis-border);
+    border-radius: 4px;
+    background: #fff;
+}
+
+/* ================================================================
+   МОДАЛКА ПОДТВЕРЖДЕНИЯ ВУ
+   ================================================================ */
+
+.eis-confirm-vu {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.eis-confirm-vu-photo {
+    border: 1px solid var(--eis-border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+    .eis-confirm-vu-photo img {
+        max-width: 100%;
+        max-height: 260px;
+        object-fit: contain;
+        display: block;
+    }
+
+.eis-confirm-vu-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+    .eis-confirm-vu-fields .eis-data-value {
+        font-size: 14px;
+        padding: 6px 0;
+        border-bottom: 1px dashed var(--eis-border);
+    }
+
+@media (max-width: 640px) {
+    .eis-confirm-vu {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ================================================================
+   ВСПЛЫВАЮЩИЕ УВЕДОМЛЕНИЯ (TOAST)
+   ================================================================ */
+
+.eis-toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column-reverse; /* новые тосты появляются снизу, старые уходят вверх */
+    gap: 12px;
+    pointer-events: none;
+    max-width: 400px;
+}
+
+.eis-toast {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid var(--eis-border);
+    border-left: 4px solid var(--eis-info);
+    border-radius: 6px;
+    padding: 14px 40px 14px 52px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    pointer-events: auto;
+    min-width: 300px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.eis-toast-show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.eis-toast-hide {
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+.eis-toast-icon {
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--eis-info);
+}
+
+.eis-toast-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--eis-text);
+    margin-bottom: 3px;
+}
+
+.eis-toast-message {
+    font-size: 13px;
+    color: var(--eis-text-secondary);
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.eis-toast-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+    border: none;
+    background: transparent;
+    color: var(--eis-text-light);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .eis-toast-close:hover {
+        background: #f0f0f0;
+        color: var(--eis-text);
+    }
+
+.eis-toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: currentColor;
+    opacity: 0.3;
+    animation: eis-toast-progress linear forwards;
+    width: 100%;
+}
+
+@keyframes eis-toast-progress {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0;
+    }
+}
+
+/* Типы toast */
+.eis-toast-success {
+    border-left-color: var(--eis-success);
+}
+
+    .eis-toast-success .eis-toast-icon {
+        background: var(--eis-success);
+    }
+
+    .eis-toast-success .eis-toast-progress {
+        color: var(--eis-success);
+    }
+
+.eis-toast-error {
+    border-left-color: var(--eis-danger);
+}
+
+    .eis-toast-error .eis-toast-icon {
+        background: var(--eis-danger);
+    }
+
+    .eis-toast-error .eis-toast-progress {
+        color: var(--eis-danger);
+    }
+
+.eis-toast-warning {
+    border-left-color: var(--eis-warning);
+}
+
+    .eis-toast-warning .eis-toast-icon {
+        background: var(--eis-warning);
+        color: #333;
+    }
+
+    .eis-toast-warning .eis-toast-progress {
+        color: var(--eis-warning);
+    }
+
+.eis-toast-info {
+    border-left-color: var(--eis-info);
+}
+
+    .eis-toast-info .eis-toast-icon {
+        background: var(--eis-info);
+    }
+
+    .eis-toast-info .eis-toast-progress {
+        color: var(--eis-info);
+    }
+
+@media (max-width: 480px) {
+    .eis-toast-container {
+        top: 12px;
+        right: 12px;
+        left: 12px;
+        max-width: none;
+    }
+
+    .eis-toast {
+        min-width: 0;
+        width: 100%;
+    }
+}
+
+/* ================================================================
+   МОДАЛКА ПОДТВЕРЖДЕНИЯ (CONFIRM)
+   ================================================================ */
+
+.eis-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.eis-confirm-show {
+    opacity: 1;
+}
+
+.eis-confirm-modal {
+    background: #fff;
+    border-radius: 8px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: scale(0.9);
+    transition: transform 0.2s;
+    overflow: hidden;
+}
+
+.eis-confirm-show .eis-confirm-modal {
+    transform: scale(1);
+}
+
+.eis-confirm-header {
+    padding: 20px 24px 12px;
+    border-bottom: 1px solid var(--eis-border);
+}
+
+    .eis-confirm-header h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--eis-text);
+        margin: 0;
+    }
+
+.eis-confirm-body {
+    padding: 20px 24px;
+    font-size: 14px;
+    color: var(--eis-text);
+    line-height: 1.5;
+}
+
+.eis-confirm-footer {
+    padding: 14px 24px;
+    background: #fafbfc;
+    border-top: 1px solid var(--eis-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Тонкая полоска сверху по типу */
+.eis-confirm-danger .eis-confirm-header {
+    border-top: 3px solid var(--eis-danger);
+}
+
+.eis-confirm-warning .eis-confirm-header {
+    border-top: 3px solid var(--eis-warning);
+}
+
+.eis-confirm-default .eis-confirm-header {
+    border-top: 3px solid var(--eis-accent);
+}
+
+/* ================================================================
+   КНОПКИ ДЕЙСТВИЙ НА КАРТОЧКЕ ВУ
+   ================================================================ */
+
+.eis-vu-record-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.eis-vu-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .eis-vu-record-header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .eis-vu-actions {
+        width: 100%;
+    }
+
+        .eis-vu-actions .eis-btn {
+            flex: 1;
+        }
+}
+
+/* ================================================================
+   МОДАЛКА ПОДРОБНОЙ ИНФОРМАЦИИ О ЛОГЕ
+   ================================================================ */
+
+.eis-audit-detail-section {
+    margin-bottom: 24px;
+}
+
+    .eis-audit-detail-section:last-child {
+        margin-bottom: 0;
+    }
+
+.eis-audit-detail-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--eis-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--eis-border);
+}
+
+.eis-audit-detail-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px dashed #f0f0f0;
+    font-size: 13px;
+}
+
+    .eis-audit-detail-row:last-child {
+        border-bottom: none;
+    }
+
+.eis-audit-detail-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--eis-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding-top: 2px;
+}
+
+.eis-audit-detail-value {
+    font-family: var(--eis-font-mono);
+    font-size: 12px;
+    color: var(--eis-text);
+    word-break: break-all;
+}
+
+.eis-audit-detail-json {
+    background: #1f2025;
+    color: #e0e0e0;
+    padding: 16px 20px;
+    border-radius: 4px;
+    overflow-x: auto;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+    .eis-audit-detail-json pre {
+        font-family: var(--eis-font-mono);
+        font-size: 12px;
+        line-height: 1.5;
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+@media (max-width: 640px) {
+    .eis-audit-detail-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+}
+
+/* ================================================================
+   РАЗДЕЛЁННЫЙ FOOTER МОДАЛКИ (удалить слева, действия справа)
+   ================================================================ */
+
+.eis-modal-form-footer-split {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.eis-modal-form-footer-right {
+    display: flex;
+    gap: 10px;
+}

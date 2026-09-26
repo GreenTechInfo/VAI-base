@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Техосмотр — ЕИС ВАИ</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="eis-wrapper">
+        <div id="site-header"></div>
+        <div id="site-nav"></div>
+
+        <main class="eis-main">
+            <div class="eis-container">
+                <div class="eis-page-header">
+                    <h1 class="eis-page-title">Диагностическая карта техосмотра</h1>
+                    <div class="eis-page-subtitle">Заполнение результатов технического осмотра ТС</div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Основные сведения</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Регистрационный номер карты</label>
+                                <input type="text" class="eis-input" id="techCardNumber" placeholder="000000000000001" maxlength="15" inputmode="numeric" oninput="formatTechCardNumber(this)">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Срок действия до</label>
+                                <input type="text" class="eis-input" id="techValidUntil" placeholder="ДД.ММ.ГГГГ" maxlength="10" inputmode="numeric" oninput="formatTechDate(this)">
+                            </div>
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Подразделение</label>
+                            <input type="text" class="eis-input" id="techDepartment" value="49-я территориальная ВАИ Нижегородского гарнизона" readonly>
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Тип проверки</label>
+                            <div class="eis-radio-group">
+                                <label class="eis-radio">
+                                    <input type="radio" name="techCheckType" value="primary" onchange="generateTech()">
+                                    <span>Первичная</span>
+                                </label>
+                                <label class="eis-radio">
+                                    <input type="radio" name="techCheckType" value="secondary" onchange="generateTech()">
+                                    <span>Вторичная</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Регистрационный знак ТС</label>
+                                <input type="text" class="eis-input" id="techPlateNumber" placeholder="4295АТ 67" oninput="generateTech()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Марка, модель ТС</label>
+                                <input type="text" class="eis-input" id="techVehicleMakeModel" placeholder="УРАЛ 4320" oninput="generateTech()">
+                            </div>
+                        </div>
+
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">VIN</label>
+                                <input type="text" class="eis-input" id="techVIN" placeholder="V5GGJIQ5WCO710235" oninput="generateTech()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Категория ТС</label>
+                                <input type="text" class="eis-input" id="techCategory" placeholder="C" oninput="generateTech()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Год выпуска</label>
+                                <input type="text" class="eis-input" id="techYear" placeholder="2016" oninput="generateTech()">
+                            </div>
+                        </div>
+
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">СТС серия</label>
+                                <input type="text" class="eis-input" id="techSTSSeries" placeholder="52" oninput="generateTech()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">СТС номер</label>
+                                <input type="text" class="eis-input" id="techSTSNumber" placeholder="8595" oninput="generateTech()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">СТС выдан кем</label>
+                                <input type="text" class="eis-input" id="techSTSIssuedBy" placeholder="49-ой территориальной ВАИ" oninput="generateTech()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">СТС выдан когда</label>
+                                <input type="text" class="eis-input" id="techSTSIssuedDate" placeholder="ДД.ММ.ГГГГ" maxlength="10" oninput="formatTechDate(this)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Пункты диагностической карты</span>
+                        <div class="eis-panel-actions">
+                            <button type="button" class="eis-btn eis-btn-sm" onclick="setAllTechItems('ok')">Все ✓</button>
+                            <button type="button" class="eis-btn eis-btn-sm" onclick="setAllTechItems('fail')">Все ✕</button>
+                            <button type="button" class="eis-btn eis-btn-sm" onclick="setAllTechItems(null)">Сбросить</button>
+                        </div>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div id="techItemsContainer"></div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Технические характеристики</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Масса без нагрузки</label>
+                                <input type="text" class="eis-input" id="techMassWithoutLoad" placeholder="8050 кг" oninput="generateTech()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Разрешённая максимальная масса</label>
+                                <input type="text" class="eis-input" id="techMaxMass" placeholder="15205 кг" oninput="generateTech()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Мощность двигателя</label>
+                                <input type="text" class="eis-input" id="techEnginePower" placeholder="240 л.с." oninput="generateTech()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Пробег ТС</label>
+                                <input type="text" class="eis-input" id="techMileage" placeholder="1000 км" oninput="generateTech()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Заключение</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Возможность эксплуатации</label>
+                            <div class="eis-radio-group">
+                                <label class="eis-radio">
+                                    <input type="radio" name="techConclusion" value="possible" onchange="generateTech()">
+                                    <span>Возможно</span>
+                                </label>
+                                <label class="eis-radio">
+                                    <input type="radio" name="techConclusion" value="impossible" onchange="generateTech()">
+                                    <span>Невозможно</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Пункты, требующие повторной проверки</label>
+                            <input type="text" class="eis-input" id="techRecheck1" placeholder="Пункт 1" oninput="generateTech()" style="margin-bottom:6px;">
+                            <input type="text" class="eis-input" id="techRecheck2" placeholder="Пункт 2" oninput="generateTech()" style="margin-bottom:6px;">
+                            <input type="text" class="eis-input" id="techRecheck3" placeholder="Пункт 3" oninput="generateTech()">
+                        </div>
+
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Дата</label>
+                                <input type="text" class="eis-input" id="techExpertDate" placeholder="ДД.ММ.ГГГГ" maxlength="10" oninput="formatTechDate(this)">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">ФИО технического эксперта</label>
+                                <input type="text" class="eis-input" id="techExpertName" placeholder="Кравченко А.Н." oninput="generateTech()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Подпись технического эксперта</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-signature-item" style="max-width:400px;">
+                            <input type="file" class="eis-file-input" id="signatureTechExpertInput" accept="image/*" onchange="loadSignature('techExpert', this)">
+                            <div class="eis-signature-preview" id="signatureTechExpertPreview">Подпись не загружена</div>
+                            <button class="eis-btn eis-btn-sm" onclick="resetSignature('techExpert')">Сбросить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-actions-bar">
+                    <button class="eis-btn eis-btn-success" onclick="saveTech()">Сохранить диагностическую карту</button>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Предпросмотр диагностической карты</span>
+                    </div>
+                    <div class="eis-panel-body eis-preview-body">
+                        <div class="eis-page-preview">
+                            <h3>Диагностическая карта</h3>
+                            <canvas id="techCanvas" width="1654" height="2339"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/guard.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/signatures.js"></script>
+    <script src="js/techosmotr.js"></script>
+</body>
+</html>

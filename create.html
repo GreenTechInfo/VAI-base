@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать ВУ — ЕИС ВАИ</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="eis-wrapper">
+        <div id="site-header"></div>
+        <div id="site-nav"></div>
+
+        <main class="eis-main">
+            <div class="eis-container">
+                <div class="eis-page-header">
+                    <h1 class="eis-page-title">Создание военного удостоверения</h1>
+                    <div class="eis-page-subtitle">Заполните форму для генерации ВУ</div>
+                </div>
+
+                <div class="eis-two-col">
+                    <div class="eis-panel">
+                        <div class="eis-panel-header">
+                            <span class="eis-panel-title">Данные для заполнения</span>
+                        </div>
+                        <div class="eis-panel-body">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Номер ВУ</label>
+                                <input type="text" class="eis-input" id="createVUNumber" placeholder="Например: АН-12-8" oninput="generateVU()">
+                            </div>
+
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Звание</label>
+                                <select class="eis-select" id="createRank" onchange="generateVU()">
+                                    <option value="Гвардии ефрейтор">Ефрейтор</option>
+                                    <option value="Гвардии мл. сержант">Младший сержант</option>
+                                    <option value="Гвардии сержант">Сержант</option>
+                                    <option value="Гвардии ст. сержант">Старший сержант</option>
+                                    <option value="Гвардии старшина">Старшина</option>
+                                    <option value="Гвардии прапорщик">Прапорщик</option>
+                                    <option value="Гвардии ст. прапорщик">Старший прапорщик</option>
+                                    <option value="Гвардии лейтенант">Лейтенант</option>
+                                    <option value="Гвардии ст. лейтенант">Старший лейтенант</option>
+                                    <option value="Гвардии капитан">Капитан</option>
+                                    <option value="Гвардии майор">Майор</option>
+                                </select>
+                            </div>
+
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Фамилия</label>
+                                <input type="text" class="eis-input" id="createLastName" placeholder="Иванов" oninput="generateVU()">
+                            </div>
+
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Имя</label>
+                                <input type="text" class="eis-input" id="createFirstName" placeholder="Иван" oninput="generateVU()">
+                            </div>
+
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Отчество</label>
+                                <input type="text" class="eis-input" id="createMiddleName" placeholder="Иванович" oninput="generateVU()">
+                            </div>
+
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Дата выдачи</label>
+                                <input type="date" class="eis-input" id="createIssueDate" oninput="generateVU()" onchange="generateVU()">
+                            </div>
+
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Действительно до</label>
+                                <input type="text" class="eis-input" id="createExpiryDate" readonly>
+                            </div>
+
+                            <div class="eis-actions-bar" style="margin-bottom: 0;">
+                                <button class="eis-btn eis-btn-secondary" onclick="downloadVUImage()">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                                    </svg>
+                                    Скачать фото
+                                </button>
+                                <button class="eis-btn eis-btn-primary" onclick="saveVU()">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                        <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z" />
+                                    </svg>
+                                    Сохранить ВУ в базу
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="eis-panel">
+                        <div class="eis-panel-header">
+                            <span class="eis-panel-title">Предпросмотр</span>
+                        </div>
+                        <div class="eis-panel-body eis-preview-body">
+                            <canvas id="vuCanvas" width="1215" height="892"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Модалка подтверждения ВУ -->
+        <div class="eis-modal-form" id="confirmVUModal">
+            <div class="eis-modal-form-content" style="max-width: 800px;">
+                <div class="eis-modal-form-header">
+                    <h3>Подтверждение записи ВУ</h3>
+                    <span class="eis-modal-form-close" onclick="closeConfirmVUModal()">×</span>
+                </div>
+                <div class="eis-modal-form-body">
+                    <div class="eis-confirm-vu">
+                        <!-- Фото -->
+                        <div class="eis-confirm-vu-photo">
+                            <img id="cvPhoto" src="" alt="ВУ">
+                        </div>
+
+                        <!-- Данные -->
+                        <div class="eis-confirm-vu-fields">
+                            <div class="eis-data-field">
+                                <div class="eis-data-label">Номер ВУ</div>
+                                <div class="eis-data-value" id="cvNumber">—</div>
+                            </div>
+                            <div class="eis-data-field">
+                                <div class="eis-data-label">ФИО</div>
+                                <div class="eis-data-value" id="cvFIO">—</div>
+                            </div>
+                            <div class="eis-data-field">
+                                <div class="eis-data-label">Звание</div>
+                                <div class="eis-data-value" id="cvRank">—</div>
+                            </div>
+                            <div class="eis-data-field">
+                                <div class="eis-data-label">Дата выдачи</div>
+                                <div class="eis-data-value" id="cvIssueDate">—</div>
+                            </div>
+                            <div class="eis-data-field">
+                                <div class="eis-data-label">Действительно до</div>
+                                <div class="eis-data-value" id="cvExpiryDate">—</div>
+                            </div>
+                            <div class="eis-data-field">
+                                <div class="eis-data-label">Кем выдано</div>
+                                <div class="eis-data-value" id="cvIssuedBy">—</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="eis-auth-error" id="cvError"></div>
+                    <div class="eis-profile-hint" style="margin-top: 16px;">
+                        Нажмите «Записать в базу», чтобы сохранить ВУ в ЕИС.
+                    </div>
+                </div>
+                <div class="eis-modal-form-footer">
+                    <button type="button" class="eis-btn eis-btn-secondary" onclick="closeConfirmVUModal()">Отмена</button>
+                    <button type="button" class="eis-btn eis-btn-primary" id="cvSaveBtn" onclick="confirmSaveVU()">
+                        Записать в базу
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/guard.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/create.js"></script>
+</body>
+</html>

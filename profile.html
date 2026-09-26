@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет — ЕИС ВАИ</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="eis-wrapper">
+        <div id="site-header"></div>
+        <div id="site-nav"></div>
+
+        <main class="eis-main">
+            <div class="eis-container">
+                <div class="eis-page-header">
+                    <h1 class="eis-page-title">Личный кабинет</h1>
+                    <div class="eis-page-subtitle">Данные вашей учётной записи</div>
+                </div>
+
+                <div class="eis-two-col">
+                    <!-- Профиль -->
+                    <div class="eis-panel">
+                        <div class="eis-panel-header">
+                            <span class="eis-panel-title">Профиль</span>
+                        </div>
+                        <div class="eis-panel-body">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Логин</label>
+                                <input type="text" class="eis-input" id="profUsername" readonly>
+                            </div>
+
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">ФИО</label>
+                                <input type="text" class="eis-input" id="profFullName" readonly>
+                            </div>
+
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Звание</label>
+                                <input type="text" class="eis-input" id="profRank" readonly>
+                            </div>
+
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Должность</label>
+                                <input type="text" class="eis-input" id="profPosition" readonly>
+                            </div>
+
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Подразделение</label>
+                                <input type="text" class="eis-input" id="profVaiUnit" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Смена пароля -->
+                    <div class="eis-panel">
+                        <div class="eis-panel-header">
+                            <span class="eis-panel-title">Смена пароля</span>
+                        </div>
+                        <div class="eis-panel-body">
+                            <form id="passwordForm">
+                                <div class="eis-form-group">
+                                    <label class="eis-form-label">Новый пароль</label>
+                                    <input type="password" class="eis-input" id="newPassword" minlength="6" required autocomplete="new-password">
+                                </div>
+
+                                <div class="eis-form-group">
+                                    <label class="eis-form-label">Повтор пароля</label>
+                                    <input type="password" class="eis-input" id="newPassword2" minlength="6" required autocomplete="new-password">
+                                </div>
+
+                                <div class="eis-auth-error" id="passwordError"></div>
+
+                                <button type="submit" class="eis-btn eis-btn-primary">Сменить пароль</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/guard.js"></script>
+    <script>
+        // Ждём, пока guard загрузит профиль
+        document.addEventListener('user-ready', (e) => {
+            const profile = e.detail;
+            const user = window.currentUser;
+
+            document.getElementById('profUsername').value = profile.username || '';
+            document.getElementById('profFullName').value = profile.full_name || '';
+            document.getElementById('profRank').value = profile.rank || '';
+            document.getElementById('profPosition').value = profile.position || '—';
+            document.getElementById('profVaiUnit').value = profile.vai_unit || '';
+            document.getElementById('profRole').value = ROLE_LABELS[profile.role] || profile.role;
+            document.getElementById('profEmail').value = user?.email || '';
+        });
+
+        // Смена пароля
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const errEl = document.getElementById('passwordError');
+            errEl.textContent = '';
+
+            const p1 = document.getElementById('newPassword').value;
+            const p2 = document.getElementById('newPassword2').value;
+
+            if (p1 !== p2) {
+                errEl.textContent = 'Пароли не совпадают';
+                showToast('Пароли не совпадают', 'warning');
+                return;
+            }
+
+            if (p1.length < 6) {
+                errEl.textContent = 'Пароль должен быть не менее 6 символов';
+                showToast('Пароль должен быть не менее 6 символов', 'warning');
+                return;
+            }
+
+            const result = await changePassword(p1);
+
+            if (result.success) {
+                document.getElementById('passwordForm').reset();
+                showToast('Пароль успешно изменён', 'success');
+            } else {
+                const msg = translateAuthError(result.error);
+                errEl.style.color = '#dc3545';
+                errEl.textContent = msg;
+                showToast(msg, 'error');
+            }
+        });
+    </script>
+</body>
+</html>

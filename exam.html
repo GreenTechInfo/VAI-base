@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Экзамен — ЕИС ВАИ</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="eis-wrapper">
+        <div id="site-header"></div>
+        <div id="site-nav"></div>
+
+        <main class="eis-main">
+            <div class="eis-container">
+                <div class="eis-page-header">
+                    <h1 class="eis-page-title">Заполнение экзаменационного бланка</h1>
+                    <div class="eis-page-subtitle">Внесение результатов практического экзамена</div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Данные экзамена</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Дата экзамена</label>
+                                <input type="date" class="eis-input" id="examDate" onchange="generateExam()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Время экзамена</label>
+                                <input type="time" class="eis-input" id="examTime" onchange="generateExam()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Категория ТС</label>
+                                <input type="text" class="eis-input" id="examCategory" value="C" oninput="generateExam()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Тип трансмиссии</label>
+                                <input type="text" class="eis-input" id="examTransmission" value="Механика" oninput="generateExam()">
+                            </div>
+                        </div>
+
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Фамилия</label>
+                                <input type="text" class="eis-input" id="examLastName" placeholder="Иванов" oninput="generateExam()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Имя</label>
+                                <input type="text" class="eis-input" id="examFirstName" placeholder="Иван" oninput="generateExam()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Отчество</label>
+                                <input type="text" class="eis-input" id="examMiddleName" placeholder="Иванович" oninput="generateExam()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Дата рождения</label>
+                                <input type="date" class="eis-input" id="examBirthDate" onchange="generateExam()">
+                            </div>
+                        </div>
+
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Марка ТС</label>
+                                <input type="text" class="eis-input" id="examVehicleMake" placeholder="УРАЛ" oninput="generateExam()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Модель ТС</label>
+                                <input type="text" class="eis-input" id="examVehicleModel" placeholder="4320" oninput="generateExam()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Гос. рег. знак</label>
+                                <input type="text" class="eis-input" id="examPlateNumber" placeholder="9632АТ 67" oninput="generateExam()">
+                            </div>
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Экзаменатор</label>
+                            <input type="text" class="eis-input" id="examExaminer" placeholder="Инспектор РЭО 49-й ВАИ, сержант Я.В. Орлов" oninput="generateExam()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Навыки управления ТС</span>
+                        <div class="eis-panel-actions">
+                            <button type="button" class="eis-btn eis-btn-sm" onclick="checkAllSkills()">Выделить всё</button>
+                            <button type="button" class="eis-btn eis-btn-sm" onclick="uncheckAllSkills()">Убрать всё</button>
+                        </div>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-skills-grid" id="skillsGrid"></div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Ошибки и нарушения</span>
+                        <div class="eis-panel-actions">
+                            <button type="button" class="eis-btn eis-btn-sm" onclick="checkAllErrors()">Выделить всё</button>
+                            <button type="button" class="eis-btn eis-btn-sm" onclick="uncheckAllErrors()">Убрать всё</button>
+                        </div>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div id="errorsContainer"></div>
+                        <div class="eis-errors-total" id="errorsTotal">Штрафные баллы: 0</div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Комментарий экзаменатора</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <input type="text" class="eis-input" id="examExaminerComment" placeholder="Введите комментарий..." oninput="generateExam()">
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Подписи</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-signatures-grid">
+                            <div class="eis-signature-item">
+                                <div class="eis-signature-label">Подпись экзаменатора</div>
+                                <input type="text" class="eis-input eis-input-sm" id="signatureExaminerText" placeholder="Инициалы, фамилия" oninput="generateExam()">
+                                <input type="file" class="eis-file-input" id="signatureExaminerInput" accept="image/*" onchange="loadSignature('examiner', this)">
+                                <div class="eis-signature-preview" id="signatureExaminerPreview">Подпись не загружена</div>
+                                <button class="eis-btn eis-btn-sm" onclick="resetSignature('examiner')">Сбросить</button>
+                            </div>
+                            <div class="eis-signature-item">
+                                <div class="eis-signature-label">Подпись кандидата</div>
+                                <input type="text" class="eis-input eis-input-sm" id="signatureCandidateText" placeholder="Инициалы, фамилия" oninput="generateExam()">
+                                <input type="file" class="eis-file-input" id="signatureCandidateInput" accept="image/*" onchange="loadSignature('candidate', this)">
+                                <div class="eis-signature-preview" id="signatureCandidatePreview">Подпись не загружена</div>
+                                <button class="eis-btn eis-btn-sm" onclick="resetSignature('candidate')">Сбросить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-actions-bar">
+                    <button class="eis-btn eis-btn-primary" onclick="saveExamPage1()">Сохранить стр. 1</button>
+                    <button class="eis-btn eis-btn-primary" onclick="saveExamPage2()">Сохранить стр. 2</button>
+                    <button class="eis-btn eis-btn-success" onclick="saveExamBoth()">Сохранить обе страницы</button>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Предпросмотр страниц</span>
+                    </div>
+                    <div class="eis-panel-body eis-preview-body">
+                        <div class="eis-page-preview">
+                            <h3>Страница 1</h3>
+                            <canvas id="examCanvas1" width="1654" height="2339"></canvas>
+                        </div>
+                        <div class="eis-page-preview">
+                            <h3>Страница 2</h3>
+                            <canvas id="examCanvas2" width="1654" height="2339"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/guard.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/signatures.js"></script>
+    <script src="js/exam.js"></script>
+</body>
+</html>

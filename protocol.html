@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Протоколы — ЕИС ВАИ</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="eis-wrapper">
+        <div id="site-header"></div>
+        <div id="site-nav"></div>
+
+        <main class="eis-main">
+            <div class="eis-container">
+                <div class="eis-page-header">
+                    <h1 class="eis-page-title">Создание протокола об административном правонарушении</h1>
+                    <div class="eis-page-subtitle">Заполнение данных протокола</div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Общие сведения</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Регистрационный номер по подсистеме «Административная практика»</label>
+                            <input type="text" class="eis-input" id="protocolRegNumber" placeholder="000001-ПДД" oninput="generateProtocol()">
+                        </div>
+
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Дата составления</label>
+                                <input type="text" class="eis-input" id="protocolDate" placeholder="ДД.ММ.ГГГГ" maxlength="10" oninput="formatProtocolDate(this)">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Время составления</label>
+                                <input type="text" class="eis-input" id="protocolTime" placeholder="ЧЧ:ММ" maxlength="5" oninput="formatProtocolTime(this)">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Место составления</label>
+                                <input type="text" class="eis-input" id="protocolPlace" placeholder="Город, улица, дом" oninput="generateProtocol()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Должностное лицо, составившее протокол (должность, звание, ФИО)</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Должность</label>
+                                <input type="text" class="eis-input" id="protocolOfficialPosition" placeholder="Должность" oninput="generateProtocol()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Воинское звание</label>
+                                <input type="text" class="eis-input" id="protocolOfficialRank" placeholder="Звание" oninput="generateProtocol()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Фамилия, инициалы</label>
+                                <input type="text" class="eis-input" id="protocolOfficialName" placeholder="Фамилия И.О." oninput="generateProtocol()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Данные лица, в отношении которого возбуждено дело</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Фамилия</label>
+                                <input type="text" class="eis-input" id="protocolLastName" oninput="generateProtocol()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Имя</label>
+                                <input type="text" class="eis-input" id="protocolFirstName" oninput="generateProtocol()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Отчество</label>
+                                <input type="text" class="eis-input" id="protocolMiddleName" oninput="generateProtocol()">
+                            </div>
+                        </div>
+
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Дата рождения</label>
+                                <input type="text" class="eis-input" id="protocolBirthDate" placeholder="ДД.ММ.ГГГГ" maxlength="10" oninput="formatProtocolBirthDate(this)">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Место рождения</label>
+                                <input type="text" class="eis-input" id="protocolBirthPlace" oninput="generateProtocol()">
+                            </div>
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Владение русским языком</label>
+                            <div class="eis-radio-group">
+                                <label class="eis-radio">
+                                    <input type="radio" name="protocolRussianLanguage" value="владеет" onchange="generateProtocol()">
+                                    <span>Владеет</span>
+                                </label>
+                                <label class="eis-radio">
+                                    <input type="radio" name="protocolRussianLanguage" value="не владеет" onchange="generateProtocol()">
+                                    <span>Не владеет</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Зарегистрированный(ая) по месту жительства</label>
+                            <input type="text" class="eis-input" id="protocolRegisteredAddress" placeholder="Адрес регистрации" oninput="generateProtocol()">
+                        </div>
+
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Телефон (регистрация)</label>
+                                <input type="text" class="eis-input" id="protocolRegisteredPhone" placeholder="+7 (___) ___-__-__" maxlength="18" oninput="formatProtocolPhone(this)">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Фактически проживающий(ая)</label>
+                                <input type="text" class="eis-input" id="protocolActualAddress" placeholder="Фактический адрес" oninput="generateProtocol()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Телефон (фактический)</label>
+                                <input type="text" class="eis-input" id="protocolActualPhone" placeholder="+7 (___) ___-__-__" maxlength="18" oninput="formatProtocolPhone(this)">
+                            </div>
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Работающий(ая) / служащий(ая)</label>
+                            <input type="text" class="eis-input" id="protocolWorkPlace2" placeholder="Наименование организации, звание, должность, рота, отряд" oninput="generateProtocol()">
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Водительское удостоверение</label>
+                            <input type="text" class="eis-input" id="protocolDriverLicense" placeholder="Например: В/У 5201 123456, выдано 01.01.2020, МРЭО УГИБДД по Нижегородской области" oninput="generateProtocol()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Транспортное средство</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Марка</label>
+                                <input type="text" class="eis-input" id="protocolVehicleMake" placeholder="UAZ PATRIOT" oninput="generateProtocol()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Цвет</label>
+                                <input type="text" class="eis-input" id="protocolVehicleColor" placeholder="Зелёный" oninput="generateProtocol()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Гос. номер</label>
+                                <input type="text" class="eis-input" id="protocolVehiclePlate" placeholder="0100MP43" oninput="generateProtocol()">
+                            </div>
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Принадлежащим (организация, фамилия, имя, отчество)</label>
+                            <input type="text" class="eis-input" id="protocolVehicleOwner" placeholder="Военной комендатуре гарнизона Нижегородской области ВС РФ" oninput="generateProtocol()">
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Состоящим на учете</label>
+                            <input type="text" class="eis-input" id="protocolVehicleRegistered" placeholder="49-ой территориальной военной автоинспекции" oninput="generateProtocol()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Обстоятельства правонарушения</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Дата совершения</label>
+                                <input type="text" class="eis-input" id="protocolViolationDate" placeholder="ДД.ММ.ГГГГ" maxlength="10" oninput="formatProtocolDate(this)">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Время совершения</label>
+                                <input type="text" class="eis-input" id="protocolViolationTime" placeholder="ЧЧ:ММ" maxlength="5" oninput="formatProtocolTime(this)">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Место совершения</label>
+                                <input type="text" class="eis-input" id="protocolViolationPlace" placeholder="Город, улица, дом" oninput="generateProtocol()">
+                            </div>
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Пункт НПА, существо нарушения, при применении спец. тех. средств указываются их показания, наименования, номер</label>
+                            <input type="text" class="eis-input" id="protocolViolationDescription" placeholder="п. 2.7 ПДД РФ, управлял транспортным средством в состоянии алкогольного опьянения" oninput="generateProtocol()">
+                        </div>
+
+                        <div class="eis-form-row">
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Часть статьи</label>
+                                <input type="text" class="eis-input" id="protocolArticlePart" oninput="generateProtocol()">
+                            </div>
+                            <div class="eis-form-group">
+                                <label class="eis-form-label">Номер статьи КоАП РФ</label>
+                                <input type="text" class="eis-input" id="protocolArticleNumber" oninput="generateProtocol()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Свидетели и потерпевшие</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Сведения о свидетелях и потерпевших (ФИО, адрес места жительства, телефон)</label>
+                            <input type="text" class="eis-input" id="protocolWitnesses" oninput="generateProtocol()">
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Свидетелям разъяснена ответственность (ФИО свидетелей)</label>
+                            <input type="text" class="eis-input" id="protocolWitnessesNotified" placeholder="Иванов И.И., Петров П.П." oninput="generateProtocol()">
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Потерпевшим разъяснены права (ФИО потерпевших)</label>
+                            <input type="text" class="eis-input" id="protocolVictimsNotified" placeholder="Иванов И.И., Петров П.П." oninput="generateProtocol()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Объяснения и замечания</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Место и время рассмотрения дела об административном правонарушении</label>
+                            <input type="text" class="eis-input" id="protocolConsiderationPlaceTime" placeholder="г. Нижегородск, ул. ... , 01.01.2026 в 10:00" oninput="generateProtocol()">
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Объяснения лица, в отношении которого возбуждено дело, показания потерпевших и свидетелей (в случае необходимости записываются и приобщаются к делу)</label>
+                            <input type="text" class="eis-input" id="protocolExplanation" oninput="generateProtocol()">
+                        </div>
+
+                        <div class="eis-form-group">
+                            <label class="eis-form-label">Объяснения и замечания по содержанию протокола</label>
+                            <input type="text" class="eis-input" id="protocolRemarks" oninput="generateProtocol()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Подписи сторон</span>
+                    </div>
+                    <div class="eis-panel-body">
+                        <div class="eis-signatures-grid">
+                            <div class="eis-signature-item">
+                                <div class="eis-signature-label">Подпись должностного лица</div>
+                                <input type="file" class="eis-file-input" id="signatureOfficialInput" accept="image/*" onchange="loadSignature('official', this)">
+                                <div class="eis-signature-preview" id="signatureOfficialPreview">Подпись не загружена</div>
+                                <button class="eis-btn eis-btn-sm" onclick="resetSignature('official')">Сбросить</button>
+                            </div>
+                            <div class="eis-signature-item">
+                                <div class="eis-signature-label">Подпись нарушителя</div>
+                                <input type="file" class="eis-file-input" id="signatureViolatorInput" accept="image/*" onchange="loadSignature('violator', this)">
+                                <div class="eis-signature-preview" id="signatureViolatorPreview">Подпись не загружена</div>
+                                <button class="eis-btn eis-btn-sm" onclick="resetSignature('violator')">Сбросить</button>
+                            </div>
+                            <div class="eis-signature-item">
+                                <div class="eis-signature-label">Подпись потерпевшего/свидетеля</div>
+                                <input type="file" class="eis-file-input" id="signatureVictimInput" accept="image/*" onchange="loadSignature('victim', this)">
+                                <div class="eis-signature-preview" id="signatureVictimPreview">Подпись не загружена</div>
+                                <button class="eis-btn eis-btn-sm" onclick="resetSignature('victim')">Сбросить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eis-actions-bar">
+                    <button class="eis-btn eis-btn-primary" onclick="saveProtocolPage1()">Сохранить стр. 1</button>
+                    <button class="eis-btn eis-btn-primary" onclick="saveProtocolPage2()">Сохранить стр. 2</button>
+                    <button class="eis-btn eis-btn-success" onclick="saveProtocolBoth()">Сохранить обе страницы</button>
+                </div>
+
+                <div class="eis-panel">
+                    <div class="eis-panel-header">
+                        <span class="eis-panel-title">Предпросмотр страниц</span>
+                    </div>
+                    <div class="eis-panel-body eis-preview-body">
+                        <div class="eis-page-preview">
+                            <h3>Страница 1</h3>
+                            <canvas id="protocolCanvas1" width="1654" height="2339"></canvas>
+                        </div>
+                        <div class="eis-page-preview">
+                            <h3>Страница 2</h3>
+                            <canvas id="protocolCanvas2" width="1654" height="2339"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/guard.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/signatures.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <script src="js/protocol.js"></script>
+</body>
+</html>

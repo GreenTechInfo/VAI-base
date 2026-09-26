@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход — ЕИС ВАИ</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="eis-auth-wrapper">
+        <div class="eis-auth-card">
+            <div class="eis-auth-header">
+                <img src="images/gerb.png" alt="Герб" class="eis-auth-logo">
+                <h1 class="eis-auth-title">Единая информационная система</h1>
+                <p class="eis-auth-subtitle">49-ой территориальной ВАИ</p>
+            </div>
+
+            <form id="loginForm" class="eis-auth-form">
+                <div class="eis-form-group">
+                    <label class="eis-form-label">Логин</label>
+                    <input type="text" class="eis-input" id="loginUsername" required autocomplete="username">
+                </div>
+
+                <div class="eis-form-group">
+                    <label class="eis-form-label">Пароль</label>
+                    <input type="password" class="eis-input" id="loginPassword" required autocomplete="current-password">
+                </div>
+
+                <div class="eis-auth-error" id="loginError"></div>
+
+                <button type="submit" class="eis-btn eis-btn-primary eis-btn-block" id="loginBtn">
+                    Войти
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Если уже авторизован — сразу на главную
+        (async () => {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) {
+                    const redirect = sessionStorage.getItem('redirect_after_login') || 'index.html';
+                    sessionStorage.removeItem('redirect_after_login');
+                    window.location.href = redirect;
+                }
+            } catch (e) {
+                console.warn(e);
+            }
+        })();
+
+        const form = document.getElementById('loginForm');
+        const btn = document.getElementById('loginBtn');
+        const errEl = document.getElementById('loginError');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            btn.disabled = true;
+            btn.textContent = 'Вход...';
+            errEl.textContent = '';
+
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const result = await signIn(username, password);
+
+            if (result.success) {
+                const redirect = sessionStorage.getItem('redirect_after_login') || 'index.html';
+                sessionStorage.removeItem('redirect_after_login');
+                window.location.href = redirect;
+            } else {
+                const msg = translateAuthError(result.error);
+                errEl.textContent = msg;
+                showToast(msg, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Войти';
+            }
+        });
+    </script>
+</body>
+</html>
