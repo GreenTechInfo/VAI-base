@@ -1,5 +1,9 @@
-/* ========== ЕИС ВАИ - ЕДИНАЯ ИНФОРМАЦИОННАЯ СИСТЕМА ========== */
+/* ================================================================
+   ЕИС ВАИ — ЕДИНАЯ ИНФОРМАЦИОННАЯ СИСТЕМА
+   Полный адаптивный style.css
+   ================================================================ */
 
+/* ========== ПЕРЕМЕННЫЕ ========== */
 :root {
     --eis-bg: #f0f2f5;
     --eis-bg-dark: #1f2025;
@@ -21,25 +25,54 @@
     --eis-info: #17a2b8;
     --eis-font: 'PT Sans', 'Segoe UI', Arial, sans-serif;
     --eis-font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+    --eis-radius: 6px;
+    --eis-radius-sm: 4px;
 }
 
-* {
+/* ========== СБРОС ========== */
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
     font-family: var(--eis-font);
     background: var(--eis-bg);
     min-height: 100vh;
+    min-height: 100dvh;
     color: var(--eis-text);
     line-height: 1.5;
+    overflow-x: hidden;
+}
+
+img,
+canvas,
+svg,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+    font-size: inherit;
 }
 
 /* ========== ОБЁРТКА ========== */
 .eis-wrapper {
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
 }
@@ -51,11 +84,13 @@ body {
     width: 100%;
 }
 
-/* ========== ШАПКА ========== */
+/* ================================================================
+   ШАПКА
+   ================================================================ */
 .eis-header {
     background: var(--eis-bg-dark);
     color: var(--eis-text-white);
-    height: 72px;
+    min-height: 72px;
     display: flex;
     align-items: center;
     position: sticky;
@@ -63,35 +98,38 @@ body {
     z-index: 100;
 }
 
-.eis-header .eis-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+    .eis-header .eis-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
 
 .eis-header-left {
     display: flex;
     align-items: center;
     gap: 16px;
+    min-width: 0;
 }
 
 .eis-logo {
     width: 48px;
     height: 48px;
-    border-radius: 6px;
+    border-radius: var(--eis-radius);
     overflow: hidden;
     flex-shrink: 0;
 }
 
-.eis-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
+    .eis-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
 
 .eis-org-info {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .eis-org-title {
@@ -110,12 +148,14 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
+    flex-shrink: 0;
 }
 
 .eis-user-info {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    min-width: 0;
 }
 
 .eis-user-role {
@@ -134,6 +174,7 @@ body {
     width: 1px;
     height: 32px;
     background: rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
 }
 
 .eis-logout-btn {
@@ -142,66 +183,103 @@ body {
     color: #ccc;
     width: 36px;
     height: 36px;
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
+    flex-shrink: 0;
 }
 
-.eis-logout-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    border-color: rgba(255, 255, 255, 0.3);
-}
+    .eis-logout-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.3);
+    }
 
-/* ========== НАВИГАЦИЯ ========== */
+/* ================================================================
+   НАВИГАЦИЯ
+   ================================================================ */
 .eis-nav {
     background: var(--eis-bg-nav);
     min-height: 44px;
     display: flex;
-    align-items: center;
+    align-items: stretch;
+    position: sticky;
+    top: 72px;
+    z-index: 99;
 }
+
+    .eis-nav .eis-container {
+        display: flex;
+        align-items: stretch;
+    }
 
 .eis-nav-menu {
     display: flex;
     list-style: none;
     gap: 2px;
     width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
 }
+
+    .eis-nav-menu::-webkit-scrollbar {
+        height: 3px;
+    }
+
+    .eis-nav-menu::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 2px;
+    }
 
 .eis-nav-item {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.85);
-    cursor: pointer;
-    transition: all 0.15s;
-    border-radius: 4px 4px 0 0;
-    white-space: nowrap;
-    user-select: none;
-}
-
-.eis-nav-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-}
-
-.eis-nav-item.active {
-    background: var(--eis-bg);
-    color: var(--eis-accent);
-    font-weight: 700;
-}
-
-.eis-nav-item svg {
+    align-items: stretch;
     flex-shrink: 0;
 }
 
-/* ========== ОСНОВНОЙ КОНТЕНТ ========== */
+    .eis-nav-item a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.85);
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+        text-decoration: none;
+        user-select: none;
+    }
+
+        .eis-nav-item a svg {
+            flex-shrink: 0;
+            display: none;
+        }
+
+    .eis-nav-item:hover a {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+
+    .eis-nav-item.active {
+        background: var(--eis-bg);
+        border-radius: var(--eis-radius-sm) var(--eis-radius-sm) 0 0;
+    }
+
+        .eis-nav-item.active a {
+            color: var(--eis-accent);
+            font-weight: 700;
+        }
+
+/* ================================================================
+   ОСНОВНОЙ КОНТЕНТ
+   ================================================================ */
 .eis-main {
     flex: 1;
     padding: 24px 0 48px;
@@ -211,9 +289,9 @@ body {
     display: none;
 }
 
-.eis-tab-content.active {
-    display: block;
-}
+    .eis-tab-content.active {
+        display: block;
+    }
 
 /* ========== ЗАГОЛОВОК СТРАНИЦЫ ========== */
 .eis-page-header {
@@ -225,6 +303,7 @@ body {
     font-weight: 700;
     color: var(--eis-text);
     margin-bottom: 4px;
+    line-height: 1.25;
 }
 
 .eis-page-subtitle {
@@ -232,11 +311,13 @@ body {
     color: var(--eis-text-secondary);
 }
 
-/* ========== ПАНЕЛИ ========== */
+/* ================================================================
+   ПАНЕЛИ
+   ================================================================ */
 .eis-panel {
     background: var(--eis-bg-panel);
     border: 1px solid var(--eis-border);
-    border-radius: 6px;
+    border-radius: var(--eis-radius);
     margin-bottom: 20px;
     overflow: hidden;
 }
@@ -270,15 +351,15 @@ body {
     padding: 20px;
 }
 
-.eis-panel-body.eis-preview-body {
-    background: #f5f5f5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: 24px;
-    overflow: auto;
-}
+    .eis-panel-body.eis-preview-body {
+        background: #f5f5f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 24px;
+        overflow: auto;
+    }
 
 .eis-badge {
     font-size: 11px;
@@ -288,9 +369,12 @@ body {
     padding: 4px 10px;
     border-radius: 12px;
     font-family: var(--eis-font-mono);
+    white-space: nowrap;
 }
 
-/* ========== ДВУХКОЛОНОЧНЫЙ МАКЕТ ========== */
+/* ================================================================
+   ДВУХКОЛОНОЧНЫЙ МАКЕТ
+   ================================================================ */
 .eis-two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -298,7 +382,9 @@ body {
     align-items: start;
 }
 
-/* ========== ФОРМЫ ========== */
+/* ================================================================
+   ФОРМЫ
+   ================================================================ */
 .eis-form-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -306,20 +392,21 @@ body {
     margin-bottom: 16px;
 }
 
-.eis-form-row:last-child {
-    margin-bottom: 0;
-}
+    .eis-form-row:last-child {
+        margin-bottom: 0;
+    }
 
 .eis-form-group {
     display: flex;
     flex-direction: column;
     gap: 6px;
     margin-bottom: 16px;
+    min-width: 0;
 }
 
-.eis-form-group:last-child {
-    margin-bottom: 0;
-}
+    .eis-form-group:last-child {
+        margin-bottom: 0;
+    }
 
 .eis-form-group-btn {
     justify-content: flex-start;
@@ -328,34 +415,6 @@ body {
     .eis-form-group-btn .eis-btn {
         width: 100%;
     }
-
-.eis-btn-danger {
-    background: var(--eis-danger);
-    color: #fff;
-    border-color: var(--eis-danger);
-}
-
-    .eis-btn-danger:hover {
-        background: #c82333;
-        border-color: #c82333;
-    }
-
-.eis-input[type="date"] {
-    appearance: none;
-    -webkit-appearance: none;
-    cursor: pointer;
-    position: relative;
-}
-
-.eis-input[type="date"]::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-    opacity: 0.6;
-    transition: opacity 0.2s;
-}
-
-.eis-input[type="date"]::-webkit-calendar-picker-indicator:hover {
-    opacity: 1;
-}
 
 .eis-form-label {
     font-size: 12px;
@@ -370,46 +429,66 @@ body {
     width: 100%;
     padding: 10px 12px;
     font-size: 14px;
-    font-family: var(--eis-font);
     color: var(--eis-text);
     background: #fff;
     border: 1px solid var(--eis-border);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     transition: border-color 0.2s, box-shadow 0.2s;
+    min-width: 0;
 }
 
-.eis-input:focus,
-.eis-select:focus {
-    outline: none;
-    border-color: var(--eis-accent);
-    box-shadow: 0 0 0 3px rgba(30, 126, 52, 0.1);
-}
+    .eis-input:focus,
+    .eis-select:focus {
+        outline: none;
+        border-color: var(--eis-accent);
+        box-shadow: 0 0 0 3px rgba(30, 126, 52, 0.1);
+    }
 
-.eis-input::placeholder {
-    color: #aaa;
-}
+    .eis-input::placeholder {
+        color: #aaa;
+    }
 
-.eis-input[readonly] {
-    background: #f5f5f5;
-    color: var(--eis-text-light);
-    cursor: not-allowed;
-}
+    .eis-input[readonly] {
+        background: #f5f5f5;
+        color: var(--eis-text-light);
+        cursor: not-allowed;
+    }
 
 .eis-input-sm {
     font-size: 13px;
     padding: 8px 10px;
 }
 
+.eis-input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    position: relative;
+}
+
+    .eis-input[type="date"]::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.2s;
+    }
+
+        .eis-input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+        }
+
 .eis-select {
     cursor: pointer;
     appearance: none;
+    -webkit-appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23666'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
     padding-right: 36px;
 }
 
-/* ========== КНОПКИ ========== */
+/* ================================================================
+   КНОПКИ
+   ================================================================ */
 .eis-btn {
     display: inline-flex;
     align-items: center;
@@ -418,14 +497,20 @@ body {
     padding: 10px 20px;
     font-size: 14px;
     font-weight: 600;
-    font-family: var(--eis-font);
     border: 1px solid transparent;
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     cursor: pointer;
     transition: all 0.2s;
     white-space: nowrap;
     text-decoration: none;
+    line-height: 1.2;
+    user-select: none;
 }
+
+    .eis-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
 
 .eis-btn-primary {
     background: var(--eis-accent);
@@ -433,10 +518,10 @@ body {
     border-color: var(--eis-accent);
 }
 
-.eis-btn-primary:hover {
-    background: var(--eis-accent-hover);
-    border-color: var(--eis-accent-hover);
-}
+    .eis-btn-primary:hover:not(:disabled) {
+        background: var(--eis-accent-hover);
+        border-color: var(--eis-accent-hover);
+    }
 
 .eis-btn-secondary {
     background: #fff;
@@ -444,10 +529,10 @@ body {
     border-color: var(--eis-border);
 }
 
-.eis-btn-secondary:hover {
-    background: #f5f5f5;
-    border-color: #ccc;
-}
+    .eis-btn-secondary:hover:not(:disabled) {
+        background: #f5f5f5;
+        border-color: #ccc;
+    }
 
 .eis-btn-success {
     background: var(--eis-success);
@@ -455,14 +540,30 @@ body {
     border-color: var(--eis-success);
 }
 
-.eis-btn-success:hover {
-    background: #218838;
-    border-color: #218838;
+    .eis-btn-success:hover:not(:disabled) {
+        background: #218838;
+        border-color: #218838;
+    }
+
+.eis-btn-danger {
+    background: var(--eis-danger);
+    color: #fff;
+    border-color: var(--eis-danger);
 }
+
+    .eis-btn-danger:hover:not(:disabled) {
+        background: #c82333;
+        border-color: #c82333;
+    }
 
 .eis-btn-sm {
     padding: 6px 12px;
     font-size: 12px;
+}
+
+.eis-btn-block {
+    width: 100%;
+    margin-top: 8px;
 }
 
 .eis-actions-bar {
@@ -472,7 +573,9 @@ body {
     flex-wrap: wrap;
 }
 
-/* ========== ЧЕКБОКСЫ И РАДИО ========== */
+/* ================================================================
+   ЧЕКБОКСЫ И РАДИО
+   ================================================================ */
 .eis-radio-group {
     display: flex;
     gap: 16px;
@@ -488,32 +591,35 @@ body {
     color: var(--eis-text);
     background: #fff;
     border: 1px solid var(--eis-border);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     cursor: pointer;
     transition: all 0.2s;
     user-select: none;
 }
 
-.eis-radio:hover {
-    border-color: var(--eis-accent);
-    background: var(--eis-accent-light);
-}
+    .eis-radio:hover {
+        border-color: var(--eis-accent);
+        background: var(--eis-accent-light);
+    }
 
-.eis-radio input[type="radio"] {
-    width: 16px;
-    height: 16px;
-    accent-color: var(--eis-accent);
-    cursor: pointer;
-}
+    .eis-radio input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--eis-accent);
+        cursor: pointer;
+        flex-shrink: 0;
+    }
 
-.eis-radio:has(input:checked) {
-    border-color: var(--eis-accent);
-    background: var(--eis-accent-light);
-    color: var(--eis-accent);
-    font-weight: 600;
-}
+    .eis-radio:has(input:checked) {
+        border-color: var(--eis-accent);
+        background: var(--eis-accent-light);
+        color: var(--eis-accent);
+        font-weight: 600;
+    }
 
-/* ========== НАВЫКИ ========== */
+/* ================================================================
+   НАВЫКИ
+   ================================================================ */
 .eis-skills-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -522,41 +628,44 @@ body {
 
 .eis-skill-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
     padding: 6px 8px;
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     transition: background 0.2s;
     cursor: pointer;
 }
 
-.eis-skill-item:hover {
-    background: #f5f5f5;
-}
+    .eis-skill-item:hover {
+        background: #f5f5f5;
+    }
 
-.eis-skill-item input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--eis-accent);
-    cursor: pointer;
-    flex-shrink: 0;
-}
+    .eis-skill-item input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--eis-accent);
+        cursor: pointer;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
 
-.eis-skill-item label {
-    font-size: 13px;
-    color: var(--eis-text);
-    cursor: pointer;
-    line-height: 1.3;
-}
+    .eis-skill-item label {
+        font-size: 13px;
+        color: var(--eis-text);
+        cursor: pointer;
+        line-height: 1.3;
+    }
 
-/* ========== ОШИБКИ ========== */
+/* ================================================================
+   ОШИБКИ
+   ================================================================ */
 .eis-error-group {
     margin-bottom: 16px;
     padding: 12px 16px;
     background: #fafbfc;
     border: 1px solid var(--eis-border);
     border-left: 3px solid var(--eis-accent);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
 }
 
 .eis-error-group-title {
@@ -581,12 +690,12 @@ body {
     padding: 4px 0;
 }
 
-.eis-error-item label {
-    font-size: 13px;
-    color: var(--eis-text);
-    flex: 1;
-    line-height: 1.3;
-}
+    .eis-error-item label {
+        font-size: 13px;
+        color: var(--eis-text);
+        flex: 1;
+        line-height: 1.3;
+    }
 
 .eis-error-controls {
     display: flex;
@@ -601,7 +710,7 @@ body {
     border: 1px solid var(--eis-border);
     background: #fff;
     color: var(--eis-text);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     cursor: pointer;
     font-size: 14px;
     font-weight: 700;
@@ -611,11 +720,11 @@ body {
     transition: all 0.2s;
 }
 
-.eis-error-btn:hover {
-    border-color: var(--eis-accent);
-    color: var(--eis-accent);
-    background: var(--eis-accent-light);
-}
+    .eis-error-btn:hover {
+        border-color: var(--eis-accent);
+        color: var(--eis-accent);
+        background: var(--eis-accent-light);
+    }
 
 .eis-error-count {
     min-width: 24px;
@@ -636,7 +745,7 @@ body {
     padding: 12px 20px;
     background: var(--eis-accent-light);
     border: 1px solid var(--eis-accent);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     font-size: 15px;
     font-weight: 700;
     text-align: center;
@@ -644,7 +753,9 @@ body {
     font-family: var(--eis-font-mono);
 }
 
-/* ========== ПУНКТЫ ТЕХОСМОТРА ========== */
+/* ================================================================
+   ПУНКТЫ ТЕХОСМОТРА
+   ================================================================ */
 .eis-tech-item {
     display: flex;
     align-items: center;
@@ -654,13 +765,13 @@ body {
     transition: background 0.2s;
 }
 
-.eis-tech-item:hover {
-    background: #fafbfc;
-}
+    .eis-tech-item:hover {
+        background: #fafbfc;
+    }
 
-.eis-tech-item:last-child {
-    border-bottom: none;
-}
+    .eis-tech-item:last-child {
+        border-bottom: none;
+    }
 
 .eis-tech-item-number {
     min-width: 28px;
@@ -669,6 +780,7 @@ body {
     color: var(--eis-accent);
     font-family: var(--eis-font-mono);
     text-align: right;
+    flex-shrink: 0;
 }
 
 .eis-tech-item-text {
@@ -676,6 +788,7 @@ body {
     font-size: 13px;
     color: var(--eis-text);
     line-height: 1.3;
+    min-width: 0;
 }
 
 .eis-tech-item-actions {
@@ -689,7 +802,7 @@ body {
     height: 30px;
     border: 1px solid var(--eis-border);
     background: #fff;
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     cursor: pointer;
     font-size: 14px;
     font-weight: 700;
@@ -714,7 +827,9 @@ body {
     color: var(--eis-danger);
 }
 
-/* ========== ПОДПИСИ ========== */
+/* ================================================================
+   ПОДПИСИ
+   ================================================================ */
 .eis-signatures-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -724,7 +839,7 @@ body {
 .eis-signature-item {
     background: #fafbfc;
     border: 1px solid var(--eis-border);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -742,33 +857,34 @@ body {
 .eis-file-input {
     font-size: 12px;
     color: var(--eis-text-secondary);
+    max-width: 100%;
 }
 
-.eis-file-input::file-selector-button {
-    background: #fff;
-    border: 1px solid var(--eis-border);
-    color: var(--eis-text);
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: var(--eis-font);
-    font-size: 12px;
-    font-weight: 600;
-    margin-right: 10px;
-    transition: all 0.2s;
-}
+    .eis-file-input::file-selector-button {
+        background: #fff;
+        border: 1px solid var(--eis-border);
+        color: var(--eis-text);
+        padding: 6px 12px;
+        border-radius: var(--eis-radius-sm);
+        cursor: pointer;
+        font-family: var(--eis-font);
+        font-size: 12px;
+        font-weight: 600;
+        margin-right: 10px;
+        transition: all 0.2s;
+    }
 
-.eis-file-input::file-selector-button:hover {
-    border-color: var(--eis-accent);
-    color: var(--eis-accent);
-    background: var(--eis-accent-light);
-}
+        .eis-file-input::file-selector-button:hover {
+            border-color: var(--eis-accent);
+            color: var(--eis-accent);
+            background: var(--eis-accent-light);
+        }
 
 .eis-signature-preview {
     min-height: 60px;
     background: #fff;
     border: 1px dashed var(--eis-border);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -778,13 +894,15 @@ body {
     overflow: hidden;
 }
 
-.eis-signature-preview canvas {
-    max-width: 100%;
-    max-height: 50px;
-    object-fit: contain;
-}
+    .eis-signature-preview canvas {
+        max-width: 100%;
+        max-height: 50px;
+        object-fit: contain;
+    }
 
-/* ========== РЕЗУЛЬТАТЫ ========== */
+/* ================================================================
+   РЕЗУЛЬТАТЫ
+   ================================================================ */
 .eis-loading {
     display: flex;
     flex-direction: column;
@@ -806,7 +924,9 @@ body {
 }
 
 @keyframes eis-spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .eis-no-results {
@@ -819,15 +939,15 @@ body {
 .eis-vu-record {
     background: #fff;
     border: 1px solid var(--eis-border);
-    border-radius: 6px;
+    border-radius: var(--eis-radius);
     margin-bottom: 16px;
     overflow: hidden;
     transition: box-shadow 0.2s;
 }
 
-.eis-vu-record:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
+    .eis-vu-record:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
 
 .eis-vu-record-header {
     display: flex;
@@ -846,6 +966,20 @@ body {
     font-weight: 700;
     color: var(--eis-accent);
     letter-spacing: 0.5px;
+    word-break: break-all;
+}
+
+.eis-vu-record-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.eis-vu-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
 .eis-vu-status {
@@ -855,6 +989,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-radius: 12px;
+    white-space: nowrap;
 }
 
 .eis-status-valid {
@@ -892,6 +1027,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 0;
 }
 
 .eis-data-label {
@@ -906,9 +1042,12 @@ body {
     font-size: 14px;
     color: var(--eis-text);
     font-family: var(--eis-font-mono);
+    word-break: break-word;
 }
 
-/* ========== ДОКУМЕНТЫ ========== */
+/* ================================================================
+   ДОКУМЕНТЫ
+   ================================================================ */
 .eis-documents-grid {
     display: flex;
     gap: 12px;
@@ -922,22 +1061,22 @@ body {
     height: 95px;
     background: #f5f5f5;
     border: 1px solid var(--eis-border);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     overflow: hidden;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.eis-document-thumb:hover {
-    border-color: var(--eis-accent);
-    box-shadow: 0 2px 8px rgba(30, 126, 52, 0.15);
-}
+    .eis-document-thumb:hover {
+        border-color: var(--eis-accent);
+        box-shadow: 0 2px 8px rgba(30, 126, 52, 0.15);
+    }
 
-.eis-document-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+    .eis-document-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
 .eis-document-label {
     position: absolute;
@@ -965,7 +1104,9 @@ body {
     font-family: var(--eis-font-mono);
 }
 
-/* ========== ПРЕДПРОСМОТР СТРАНИЦ ========== */
+/* ================================================================
+   ПРЕДПРОСМОТР СТРАНИЦ
+   ================================================================ */
 .eis-page-preview {
     width: 100%;
     display: flex;
@@ -974,33 +1115,43 @@ body {
     gap: 12px;
 }
 
-.eis-page-preview h3 {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--eis-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    align-self: flex-start;
-}
+    .eis-page-preview h3 {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--eis-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        align-self: flex-start;
+    }
 
-.eis-page-preview canvas {
+    .eis-page-preview canvas {
+        max-width: 100%;
+        height: auto;
+        border: 1px solid var(--eis-border);
+        border-radius: var(--eis-radius-sm);
+        background: #fff;
+    }
+
+#vuCanvas {
     max-width: 100%;
     height: auto;
+    display: block;
     border: 1px solid var(--eis-border);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     background: #fff;
 }
 
-/* ========== ПОДВАЛ ========== */
+/* ================================================================
+   ПОДВАЛ
+   ================================================================ */
 .eis-footer {
-    background: var(--eis-bg-dark); /* #1f2025 — как у шапки */
+    background: var(--eis-bg-dark);
     color: #aaa;
     padding: 28px 0 18px;
     margin-top: auto;
     font-size: 14px;
 }
 
-/* --- Верхняя часть: логотип + название --- */
 .eis-footer-top {
     display: flex;
     align-items: center;
@@ -1027,6 +1178,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    min-width: 0;
 }
 
 .eis-footer-org-title {
@@ -1042,7 +1194,6 @@ body {
     line-height: 1.2;
 }
 
-/* --- Нижняя часть: дисклеймер + копирайт --- */
 .eis-footer-bottom {
     display: flex;
     justify-content: space-between;
@@ -1073,51 +1224,9 @@ body {
     font-family: var(--eis-font-mono);
 }
 
-/* --- Адаптив --- */
-@media (max-width: 768px) {
-    .eis-footer {
-        padding: 22px 0 16px;
-    }
-
-    .eis-footer-top {
-        gap: 12px;
-    }
-
-    .eis-footer-logo-img {
-        height: 38px;
-    }
-
-    .eis-footer-bottom {
-        flex-direction: column;
-        gap: 12px;
-        align-items: flex-start;
-    }
-
-    .eis-footer-disclaimer {
-        flex: 1 1 auto;
-        max-width: 100%;
-    }
-
-    .eis-footer-copy {
-        white-space: normal;
-    }
-}
-
-@media (max-width: 480px) {
-    .eis-footer-org-title {
-        font-size: 14px;
-    }
-
-    .eis-footer-org-sub {
-        font-size: 12px;
-    }
-
-    .eis-footer-logo-img {
-        height: 34px;
-    }
-}
-
-/* ========== МОДАЛЬНОЕ ОКНО ========== */
+/* ================================================================
+   МОДАЛЬНОЕ ОКНО (фото)
+   ================================================================ */
 .eis-modal {
     display: none;
     position: fixed;
@@ -1140,13 +1249,13 @@ body {
     padding: 40px;
 }
 
-.eis-modal-content img {
-    max-width: 90%;
-    max-height: 80vh;
-    object-fit: contain;
-    display: block;
-    border-radius: 4px;
-}
+    .eis-modal-content img {
+        max-width: 90%;
+        max-height: 80vh;
+        object-fit: contain;
+        display: block;
+        border-radius: var(--eis-radius-sm);
+    }
 
 .eis-modal-close {
     position: absolute;
@@ -1167,9 +1276,9 @@ body {
     line-height: 1;
 }
 
-.eis-modal-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
+    .eis-modal-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
 
 .eis-modal-nav {
     position: absolute;
@@ -1191,9 +1300,9 @@ body {
     line-height: 1;
 }
 
-.eis-modal-nav:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
+    .eis-modal-nav:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
 
 .eis-modal-prev {
     left: 20px;
@@ -1213,126 +1322,12 @@ body {
     border-radius: 20px;
 }
 
-/* ========== АДАПТИВНОСТЬ ========== */
-@media (max-width: 1024px) {
-    .eis-two-col {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .eis-header {
-        height: auto;
-        padding: 12px 0;
-    }
-
-    .eis-header .eis-container {
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-
-    .eis-user-info {
-        display: none;
-    }
-
-    .eis-nav-menu {
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .eis-nav-item {
-        padding: 10px 14px;
-        font-size: 13px;
-    }
-
-    .eis-nav-item span {
-        display: none;
-    }
-
-    .eis-skills-grid,
-    .eis-error-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .eis-form-row {
-        grid-template-columns: 1fr;
-    }
-
-    .eis-signatures-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .eis-footer-content {
-        flex-direction: column;
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .eis-container {
-        padding: 0 12px;
-    }
-
-    .eis-page-title {
-        font-size: 18px;
-    }
-
-    .eis-panel-header {
-        padding: 10px 14px;
-    }
-
-    .eis-panel-body {
-        padding: 14px;
-    }
-
-    .eis-vu-data {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ========== НАВИГАЦИЯ — ССЫЛКИ ========== */
-.eis-nav-item {
-    padding: 0;
-}
-
-    .eis-nav-item a {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 20px;
-        color: inherit;
-        text-decoration: none;
-        width: 100%;
-        height: 100%;
-        border-radius: 4px 4px 0 0;
-        transition: all 0.15s;
-    }
-
-    .eis-nav-item:hover {
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-        .eis-nav-item:hover a {
-            color: #fff;
-        }
-
-    .eis-nav-item.active {
-        background: var(--eis-bg);
-    }
-
-        .eis-nav-item.active a {
-            color: var(--eis-accent);
-            font-weight: 700;
-        }
-
-
 /* ================================================================
    СТРАНИЦА ВХОДА
    ================================================================ */
-
 .eis-auth-wrapper {
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1378,11 +1373,6 @@ body {
     gap: 4px;
 }
 
-.eis-btn-block {
-    width: 100%;
-    margin-top: 8px;
-}
-
 .eis-auth-error {
     min-height: 20px;
     font-size: 13px;
@@ -1404,7 +1394,6 @@ body {
 /* ================================================================
    ЛИЧНЫЙ КАБИНЕТ
    ================================================================ */
-
 .eis-profile-hint {
     margin-top: 16px;
     padding: 12px 16px;
@@ -1412,14 +1401,13 @@ body {
     color: var(--eis-text-secondary);
     background: #fafbfc;
     border-left: 3px solid var(--eis-accent);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     line-height: 1.5;
 }
 
 /* ================================================================
    АДМИН-ПАНЕЛЬ
    ================================================================ */
-
 .eis-admin-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -1430,7 +1418,7 @@ body {
     background: #fafbfc;
     border: 1px solid var(--eis-border);
     border-left: 3px solid var(--eis-accent);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     padding: 16px;
     text-align: center;
 }
@@ -1451,17 +1439,18 @@ body {
     margin-top: 4px;
 }
 
-/* Таблица */
 .eis-admin-table-wrap {
     overflow-x: auto;
     border: 1px solid var(--eis-border);
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
+    -webkit-overflow-scrolling: touch;
 }
 
 .eis-admin-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
+    min-width: 640px;
 }
 
     .eis-admin-table thead th {
@@ -1506,7 +1495,6 @@ body {
     min-width: 130px;
 }
 
-/* Роли */
 .eis-role-badge {
     display: inline-block;
     padding: 3px 10px;
@@ -1528,7 +1516,6 @@ body {
     border: 1px solid #e0e0e0;
 }
 
-/* Audit log */
 .eis-audit-time {
     font-family: var(--eis-font-mono);
     font-size: 12px;
@@ -1552,19 +1539,9 @@ body {
     white-space: nowrap;
 }
 
-/* Кнопка удаления */
-.eis-btn-danger {
-    background: var(--eis-danger);
-    color: #fff;
-    border-color: var(--eis-danger);
-}
-
-    .eis-btn-danger:hover {
-        background: #c82333;
-        border-color: #c82333;
-    }
-
-/* Модальные формы */
+/* ================================================================
+   МОДАЛЬНЫЕ ФОРМЫ
+   ================================================================ */
 .eis-modal-form {
     display: none;
     position: fixed;
@@ -1585,6 +1562,7 @@ body {
     width: 100%;
     max-width: 680px;
     max-height: 90vh;
+    max-height: 90dvh;
     display: flex;
     flex-direction: column;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -1598,6 +1576,7 @@ body {
     padding: 16px 24px;
     border-bottom: 1px solid var(--eis-border);
     background: #fafbfc;
+    flex-shrink: 0;
 }
 
     .eis-modal-form-header h3 {
@@ -1614,9 +1593,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     transition: all 0.2s;
     line-height: 1;
+    flex-shrink: 0;
 }
 
     .eis-modal-form-close:hover {
@@ -1628,6 +1608,7 @@ body {
     padding: 20px 24px;
     overflow-y: auto;
     flex: 1;
+    -webkit-overflow-scrolling: touch;
 }
 
 .eis-modal-form-footer {
@@ -1637,33 +1618,24 @@ body {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
 }
 
-@media (max-width: 640px) {
-    .eis-admin-actions {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-        .eis-admin-actions .eis-select-sm,
-        .eis-admin-actions .eis-btn {
-            width: 100%;
-        }
+.eis-modal-form-footer-split {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-#vuCanvas {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    border: 1px solid var(--eis-border);
-    border-radius: 4px;
-    background: #fff;
+.eis-modal-form-footer-right {
+    display: flex;
+    gap: 10px;
 }
 
 /* ================================================================
    МОДАЛКА ПОДТВЕРЖДЕНИЯ ВУ
    ================================================================ */
-
 .eis-confirm-vu {
     display: grid;
     grid-template-columns: 320px 1fr;
@@ -1673,7 +1645,7 @@ body {
 
 .eis-confirm-vu-photo {
     border: 1px solid var(--eis-border);
-    border-radius: 6px;
+    border-radius: var(--eis-radius);
     overflow: hidden;
     background: #f5f5f5;
     display: flex;
@@ -1693,6 +1665,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    min-width: 0;
 }
 
     .eis-confirm-vu-fields .eis-data-value {
@@ -1701,23 +1674,87 @@ body {
         border-bottom: 1px dashed var(--eis-border);
     }
 
-@media (max-width: 640px) {
-    .eis-confirm-vu {
-        grid-template-columns: 1fr;
-    }
+/* ================================================================
+   МОДАЛКА ПОДРОБНОЙ ИНФОРМАЦИИ О ЛОГЕ
+   ================================================================ */
+.eis-audit-detail-section {
+    margin-bottom: 24px;
 }
 
-/* ================================================================
-   ВСПЛЫВАЮЩИЕ УВЕДОМЛЕНИЯ (TOAST)
-   ================================================================ */
+    .eis-audit-detail-section:last-child {
+        margin-bottom: 0;
+    }
 
+.eis-audit-detail-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--eis-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--eis-border);
+}
+
+.eis-audit-detail-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px dashed #f0f0f0;
+    font-size: 13px;
+}
+
+    .eis-audit-detail-row:last-child {
+        border-bottom: none;
+    }
+
+.eis-audit-detail-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--eis-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding-top: 2px;
+}
+
+.eis-audit-detail-value {
+    font-family: var(--eis-font-mono);
+    font-size: 12px;
+    color: var(--eis-text);
+    word-break: break-all;
+}
+
+.eis-audit-detail-json {
+    background: #1f2025;
+    color: #e0e0e0;
+    padding: 16px 20px;
+    border-radius: var(--eis-radius-sm);
+    overflow-x: auto;
+    max-height: 300px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+    .eis-audit-detail-json pre {
+        font-family: var(--eis-font-mono);
+        font-size: 12px;
+        line-height: 1.5;
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+/* ================================================================
+   TOAST-УВЕДОМЛЕНИЯ
+   ================================================================ */
 .eis-toast-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 9999;
     display: flex;
-    flex-direction: column-reverse; /* новые тосты появляются снизу, старые уходят вверх */
+    flex-direction: column-reverse;
     gap: 12px;
     pointer-events: none;
     max-width: 400px;
@@ -1728,7 +1765,7 @@ body {
     background: #ffffff;
     border: 1px solid var(--eis-border);
     border-left: 4px solid var(--eis-info);
-    border-radius: 6px;
+    border-radius: var(--eis-radius);
     padding: 14px 40px 14px 52px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     pointer-events: auto;
@@ -1791,7 +1828,7 @@ body {
     font-size: 20px;
     line-height: 1;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: var(--eis-radius-sm);
     transition: all 0.15s;
     display: flex;
     align-items: center;
@@ -1824,7 +1861,6 @@ body {
     }
 }
 
-/* Типы toast */
 .eis-toast-success {
     border-left-color: var(--eis-success);
 }
@@ -1874,24 +1910,9 @@ body {
         color: var(--eis-info);
     }
 
-@media (max-width: 480px) {
-    .eis-toast-container {
-        top: 12px;
-        right: 12px;
-        left: 12px;
-        max-width: none;
-    }
-
-    .eis-toast {
-        min-width: 0;
-        width: 100%;
-    }
-}
-
 /* ================================================================
-   МОДАЛКА ПОДТВЕРЖДЕНИЯ (CONFIRM)
+   CONFIRM-МОДАЛКА
    ================================================================ */
-
 .eis-confirm-overlay {
     position: fixed;
     inset: 0;
@@ -1952,7 +1973,6 @@ body {
     gap: 10px;
 }
 
-/* Тонкая полоска сверху по типу */
 .eis-confirm-danger .eis-confirm-header {
     border-top: 3px solid var(--eis-danger);
 }
@@ -1966,23 +1986,227 @@ body {
 }
 
 /* ================================================================
-   КНОПКИ ДЕЙСТВИЙ НА КАРТОЧКЕ ВУ
+   АДАПТИВНОСТЬ
    ================================================================ */
 
-.eis-vu-record-header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
+/* ---------- Планшеты (до 1024px) ---------- */
+@media (max-width: 1024px) {
+    .eis-two-col {
+        grid-template-columns: 1fr;
+    }
 }
 
-.eis-vu-actions {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-
+/* ---------- Большие телефоны / маленькие планшеты (до 768px) ---------- */
 @media (max-width: 768px) {
+
+    /* --- Контейнер --- */
+    .eis-container {
+        padding: 0 14px;
+    }
+
+    /* --- Шапка --- */
+    .eis-header {
+        min-height: 56px;
+    }
+
+        .eis-header .eis-container {
+            gap: 10px;
+        }
+
+    .eis-logo {
+        width: 38px;
+        height: 38px;
+    }
+
+    .eis-org-title {
+        font-size: 13px;
+    }
+
+    .eis-org-sub {
+        font-size: 10px;
+    }
+
+    .eis-user-info {
+        display: none;
+    }
+
+    .eis-header-divider {
+        display: none;
+    }
+
+    .eis-header-right {
+        gap: 8px;
+    }
+
+    .eis-logout-btn {
+        width: 34px;
+        height: 34px;
+    }
+
+    /* --- Навигация --- */
+    .eis-nav {
+        top: 56px;
+    }
+
+    .eis-nav-menu {
+        gap: 0;
+    }
+
+    .eis-nav-item a {
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+        .eis-nav-item a svg {
+            display: block;
+            width: 18px;
+            height: 18px;
+        }
+
+        .eis-nav-item a span {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+    /* --- Основной контент --- */
+    .eis-main {
+        padding: 16px 0 32px;
+    }
+
+    .eis-page-header {
+        margin-bottom: 16px;
+    }
+
+    .eis-page-title {
+        font-size: 18px;
+    }
+
+    .eis-page-subtitle {
+        font-size: 12px;
+    }
+
+    /* --- Панели --- */
+    .eis-panel {
+        margin-bottom: 14px;
+    }
+
+    .eis-panel-header {
+        padding: 10px 14px;
+    }
+
+    .eis-panel-title {
+        font-size: 12px;
+    }
+
+    .eis-panel-body {
+        padding: 14px;
+    }
+
+        .eis-panel-body.eis-preview-body {
+            padding: 14px;
+            gap: 14px;
+        }
+
+    /* --- Формы --- */
+    .eis-form-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .eis-form-group {
+        margin-bottom: 12px;
+    }
+
+    .eis-input,
+    .eis-select {
+        font-size: 16px; /* предотвращает зум на iOS */
+        padding: 11px 12px;
+    }
+
+    .eis-input-sm {
+        font-size: 14px;
+        padding: 9px 10px;
+    }
+
+    /* --- Кнопки --- */
+    .eis-btn {
+        padding: 11px 16px;
+        font-size: 14px;
+    }
+
+    .eis-btn-sm {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .eis-actions-bar {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+        .eis-actions-bar .eis-btn {
+            width: 100%;
+        }
+
+    /* --- Навыки / ошибки --- */
+    .eis-skills-grid,
+    .eis-error-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .eis-error-item {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+        .eis-error-item label {
+            font-size: 12px;
+            flex-basis: 100%;
+            order: 2;
+        }
+
+    .eis-error-controls {
+        order: 1;
+    }
+
+    /* --- Техосмотр --- */
+    .eis-tech-item {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .eis-tech-item-text {
+        font-size: 12px;
+        flex-basis: calc(100% - 100px);
+    }
+
+    .eis-tech-item-actions {
+        margin-left: auto;
+    }
+
+    /* --- Подписи --- */
+    .eis-signatures-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .eis-signature-item {
+        padding: 14px;
+    }
+
+    /* --- VU-записи --- */
+    .eis-vu-record-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px 14px;
+    }
+
     .eis-vu-record-header-right {
         width: 100%;
         justify-content: space-between;
@@ -1995,97 +2219,412 @@ body {
         .eis-vu-actions .eis-btn {
             flex: 1;
         }
-}
 
-/* ================================================================
-   МОДАЛКА ПОДРОБНОЙ ИНФОРМАЦИИ О ЛОГЕ
-   ================================================================ */
-
-.eis-audit-detail-section {
-    margin-bottom: 24px;
-}
-
-    .eis-audit-detail-section:last-child {
-        margin-bottom: 0;
+    .eis-vu-data {
+        padding: 14px;
+        grid-template-columns: 1fr;
+        gap: 12px;
     }
 
-.eis-audit-detail-title {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--eis-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--eis-border);
-}
-
-.eis-audit-detail-row {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 12px;
-    padding: 6px 0;
-    border-bottom: 1px dashed #f0f0f0;
-    font-size: 13px;
-}
-
-    .eis-audit-detail-row:last-child {
-        border-bottom: none;
+    .eis-documents-grid {
+        padding: 0 14px 14px;
+        gap: 8px;
     }
 
-.eis-audit-detail-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--eis-text-light);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    padding-top: 2px;
-}
-
-.eis-audit-detail-value {
-    font-family: var(--eis-font-mono);
-    font-size: 12px;
-    color: var(--eis-text);
-    word-break: break-all;
-}
-
-.eis-audit-detail-json {
-    background: #1f2025;
-    color: #e0e0e0;
-    padding: 16px 20px;
-    border-radius: 4px;
-    overflow-x: auto;
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-    .eis-audit-detail-json pre {
-        font-family: var(--eis-font-mono);
-        font-size: 12px;
-        line-height: 1.5;
-        margin: 0;
-        white-space: pre-wrap;
-        word-break: break-word;
+    .eis-document-thumb {
+        width: calc(50% - 4px);
+        height: 90px;
     }
 
-@media (max-width: 640px) {
+    /* --- Предпросмотр --- */
+    .eis-page-preview canvas,
+    #vuCanvas,
+    #techCanvas,
+    #examCanvas1,
+    #examCanvas2,
+    #protocolCanvas1,
+    #protocolCanvas2 {
+        max-height: 65vh;
+        width: auto;
+        max-width: 100%;
+    }
+
+    /* --- Модалки --- */
+    .eis-modal-form {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .eis-modal-form-content {
+        max-height: 92vh;
+        max-height: 92dvh;
+        border-radius: 12px 12px 0 0;
+        max-width: 100%;
+    }
+
+    .eis-modal-form-header {
+        padding: 14px 16px;
+    }
+
+        .eis-modal-form-header h3 {
+            font-size: 15px;
+        }
+
+    .eis-modal-form-body {
+        padding: 16px;
+    }
+
+    .eis-modal-form-footer {
+        padding: 12px 16px;
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+
+        .eis-modal-form-footer .eis-btn {
+            width: 100%;
+        }
+
+    .eis-modal-form-footer-split {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .eis-modal-form-footer-right {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    /* --- Confirm --- */
+    .eis-confirm-footer {
+        flex-direction: column-reverse;
+    }
+
+        .eis-confirm-footer .eis-btn {
+            width: 100%;
+        }
+
+    /* --- Модалка подтверждения ВУ --- */
+    .eis-confirm-vu {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .eis-confirm-vu-photo {
+        min-height: 160px;
+    }
+
+        .eis-confirm-vu-photo img {
+            max-height: 200px;
+        }
+
+    /* --- Таблицы админки: карточный вид --- */
+    .eis-admin-table-wrap {
+        border: none;
+        overflow: visible;
+    }
+
+    .eis-admin-table {
+        min-width: 0;
+        display: block;
+    }
+
+        .eis-admin-table thead {
+            display: none;
+        }
+
+        .eis-admin-table tbody {
+            display: block;
+        }
+
+            .eis-admin-table tbody tr {
+                display: block;
+                margin-bottom: 12px;
+                border: 1px solid var(--eis-border);
+                border-radius: var(--eis-radius);
+                padding: 10px 12px;
+                background: #fff;
+            }
+
+            .eis-admin-table tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 6px 0;
+                border: none;
+                border-bottom: 1px dashed #f0f0f0;
+                text-align: right;
+            }
+
+                .eis-admin-table tbody td:last-child {
+                    border-bottom: none;
+                    padding-top: 10px;
+                    justify-content: stretch;
+                }
+
+                .eis-admin-table tbody td::before {
+                    content: attr(data-label);
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: var(--eis-text-secondary);
+                    text-transform: uppercase;
+                    letter-spacing: 0.3px;
+                    text-align: left;
+                    flex-shrink: 0;
+                }
+
+                .eis-admin-table tbody td:last-child::before {
+                    display: none;
+                }
+
+    .eis-admin-actions {
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+    }
+
+        .eis-admin-actions .eis-btn,
+        .eis-admin-actions .eis-select-sm {
+            width: 100%;
+        }
+
+    .eis-select-sm {
+        min-width: 0;
+    }
+
+    /* --- Статистика --- */
+    .eis-admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .eis-stat-card {
+        padding: 12px 10px;
+    }
+
+    .eis-stat-value {
+        font-size: 22px;
+    }
+
+    .eis-stat-label {
+        font-size: 10px;
+    }
+
+    /* --- Audit detail --- */
     .eis-audit-detail-row {
         grid-template-columns: 1fr;
         gap: 4px;
     }
+
+    /* --- Фото-модалка --- */
+    .eis-modal-content {
+        padding: 16px;
+    }
+
+        .eis-modal-content img {
+            max-width: 96%;
+            max-height: 70vh;
+        }
+
+    .eis-modal-close {
+        top: 12px;
+        right: 12px;
+        width: 40px;
+        height: 40px;
+        font-size: 26px;
+    }
+
+    .eis-modal-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 28px;
+    }
+
+    .eis-modal-prev {
+        left: 8px;
+    }
+
+    .eis-modal-next {
+        right: 8px;
+    }
+
+    /* --- Подвал --- */
+    .eis-footer {
+        padding: 22px 0 16px;
+    }
+
+    .eis-footer-top {
+        gap: 12px;
+    }
+
+    .eis-footer-logo-img {
+        height: 38px;
+    }
+
+    .eis-footer-bottom {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .eis-footer-disclaimer {
+        flex: 1 1 auto;
+        max-width: 100%;
+    }
+
+    .eis-footer-copy {
+        white-space: normal;
+    }
+}
+
+/* ---------- Маленькие телефоны (до 480px) ---------- */
+@media (max-width: 480px) {
+
+    .eis-container {
+        padding: 0 10px;
+    }
+
+    /* --- Шапка --- */
+    .eis-org-title {
+        font-size: 12px;
+    }
+
+    .eis-org-sub {
+        font-size: 9px;
+    }
+
+    .eis-logo {
+        width: 34px;
+        height: 34px;
+    }
+
+    /* --- Заголовки --- */
+    .eis-page-title {
+        font-size: 16px;
+    }
+
+    .eis-page-subtitle {
+        font-size: 11px;
+    }
+
+    /* --- Панели --- */
+    .eis-panel-header {
+        padding: 10px 12px;
+    }
+
+    .eis-panel-body {
+        padding: 12px;
+    }
+
+        .eis-panel-body.eis-preview-body {
+            padding: 10px;
+        }
+
+    /* --- Подписи --- */
+    .eis-signature-item {
+        padding: 12px;
+    }
+
+    /* --- Документы --- */
+    .eis-document-thumb {
+        width: 100%;
+        height: 120px;
+    }
+
+    /* --- Кнопки --- */
+    .eis-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    /* --- Тосты --- */
+    .eis-toast-container {
+        top: 12px;
+        right: 12px;
+        left: 12px;
+        bottom: auto;
+        max-width: none;
+        flex-direction: column;
+    }
+
+    .eis-toast {
+        min-width: 0;
+        width: 100%;
+        padding: 12px 36px 12px 48px;
+    }
+
+    .eis-toast-icon {
+        left: 12px;
+        top: 12px;
+        width: 22px;
+        height: 22px;
+        font-size: 12px;
+    }
+
+    /* --- Статистика --- */
+    .eis-admin-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .eis-stat-value {
+        font-size: 20px;
+    }
+
+    /* --- Confirm --- */
+    .eis-confirm-modal {
+        max-width: 100%;
+    }
+
+    /* --- Формы --- */
+    .eis-input,
+    .eis-select {
+        padding: 11px 10px;
+    }
+}
+
+/* ---------- Очень маленькие (до 360px) ---------- */
+@media (max-width: 360px) {
+
+    .eis-nav-item a {
+        padding: 8px 8px;
+    }
+
+        .eis-nav-item a span {
+            font-size: 10px;
+        }
+
+    .eis-page-title {
+        font-size: 15px;
+    }
+
+    .eis-admin-stats {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ================================================================
-   РАЗДЕЛЁННЫЙ FOOTER МОДАЛКИ (удалить слева, действия справа)
+   ЛАНДШАФТ НА ТЕЛЕФОНАХ
    ================================================================ */
+@media (max-width: 896px) and (orientation: landscape) {
 
-.eis-modal-form-footer-split {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    .eis-header {
+        position: static;
+    }
+
+    .eis-nav {
+        position: static;
+    }
+
+    .eis-auth-wrapper {
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+
+    .eis-modal-form-content {
+        max-height: 95vh;
+        max-height: 95dvh;
+    }
 }
 
-.eis-modal-form-footer-right {
-    display: flex;
-    gap: 10px;
-}
